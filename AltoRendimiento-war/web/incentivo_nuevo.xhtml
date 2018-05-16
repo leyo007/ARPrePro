@@ -1,0 +1,362 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+     <ui:define name="content">
+         
+         
+         <script>
+            var fechanacimiento='';
+            var sexo='';
+             apellidos='';
+                fecha='';
+              
+    function verifica(x){
+        var y=x+'';         
+        console.log("Size: "+y.length);
+        console.log("value  "+y);
+        if(y.length===9){
+            console.log("inseide 9...;");
+             y='0'+y;
+            console.log("Y: "+y);
+        }
+        if(y.length===10){
+                  console.log(x);
+                  //console.log('');
+                 // console.log($('');
+                        console.log("Click on verifica");
+                            $.ajax({
+                                    url:"http://sistemas24/dinardap/dinardap.php",
+                                    type:"POST",
+                                    dataType:"json",
+                                    data:"cedula="+y,
+                                    beforeSend: function(){
+                                         console.log("Espera...");
+                                            PF('statusDialog').show();
+                                            $('#dlg').attr('display', 'block');
+
+                                            },
+                                    success:function(datos){
+                                            PF('statusDialog').hide();
+                                            $('#dlg').attr('display', 'none');
+                                            const [year, month, day] = datos.fechaNacimiento.split("-");
+
+                                            $("#imagenes").html('');
+                                            apellidos=datos.nombre
+                                            $("#newinc\\:apellidosynombres").attr('value',datos.nombre)
+                                            
+                                            //$("#newinc\\:apellidosynombres").attr('disabled','disabled')
+
+                                            console.log("Nombres "+datos.nombre);
+                                            console.log("Nombres "+$("#newinc\\:apellidosynombres").attr('value'));
+                                           
+
+                                            fechanacimiento=day+'/'+month+'/'+year;
+                                            fecha=datos.fechaNacimiento
+                                            $("#newinc\\:fechanac_input").attr('value',day+'/'+month+'/'+year)
+
+                                           // $("#newinc\\:fechanac_input").attr('disabled','disabled')     
+                                            console.log('value: '+PF('selectSex').getSelectedValue());
+                                            console.log('label: '+PF('selectSex').getSelectedLabel());
+                                            
+                                                console.log(datos.fechaNacimiento+' DOB........');
+                                                sexo=datos.fechaNacimiento;
+
+                                            console.log(datos.sexo+' sex dinar');
+                                            if(datos.sexo==='HOMBRE'){
+                                                PF('selectSex').selectValue(0);
+                                                
+                                            }
+                                            else{
+                                                PF('selectSex').selectValue(1);
+                                                
+                                            }
+                                            console.log('value: '+PF('selectSex').getSelectedValue());
+                                            console.log('label: '+PF('selectSex').getSelectedLabel());
+
+                                           // $("#newinc\\:sexo").attr('disabled','disabled')          
+
+                                            },
+                                            error: function(xhr) { // if error occured
+                                                console.log("Error occured.please try again "+xhr.statusText + xhr.responseText);
+                                                //alert("Sin cédula");
+                                                PF('ctrlCiExist').show();
+                                                PF('statusDialog').hide();
+                                                //location.reload();
+
+                                            },
+                                            complete: function() {
+                                                console.log("Finish!!!!");
+                                            }
+
+                            })
+                        }
+                        else {
+                            PF('ctrlCi').show();
+                            
+                        }
+            
+        }
+             
+           
+             
+         </script>
+         <style>
+            .menuSelect .ui-selectonemenu-label { 
+                //background: pink;
+               
+                box-sizing: content-box!important;
+            }
+            .panel .ui-selectonemenu-list { 
+                 //width: 100px;
+                //background: green;
+            }
+            
+            .ui-selectonemenu .ui-selectonemenu-trigger {
+                  // background-color: red;
+                width: auto!important;
+            }
+            .ui-state-highlight, .ui-widget-content .ui-state-highlight{
+                background-image: linear-gradient(to bottom, #f2dede, #254786);
+                    background-color: #555;
+            }
+             
+         </style>
+         <div id="contenido" class="wrapper row3">
+            <main class="hoc container clear"> 
+                
+                <p:dialog header="Cédula incompleta" widgetVar="ctrlCi" modal="true" height="100">
+                       <h:outputText value="La cédula debe tener 10 números" />
+                    </p:dialog> 
+                <p:dialog header="Sin correspondencia..." widgetVar="ctrlCiExist" modal="true" height="100">
+                       <h:outputText value="La cédula no existe" />
+                    </p:dialog> 
+                <div class="btmspace-80 center">
+                  <h3 class="nospace">Bienvenidos</h3>
+                  <h:outputText value="Usuario con acceso"/>
+                </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+                <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                </h:outputLink>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+               
+                    <h2>NUEVO INCENTIVO</h2>     
+                    <div id="comments">
+                        <ul>
+                            <li>
+                                <article>
+                                    <header>
+                                      <address><h2>Deportistas</h2></address>
+                                    </header>
+                                    <div class="comcont">
+                                        <div class="one_third first">
+                                                        <label for="url"><B> Ingresar Nuevo Deportista</B></label>
+                                        </div>
+                                        <h:form>
+                                            <p:commandButton  style="background: #4fd48a; color: white;" value="Regresar"
+                                                            action="#{myBean.givmeLink(2)}" icon="fa fa-fw fa-undo" />
+                                        </h:form>
+                                                  
+                                    </div>
+                                    <div class="comcont">
+                                        <h:form id="newinc" class="container" style="margin-left: 0%; margin-right: 0%; margin-bottom: 0px;">
+                                            <p:growl id="growl" sticky="false" showDetail="true" autoUpdate="true" life="500"/>
+                                            <p:messages id="messages" closable="true">
+                                                <p:effect type="puff" event="load" delay="300" />
+                                            </p:messages>
+                                            
+                                            <p:panel header="DATOS DEL DEPORTISTA" id="panel-datos" widgetVar="regWidget" style="padding-left: 0%; padding-right: 0%; background-color: rgba(255,255,255,0.5);">
+
+                                                <h:panelGrid columns="2"  border="0" style="width: 100%;">
+                                                    <h:outputText class="one_third" value="CEDULA"/>
+                                                    <h:outputText class="one_third" value=""/>                                                    
+                                                    <p:inputText styleClass="one_third" value="#{myBean.selectPersona.depcedula}" id="cedula" required="true" requiredMessage="Cédula obligatoria" readonly="false" placeholder="Cédula">
+                                                        <p:ajax event="change" update="apellidosynombres fechanac cedula sexo"  listener="#{myBean.reloadDinardap(myBean.selectPersona.depcedula,myBean.selectPersona.idsexo, myBean.selectPersona.depnombre )}" />
+                                                    </p:inputText>
+                                                    <p:commandButton  style="padding: 7px; width: 100%;" value="Buscar" actionListener="#{myBean.reloadDinardap(myBean.selectPersona.depcedula,myBean.selectPersona.idsexo, myBean.selectPersona.depnombre )}" onclick="verifica(''+#{myBean.selectPersona.depcedula});"  async="false" ajax="true"  />
+                                                    
+                                                    <p:message for="cedula" display="text"/><h:outputText value=""/>
+                                                 </h:panelGrid>
+                                                <h:panelGrid columns="2"  border="0" style="width: 100%;">   
+                                                    <h:outputText value="NOMBRES"/>
+                                                    <p:inputText style="" value="#{myBean.selectPersona.depnombre}" id="apellidosynombres" readonly="false" required="true" requiredMessage="No hay nombres" placeholder="Apellidos y Nombres">
+                                                        <p:ajax event="blur" update=""   listener="#{myBean.prueba(myBean.selectPersona.depnombre)}" />
+                                                    </p:inputText>
+                                                    <h:outputText value=""/>
+                                                    <p:message for="apellidosynombres" display="text"/>
+                                                    
+                                                    <h:outputText value="FECHA DE NACIMIENTO" />
+                                                    <p:calendar value="#{myBean.selectPersona.depdob}"  disabled="false" id="fechanac" converterMessage="Fecha erronea"
+                                                                pattern="dd/MM/yyyy" 
+                                                                navigator="true"
+                                                                required="true"
+                                                                readonly="false"
+                                                                requiredMessage="Falta Fecha de Nacimiento"
+                                                                locale="es"
+                                                                >
+                                                        <p:ajax event="blur" update=""   listener="#{myBean.fechas(myBean.selectPersona.depdob)}"  />
+                                                    </p:calendar>
+                                                     <h:outputText value=""/>
+                                                    <p:message for="fechanac" display="text"/>
+                                                    
+                                                    <h:outputText value="SEXO" />
+                                                    <p:selectOneMenu disabled="false" required="true" requiredMessage="Falta Sexo"
+                                                        id="sexo" value="#{myBean.selectPersona.idsexo}" widgetVar="selectSex" styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItem itemLabel="HOMBRE" itemValue="0" />
+                                                        <f:selectItem itemLabel="MUJER" itemValue="1" />
+                                                        <p:ajax event="blur" update=""   listener="#{myBean.sexo(myBean.selectPersona.idsexo)}"  />
+                                                    </p:selectOneMenu>
+                                                     <h:outputText value=""/>
+                                                    <p:message for="sexo" display="text"/>
+                                                    
+                                                     <h:outputText value="Etnia" />
+                                                     <p:column>                                                          
+                                                         <p:selectOneMenu id="grupoetnico" value="#{myBean.selectPersona.idetnia}" required="true" requiredMessage="Falta la Etnia!" >
+                                                                    <f:selectItem itemLabel="Seleccione una" />
+                                                                    <f:selectItem  itemLabel="Blanco" itemValue="Blanco" />
+                                                                    <f:selectItem  itemLabel="Afroecuatoriano" itemValue="Afroecuatoriano" />
+                                                                    <f:selectItem   itemLabel="Mestizo" itemValue="Mestizo" />
+                                                                    <f:selectItem   itemLabel="Indigena" itemValue="Indigena" />
+                                                                    <f:selectItem   itemLabel="Montubio" itemValue="Montubio" />
+                                                                    <f:selectItem   itemLabel="Mulato" itemValue="Mulato" />
+                                                                    <f:selectItem   itemLabel="Negro" itemValue="Negro" />
+                                                                    <f:selectItem   itemLabel="Otro" itemValue="Otro" />
+                                                                </p:selectOneMenu>
+                                                        </p:column>                                                       
+                                                     <h:outputText value=""/>
+                                                     <p:message for="grupoetnico" display="text"/>
+
+                                                <p:separator /> <p:separator />
+                                                    
+                                                    <h:outputText value="DEPORTE" />
+                                                    <p:selectOneMenu id="dep" required="true" requiredMessage="Deporte obligatorio" value="#{myBean.selectPersona.iddeporte}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Deportes"/>
+                                                        <f:selectItems value="#{myBean.listDeporte}" var="de" itemLabel="#{de.depdescripcion}" itemValue="#{de.iddeporte}"  />
+                                                    </p:selectOneMenu>
+                                                     <h:outputText value=""/>
+                                                     <p:message for="dep" display="text"/>
+                                                     
+                                                    <h:outputText value="DISCIPLINA" />
+                                                    <p:selectOneMenu id="disc" required="true" requiredMessage="Disiciplina obligatoria" value="#{myBean.selectPersona.iddis}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Disciplinas"/>
+                                                        <f:selectItems value="#{myBean.listDisciplina}" var="di" itemLabel="#{di.disdescripcion}" itemValue="#{di.iddis}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value=""/>
+                                                     <p:message for="disc" display="text"/>
+                                                     
+                                                    <h:outputText value="PRUEBA" />
+                                                    <p:inputText style="" value="#{myBean.selectPersona.depprueba}" id="prueba" required="true" requiredMessage="Prueba obligstoria" placeholder="Especifique la prueba"/>
+                                                    <h:outputText value="" />
+                                                    <p:message for="prueba" display="text"/>
+                                                    
+                                                    <h:outputText value="PROVINCIA" />
+                                                    <p:selectOneMenu id="prov" required="true" requiredMessage="Selecione la provincia" value="#{myBean.selectPersona.idprorep}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Provincia"/>
+                                                        <f:selectItems value="#{myBean.listaProv}" var="pv" itemLabel="#{pv.nombredivpol}" itemValue="#{pv.iddivpol}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="" />
+                                                    <p:message for="prov" display="text"/>
+                                                    
+                                                    <h:outputText value="MES INGRESO" />
+                                                    <p:selectOneMenu id="mesingreso" value="#{myBean.selectIncentivo.idmes}" required="true" requiredMessage="Mes obligstorio" >
+                                                                    <f:selectItem itemLabel="Mes Ingreso" />
+                                                                    <f:selectItem  itemLabel="Enero" itemValue="1" />
+                                                                    <f:selectItem  itemLabel="Febrero" itemValue="2" />
+                                                                    <f:selectItem  itemLabel="Marzo" itemValue="3" />
+                                                                    <f:selectItem  itemLabel="Abril" itemValue="4" />
+                                                                    <f:selectItem  itemLabel="Mayo" itemValue="5" />
+                                                                    <f:selectItem  itemLabel="Junio" itemValue="6" />
+                                                                    <f:selectItem  itemLabel="Julio" itemValue="7" />
+                                                                    <f:selectItem  itemLabel="Agosto" itemValue="8" />
+                                                                    <f:selectItem  itemLabel="Séptiembre" itemValue="9" />
+                                                                    <f:selectItem  itemLabel="Octubre" itemValue="10" />
+                                                                    <f:selectItem  itemLabel="Noviembre" itemValue="11" />
+                                                                    <f:selectItem  itemLabel="Diciembre" itemValue="12" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="" />
+                                                    <p:message for="mesingreso" display="text"/>
+                                                    
+                                                    
+                                                    
+                                                    <h:outputText value="CATEGORÍA EDAD" />
+                                                    <p:selectOneMenu id="catEdad" required="true" requiredMessage="Categoría obligatoria" value="#{myBean.selectIncentivo.idedad}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="#{myBean.listCatE}" var="ce" itemLabel="#{ce.catedaddescripcion}" itemValue="#{ce.idedad}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="" />
+                                                    <p:message for="catEdad" display="text"/>
+                                                    
+                                                    <h:outputText value="CONVOCATORIA" />
+                                                    <p:selectOneMenu id="conv" required="true" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectPersona.idconv}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="#{myBean.listConv}" var="lc" itemLabel="#{lc.condescripcion}" itemValue="#{lc.idconv}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value=""/>
+                                                    <p:message for="conv" display="text"/>
+                                                    
+                                                    <h:outputText value="CATEGORÍA PROPUESTA" />
+                                                    <p:selectOneMenu id="catPro" required="true" requiredMessage="Categoría obligatoria" value="#{myBean.selectIncentivo.idcatpro}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="#{myBean.listCatP}" var="cp" itemLabel="#{cp.catdescripcion}" itemValue="#{cp.idcatpro}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value=""/>
+                                                    <p:message for="catPro" display="text"/>
+                                                    
+                                                    <h:outputText value="RESULTADOS ELEGIBILIDAD" />
+                                                    <p:inputTextarea value="#{myBean.selectPersona.depresultados}" rows="6" cols="50" />
+                                                    <h:outputText value="PROYECCIÓN" />
+                                                    <p:inputTextarea value="#{myBean.selectPersona.depproyeccion}" rows="6" cols="50" />
+                                                    <h:outputText value="NOVEDAD" />
+                                                    <p:inputTextarea value="#{myBean.selectPersona.depnovedad}" rows="6" cols="50" />
+                                                    
+                                                    
+                                                </h:panelGrid>
+
+                                               
+                                                <p:separator />
+                                                <p:commandButton id="gt" 
+                                                style=" background: #FBFBFB; color: black;" 
+                                                value="Guardado temporal" 
+                                                action="#{myBean.registraPersona()}"
+                                                icon="fa fa-fw fa-save"
+
+                                                update="newinc"
+                                                ></p:commandButton>       
+                                            </p:panel>
+                </h:form>     
+                                    </div>
+                                </article>
+                            </li>
+                            <li>
+                              <article>
+                                    <div class="comcont">
+                                       <div class="scrollable">
+                                          <div id="datos"></div>
+                                       </div>
+                                    </div>
+                              </article>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                 
+                
+                  <!-- InstanceEndEditable -->
+                <div class="clear"></div>
+            </main>
+        </div>
+         
+         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                     <p:dialog id="dgl" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                         <h3>Procesando...</h3>
+                                         <img  src="images/bar.gif"/>
+                                     </p:dialog>
+         
+                    
+     </ui:define>
+</ui:composition>

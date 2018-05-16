@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    <h:head>
+        <title>Ingreso|AltoRendimiento</title>
+        <link href="css/demo.css" rel="stylesheet" type="text/css"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all"/>
+        <script name="jquery/jquery.js" library="primefaces"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"/>
+        
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dosis"/>
+</h:head>
+<h:body id="top">
+    <style>
+        .one_third {
+            width: 29.288344%!important;
+        }
+        
+        @media screen and (max-width: 750px){
+            .one_third  {
+                display: block;
+                float: none;
+                width: auto!important;
+                margin: 0 0 30px 0;
+                padding: 0;
+            }
+        }
+        #form\:repeat\:0\:links, #form\:repeat\:1\:links, #form\:repeat\:2\:links, #form\:repeat\:3\:links, #form\:repeat\:4\:links{
+            
+               color: #ffffff00;
+    background-color: #ffffff00;
+        }
+        #form\:repeat\:0\:links:hover, #form\:repeat\:1\:links:hover, #form\:repeat\:2\:links:hover, #form\:repeat\:3\:links:hover, #form\:repeat\:4\:links:hover{
+            //display: block!important;
+            color: #FFFFFF;
+            background-color: #C5A059;
+        }
+         .ui-state-highlight, .ui-state-default, .ui-widget-content .ui-state-highlight{
+                    background-image: linear-gradient(to bottom, #ffffff00, #ffffff00);
+                background-color: #555;
+            }
+    </style>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- Top Background Image Wrapper -->
+<div class="bgded overlay" style="background-image:url(images/Collage.jpg);"> 
+  <!-- ################################################################################################ -->
+  <div class="wrapper row1">
+    <header id="header" class="hoc clear"> 
+      <!-- ################################################################################################ -->
+      <div id="logo" class="fl_left">
+        <h1>
+            <a>
+            <img src="images/3Logos.png" alt="Logo" width="161" height="76" usemap="#Map"/>
+          <map name="Map">
+            <area shape="rect" coords="2,6,244,106" href="http://www.deporte.gob.ec/" target="_blank"/>
+          </map>
+        </a></h1>
+      </div>
+      <nav id="mainavNO" class="fl_right">
+        <ul class="clear">
+          <li class="active">
+              <h:form>
+                                <p:commandButton  style="background: #9d2b07; color: white;" value="Salir" action="#{myBean.logout()}" icon="ui-icon-extlink" />
+                            </h:form>
+          </li>
+        </ul>
+      </nav>
+      
+    </header>
+  </div>
+  <div id="pageintro" class="hoc clear"> 
+    <div class="flexslider basicslider">
+      <ul class="slides">
+        <li>
+          <article>
+            <p>Ministerio del Deporte</p>
+            <h3 class="heading">Proyecto de Alto Rendimiento</h3>
+            <p>Vitae lobortis id ut mi in molestie in</p>
+  
+          </article>
+        </li>
+        
+      </ul>
+    </div>
+  
+  </div>
+  
+</div>
+<div class="wrapper row3">
+  <main class="hoc container clear"> 
+    <div class="btmspace-80 center">
+      <h3 class="nospace">Bienvenidos</h3>      
+    </div>
+  
+      <h:form id="form">
+         
+              <ul class="nospace group services">
+                  <p:repeat id="repeat" value="#{myBean.menus}" var="menu">
+                    <li class="one_third">
+                        <article class="bgded overlay" style="background-image:url(images/#{menu.mennombre}.jpg;">
+                                         <div class="txtwrap"><i class="fa fa-money" style="font-size:48px"></i>
+                                               <h6 class="heading">#{menu.mennombre}</h6>
+                                               <p>Lacus eget nullam in ornare magna nam vitae volutpat justo tincidunt</p>
+                                         </div>
+                            <footer>
+                                <p:commandButton id="links" style="padding: 7px; width: 100%;" value="Abrir" action="#{myBean.redir(menu.menlink)}"/>
+                                <!--a href="#{menu.menlink}">Agregar </a-->
+                            </footer>
+                                       </article>
+                    </li> 
+                  </p:repeat> 
+            </ul>
+            
+            <hr />
+        
+    </h:form>      
+    
+        <!-- InstanceEndEditable -->
+   
+    <div class="clear"></div>
+  </main>
+</div>
+
+
+<div class="wrapper row4 bgded overlay" style="background-image:url('images/demo/backgrounds/02.png');">
+  <footer id="footer" class="hoc clear"> 
+    <div class="one_third first">
+      <h3 class="heading">redes</h3>
+      <ul class="faico clear">
+        <li><a class="faicon-facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="faicon-twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="faicon-dribble" href="#"><i class="fa fa-dribbble"></i></a></li>
+        <li><a class="faicon-linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="faicon-google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
+        <li><a class="faicon-vk" href="#"><i class="fa fa-vk"></i></a></li>
+      </ul>
+    </div>
+    <div class="one_third">
+      <ul class="nospace meta">
+        <li class="btmspace-15"><i class="fa fa-phone"></i> 0332265480</li>
+        <li><i class="fa fa-envelope-o"></i> info@deporte.gob.ec</li>
+      </ul>
+    </div>
+    <div class="one_third">
+      <form method="post" action="#">
+        <fieldset>
+          <legend>Newsletter:</legend>
+          <div class="clear">
+            <input type="text" value="" placeholder="Type Email Here..."/>
+            <button class="fa fa-share" type="submit" title="Submit"><em>Submit</em></button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    
+  </footer>
+</div>
+<div class="wrapper row5">
+  <div id="copyright" class="hoc clear">    
+  </div>
+</div>
+<a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+<!-- JAVASCRIPTS -->
+<script src="layout/scripts/jquery.min.js"></script>
+<script src="layout/scripts/jquery.backtotop.js"></script>
+<script src="layout/scripts/jquery.mobilemenu.js"></script>
+<script src="layout/scripts/jquery.flexslider-min.js"></script>
+</h:body>
+<!-- InstanceEnd --></html>

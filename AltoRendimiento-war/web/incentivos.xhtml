@@ -1,0 +1,146 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+     <ui:define name="content">
+         <div id="contenido" class="wrapper row3">
+            <main class="hoc container clear"> 
+                <div class="btmspace-80 center">
+                  <h3 class="nospace">Bienvenidos</h3>
+                  <h:outputText value="#{myBean.getuActual.usuNombres}"/>
+                </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+                <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                </h:outputLink>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+                <h:form id="form">
+                    <h2>INCENTIVOS</h2>     
+                    <div id="comments">
+                        <ul>
+                            <li>
+                                <article>
+                                    <header>
+                                      <address><h2>Deportistas</h2></address>
+                                    </header>
+                                    <div class="comcont">
+                                        <div class="one_third first">
+                                                        <label for="url"><B> Ingresar Nuevo Deportista</B></label>
+                                         </div>
+                                         <div class="one_third">
+                                              <input type="submit" value="Nuevo" onclick = "location='incentivos_nuevos.php'"/>
+                                             <label for="#"> <span>&nbsp;</span></label>
+                                         </div>                 
+                                    </div>
+                                    <div class="comcont">
+                                        <p:dataTable id="all" value="#{myBean.listaPersonas}" var="item" style='text-align: center;'   rowIndexVar="index" 
+                                                     selectionMode="single" selection="#{myBean.selectPersona}" rowKey="#{item.idDep}"
+                                                     widgetVar="listaR" filteredValue="#{myBean.filtroPersonas}" emptyMessage="No hay registros..."
+
+                                                >
+                                           <p:ajax event="rowSelect" listener="#{myBean.registroSeleccionadoAccion()}"  update=":dlg" oncomplete="PF('dlg1').show()"  />
+                                             <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
+
+                                             <p:column filterBy="#{item.depNombre}" headerText="Nombres"  filterMatchMode="contains">
+                                                 <h:outputText value="#{item.depNombre}" />
+                                           </p:column>
+
+                                             <p:column filterBy="#{item.depApellido}" headerText="Apellidos"  filterMatchMode="contains">
+
+                                                 <h:outputText value="#{item.depApellido}"/>
+                                              </p:column>
+                                             <p:column  filterBy="#{item.depCedula}" headerText="Cédula"  filterMatchMode="contains">
+                                                  <h:outputText  value="#{item.depCedula}"/>
+                                              </p:column>
+                                             
+
+                                             <p:column filterBy="#{item.depResultados}" headerText="Resultados"  filterMatchMode="contains"  >
+                                                <h:outputText value="#{item.depResultados}"/>
+                                           </p:column>
+                                             <p:column filterBy="#{item.dep}" headerText="Resultados"  filterMatchMode="contains"  >
+                                                <h:outputText value="#{item.depResultados}"/>
+                                           </p:column>
+                                             <p:column filterBy="#{item.depResultados}" headerText="Resultados"  filterMatchMode="contains"  >
+                                                <h:outputText value="#{item.depResultados}"/>
+                                           </p:column>
+                                             <p:column headerText="Estado">
+                                                 <p:selectBooleanButton id="est" value="#{item.estado}" 
+                                                                        onLabel="Activo" offLabel="No Activo" style="width:60px" 
+                                                                        disabled="true"
+                                                                        />
+
+                                           </p:column>
+
+                                       </p:dataTable>
+                                        <p:repeat value="#{myBean.menus}" var="menu">
+                                            <table id="example" class="display nowrap" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>CEDULA</th>
+                                                        <th>NOMBRE</th>
+                                                        <th>APELLIDOS</th>
+                                                        <th>RESULTADOS</th>
+                                                        <th>VALOR MENSUAL</th>
+                                                        <th>VALOR TOTAL</th>
+                                                        <th>EDITAR</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                $numrows = mysql_num_rows($list_incentivos);
+                                                if($numrows > 0){
+                                                    while($row=mysql_fetch_array($list_incentivos)){?>
+                                                        <tr>
+                                                            <td><?php echo $row["per_cedula"];?></td>
+                                                            <td><?php echo $row["per_nombre"]; ?></td>
+                                                            <td><?php echo $row["per_apellido"]; ?></td>
+                                                            <td><?php echo $row["per_resultados"]; ?></td>
+                                                            <td><?php echo $row["inc_valor_mensual"]; ?></td>
+                                                            <td><?php echo $row["inc_valor_total"]; ?></td>
+                                                            <td><a href="modify_profile.php?idPerfil=<?php echo $row["id_perfil"];?>">Modificar</a></td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                                </tbody>
+                                            </table>
+                                        </p:repeat> 
+                                    </div>
+                                </article>
+                            </li>
+                            <li>
+                              <article>
+                                    <div class="comcont">
+                                       <div class="scrollable">
+                                          <div id="datos"></div>
+                                       </div>
+                                    </div>
+                              </article>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                </h:form>      
+                <script type="text/javascript">
+                    function handleLoginRequest(xhr, status, args) {
+                        if(args.validationFailed || !args.loggedIn) {
+                            PF('dlg').jq.effect("shake", {times:5}, 100);
+                            //location.reload(); 
+                            //window.location.replace(window.location.href);
+                        }
+                        else {
+                            PF('dlg').hide();
+                            $('#loginLink').fadeOut();
+                        }
+                    }
+                </script>
+                  <!-- InstanceEndEditable -->
+                <div class="clear"></div>
+            </main>
+        </div>
+     </ui:define>
+</ui:composition>

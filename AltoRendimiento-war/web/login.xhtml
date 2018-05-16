@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    <h:head>
+        <title>Ingreso|AltoRendimiento</title>
+        <link href="css/demo.css" rel="stylesheet" type="text/css"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all"/>
+        <script name="jquery/jquery.js" library="primefaces"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"/>
+        
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dosis"/>
+        <style>
+            #pform *{
+                clear: both;
+                //all: initial;
+                
+            }
+            
+            
+            .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: white;
+                text-align: center;
+                border-bottom: solid 1px #bcc7cf;
+            }
+            
+            .ButtonLocal:hover{
+                background: rgba(0, 0, 0, 0.0) !important;
+                color: #108470!important;
+            }
+            .ButtonLocal{
+                
+                
+                display: inline-block;
+                position: relative;
+                color: #fff;
+                font-size: 1.2rem;
+                /* width: 200px; */
+                /* height: 75px; */
+                box-shadow: 0 2px 20px rgba(0, 0, 0, 0.7), inset 0 1px rgba(255, 255, 255, 0.3);
+                text-align: center;
+                -webkit-transition: background-color 500ms, -webkit-transform 100ms;
+                transition: background-color 500ms, -webkit-transform 100ms;
+                transition: background-color 500ms, transform 100ms;
+                transition: background-color 500ms, transform 100ms, -webkit-transform 100ms;
+                border-bottom: 1px solid #cccccc;
+                border-left: 1px solid #ccc;
+                border-right: 1px solid #ccc;
+                border-radius: 25px;
+            }
+            
+
+        </style>
+       
+    <!--link rel="stylesheet" href="css/demo.css"/-->
+        
+        <script>
+           
+        </script>
+    </h:head>
+    <h:body id="top" >
+        <div class="bgded overlay" style="background-image:url(images/Collage.jpg);"> 
+            <!-- ################################################################################################ -->
+            <div class="wrapper row1">
+              <header id="header" class="hoc clear"> 
+                <!-- ################################################################################################ -->
+                <div id="logo" class="fl_left">
+                  <h1>
+                      <a>
+                        <img src="images/3Logos.png" alt="Logo" width="161" height="76" usemap="#Map"/>
+                        <map name="Map">
+                          <area shape="rect" coords="2,6,244,106" href="http://www.deporte.gob.ec/" target="_blank"/>
+                        </map>
+                        </a>
+                  </h1>
+                </div>
+                <nav id="mainav" class="fl_right">
+                  <ul class="clear">
+                    <li class="active"><a href="index.html">SALIR</a></li>
+                  </ul>
+                </nav>
+
+              </header>
+            </div>
+            <div id="pageintro" class="hoc clear"> 
+              <div class="flexslider basicslider">
+                <ul class="slides">
+                  <li>
+                    <article>
+                      <p>Ministerio del Deporte</p>
+                      <h3 class="heading">Proyecto de Alto Rendimiento</h3>
+                      <p>Vitae lobortis id ut mi in molestie in</p>
+
+                    </article>
+                  </li>
+
+                </ul>
+              </div>
+
+            </div>
+
+          </div>
+        
+        <div class="wrapper row3">
+            <main class="hoc container clear"> 
+              <div class="btmspace-80 center">
+                <h3 class="nospace">Bienvenidos</h3>      
+              </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+              <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+            </h:outputLink>
+            <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+            <h:form id="form1" >
+            <p:panel id="datosA"   style="margin-top: 5%; text-align: center;" widgetVar="dlg" styleClass=" col-md-6 ">
+               
+                     <h:outputLabel value="Inicio de sesión"/>
+                    <p:separator></p:separator>
+                    <p:messages autoUpdate="true" showDetail="true" showSummary="true"/>
+                   
+                
+                   <h:panelGrid columns="1" cellpadding="0"  style="text-align: center; padding-left: 30%; ">
+                        
+                       <p:inputText id="user" value="#{myBean.usuario}" required="true" requiredMessage="Usuario obligatorio" label="username" placeholder="Usuario" size="50" style="margin-bottom: 2%;"
+                                    styleClass="col-sm-6 col-xs-8"
+                                    />
+                       <p:message for="user" style="color:red" showDetail="User"/>
+                       <p:password id="pwd" value="#{myBean.password}" required="true" requiredMessage="Contraseña obligatoria" label="password" placeholder="Contraseña" size="50" 
+                                   styleClass="col-sm-6 col-xs-8"
+                                   />
+                       <p:message for="pwd" style="color:red" showDetail="Password"/>
+                       
+                        <!--p:inputText id="captcha" value="" required="false" label="captcha" placeholder="Captcha" size="50" style="margin-bottom: 2%;"/-->
+                        
+                        
+                    </h:panelGrid>
+                    <p:commandButton value="Ingresar"  
+                                     action="#{myBean.accessLogin()}"
+                                     oncomplete="handleLoginRequest(xhr, status, args)"  
+                                     style="margin:20px;"/>
+                    
+                
+            
+                     <p:separator /><br></br>
+                     <h:outputLabel value="Ingrese con los datos enviados a su correo." style="color:white; font-family: 'Dosis', serif;"/>
+               
+            </p:panel> 
+                
+        </h:form>
+            <script type="text/javascript">
+                function handleLoginRequest(xhr, status, args) {
+                    if(args.validationFailed || !args.loggedIn) {
+                        PF('dlg').jq.effect("shake", {times:5}, 100);
+                        //location.reload(); 
+                        //window.location.replace(window.location.href);
+                    }
+                    else {
+                        PF('dlg').hide();
+                        $('#loginLink').fadeOut();
+                    }
+                }
+            </script>
+            
+            
+           
+                  <!-- InstanceEndEditable -->
+
+              <div class="clear"></div>
+            </main>
+          </div>
+        
+        
+        
+        <div class="wrapper row4 bgded overlay" style="background-image:url('images/demo/backgrounds/02.png');">
+            <footer id="footer" class="hoc clear"> 
+              <div class="one_third first">
+                <h3 class="heading">redes</h3>
+                <ul class="faico clear">
+                  <li><a class="faicon-facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                  <li><a class="faicon-twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                  <li><a class="faicon-dribble" href="#"><i class="fa fa-dribbble"></i></a></li>
+                  <li><a class="faicon-linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                  <li><a class="faicon-google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
+                  <li><a class="faicon-vk" href="#"><i class="fa fa-vk"></i></a></li>
+                </ul>
+              </div>
+              <div class="one_third">
+                <ul class="nospace meta">
+                  <li class="btmspace-15"><i class="fa fa-phone"></i> 0332265480</li>
+                  <li><i class="fa fa-envelope-o"></i> info@deporte.gob.ec</li>
+                </ul>
+              </div>
+              <div class="one_third">
+                <form method="post" action="#">
+                  <fieldset>
+                    <legend>Newsletter:</legend>
+                    <div class="clear">
+                      <input type="text" value="" placeholder="Type Email Here&hellip;"/>
+                      <button class="fa fa-share" type="submit" title="Submit"><em>Submit</em></button>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+
+            </footer>
+          </div>
+          <div class="wrapper row5">
+            <div id="copyright" class="hoc clear">    
+            </div>
+          </div>
+          <a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+        <!-- JAVASCRIPTS -->
+          
+     
+          
+
+
+                 <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                     <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                         <h3>Procesando...</h3>
+                                         <img  src="images/bar.gif"/>
+                                     </p:dialog>
+                 
+                 <script src="layout/scripts/jquery.min.js"></script>
+        <script src="layout/scripts/jquery.backtotop.js"></script>
+        <script src="layout/scripts/jquery.mobilemenu.js"></script>
+        <script src="layout/scripts/jquery.flexslider-min.js"></script> 
+    </h:body>
+</html>
+            

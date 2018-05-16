@@ -1,0 +1,162 @@
+
+
+.bdlogin{
+background: url(img/fondos/adb.jpg) no-repeat center center fixed; 
+-webkit-background-size: cover; 
+-moz-background-size: cover; 
+-o-background-size: cover; 
+background-size: cover;
+}
+
+.clearfix:after {
+            display: block;
+            content: " ";
+            clear: both;
+        }
+        
+        /* original
+        .myButtons	{
+            text-align: center;
+            padding: 1em 0em 1em 0em !important;
+            background: rgba(51, 51, 51, 0.44) !important;
+            color: white !important;
+            border-color: white !important;
+            margin-top: -14px;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            border: 1px solid #cccccc;
+        }
+
+        .myButtons:hover {
+            background: rgba(255, 0, 0, 0.5) !important;
+        }
+        
+        */
+        
+        .myButtons {
+    margin-top: -14px;
+    color: white;
+    padding: 2em 0em 3em 2em !important;
+    background: rgba(51, 51, 51, 0.44) !important;
+    border-color: white !important;
+   
+}
+        
+        
+.myButtons:hover {
+    background: rgba(255, 0, 0, 0.5) !important;
+}
+
+.ui-state-default:hover {
+    box-shadow: rgba(46, 73, 135, 0.5) 0px 8px 16px 0px, rgb(119, 119, 119) 0px 6px 20px 0px;
+}
+
+//nuevo
+        .w3-third{
+            text-align: center;
+        }
+
+
+        *,
+        *:after,
+        *:before {
+            box-sizing: content-box;
+        }
+
+
+
+        a {
+            text-decoration: none;
+        }
+
+        .Button__textWrapper, .Button__text, .Button__icon {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+        }
+
+        .Button__text, .Button__icon {
+            -webkit-transition: top 500ms;
+            transition: top 500ms;
+        }
+
+        .Button {
+            display: inline-block;
+            position: relative;
+            color: #fff;
+            font-size: 1.2rem;
+           // border-radius: 1000px;
+            width: 200px;
+            height: 60px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.7), inset 0 1px rgba(255, 255, 255, 0.3);
+            text-align: center;
+            -webkit-transition: background-color 500ms, -webkit-transform 100ms;
+            transition: background-color 500ms, -webkit-transform 100ms;
+            transition: background-color 500ms, transform 100ms;
+            transition: background-color 500ms, transform 100ms, -webkit-transform 100ms;
+            border-bottom: 1px solid #cccccc;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+        }
+        .Button__textWrapper {
+            overflow: hidden;
+        }
+        .Button__text {
+            line-height: 60px;
+            top: 0;
+        }
+        .Button__icon {
+            top: 100%;
+        }
+        .Button::before {
+            content: attr(data-tooltip);
+            width: auto;
+            height: auto;
+            background-color: #2196f3;
+            font-size: 1rem;
+            border-radius: .7em;
+            bottom: 90px;
+            left: calc(50% - 70px);
+        }
+        .Button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #2196f3;
+            left: calc(50% - 10px);
+            bottom: 70px;
+        }
+        .Button::before, .Button::after {
+            position: absolute;
+            opacity: 0;
+            -webkit-transition: all 500ms;
+            transition: all 500ms;
+            visibility: hidden;
+        }
+        .Button:hover {
+            background: rgba(33, 150, 243, 0.5) !important;
+            box-shadow: 0 8px 16px 0 #8a6d3b, 0 6px 20px 0 #0088cc;
+        }
+        .Button:hover .Button__text {
+            top: -100%;
+        }
+        .Button:hover .Button__icon {
+            top: 10px;
+        }
+        .Button:hover::before, .Button:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        .Button:hover::after {
+            bottom: 60px;
+        }
+        .Button:hover::before {
+            bottom: 80px;
+        }
+        .Button:active {
+            -webkit-transform: translate(2px, 2px);
+            transform: translate(2px, 2px);
+        }

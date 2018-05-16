@@ -1,0 +1,14 @@
+.ui-widget {
+    //font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 12px!important;
+}
+.ui-widget-content {
+    //border: 1px solid #555;
+}
+//ver demo 61
+/* 
+*, *:before, *:after {
+    box-sizing: initial!important;
+}
+*/
+//colores de los bordes en datagrid y panelgrid

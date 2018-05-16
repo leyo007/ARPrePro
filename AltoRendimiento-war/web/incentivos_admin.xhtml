@@ -1,0 +1,191 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+     <ui:define name="content">
+         
+  
+        
+         <style>
+            .menuSelect .ui-selectonemenu-label { 
+                //background: pink;
+               
+                box-sizing: content-box!important;
+            }
+            .panel .ui-selectonemenu-list { 
+                 //width: 100px;
+                //background: green;
+            }
+            
+            .ui-selectonemenu .ui-selectonemenu-trigger {
+                  // background-color: red;
+                width: auto!important;
+            }
+            .ui-state-highlight, .ui-widget-content .ui-state-highlight{
+                background-image: linear-gradient(to bottom, #ffffff, #d6d6d6);
+                background-color: #fff;
+                color: #337ab7;
+            }
+            
+            th{
+                color: #FFFFFF!important;background-color: #373737!important;
+                background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#555), to(#373737))!important;
+            }
+            h2{
+                font-family: Georgia, Times, "Times New Roman", serif; 
+                font-size: 22px;
+            }
+             
+         </style>
+         <p:dialog id="modalNewCP" header="Añadir Categoría Propuesta" widgetVar="newCatPro" modal="true" >
+             <p:growl id="growlA" sticky="false" showDetail="true" life="1000" autoUpdate="true" />
+                <h:outputText value="Llene todos los campos." />
+                
+                
+                <h:form>
+                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                        <h:outputText value="Nombre"/>
+                        <p:inputText style="" value="#{myBean.newCatpro.catdescripcion}" id="cpnombre"  placeholder="Categoría"/>
+                             <p:message for="cpnombre" />
+                        <h:outputText value="Nº RBU"/>
+                        <p:inputText style="" value="#{myBean.newCatpro.numrbu}" id="cpnumrbu" placeholder="formato 0.0"/>
+                             <p:message for="cpnumrbu" />
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton action="#{myBean.registraCatpro()}" value="Guardar" 
+                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                 update="@(form) form-lista"
+                                 oncomplete="if (#{not facesContext.validationFailed})PF('newCatPro').hide()"
+                                 
+                                 >
+                    </p:commandButton>
+                </h:form>
+                
+            </p:dialog> 
+         
+         
+         
+         
+         
+         <div id="contenido" class="wrapper row3">
+            <main class="hoc container clear"> 
+                <div class="btmspace-80 center">
+                  <h3 class="nospace">Bienvenidos</h3>
+                  <h:outputText value="Usuario con acceso"/>
+                </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+                <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                </h:outputLink>
+             <p:growl id="growl" sticky="false" showDetail="true" life="1000" autoUpdate="true"/>
+               
+                    <h2>INCENTIVOS</h2>     
+                    <div id="comments">
+                        <ul>
+                            <li>
+                                <article>
+                                    <header>
+                                      <address><h2>Deportistas</h2></address>
+                                    </header>
+                                    <div class="comcont">
+                                        <div class="one_third first">
+                                                        <label for="url"><B> Ingresar Nuevo Deportista</B></label>
+                                         </div>
+                                         <h:form>
+                                            <p:commandButton  style="background: #4fd48a; color: white;" value="Regresar"
+                                                            action="#{myBean.givmeLink(1)}" icon="fa fa-fw fa-undo" />
+                                        </h:form>
+                                        <p:commandButton id="gt" 
+                                                style=" background: #FBFBFB; color: black;" 
+                                                value="Nueva Categoría" 
+                                                onclick="PF('newCatPro').show()" 
+                                                icon="fa fa-fw fa-plus"
+
+                                                
+                                                ></p:commandButton>  
+                                                  
+                                    </div>
+                                    <div class="comcont">
+                                        <h:panelGrid id="panel-principal" style="margin-bottom: 100px;">
+                                            <h:form id="form-lista">
+                                               
+                                                <p:commandButton id="btn-generar" value="Generar Documento" icon="fa fa-fw fa-file" ajax="false">
+                                                    <p:dataExporter type="pdf" target=":form-lista:all" fileName="#{myBean.uActual.ci}declaracion" 
+                                                    preProcessor="#{myBean.preProcessPDF}"
+                                                    options="#{myBean.pdfOpt}"
+                                                    />
+                                                </p:commandButton>
+                                                <p:dataTable id="all" value="#{myBean.listCatP}" var="cat" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
+                                                             selectionMode="single" selection="#{myBean.selCatProp}" rowKey="#{cat.idcatpro}"
+                                                             widgetVar="listaR" filteredValue="#{myBean.filtroCatP}" emptyMessage="No hay registros..."
+                                                             editable="true"
+                                                >
+                                                    
+                                                    <p:ajax event="rowEdit" listener="#{myBean.onRowEdit}" update="growl" />
+                                                    <p:ajax event="rowEditCancel" listener="#{myBean.onRowCancel}" update="growl" />
+                                                    
+                                                    <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
+                                                    <p:column filterBy="#{cat.catdescripcion}" headerText="Categoría"  filterMatchMode="contains">
+                                                        <p:cellEditor>
+                                                            <f:facet name="output"><h:outputText value="#{cat.catdescripcion}" /></f:facet>
+                                                            <f:facet name="input"><p:inputText value="#{cat.catdescripcion}" style="width:96%" label="Categoría"/></f:facet>
+                                                        </p:cellEditor>
+                                                    </p:column>
+                                                    <p:column filterBy="#{cat.numrbu}" headerText="Número RBU"  filterMatchMode="contains">
+                                                        <p:cellEditor>
+                                                            <f:facet name="output"><h:outputText value="#{cat.numrbu}" /></f:facet>
+                                                            <f:facet name="input"><p:inputText value="#{cat.numrbu}" style="width:96%" label="x RBU"/></f:facet>
+                                                        </p:cellEditor>
+                                                    </p:column>
+                                                    <p:column style="width:32px">
+                                                        <p:rowEditor />
+                                                    </p:column>   
+                                                    
+                                                </p:dataTable>
+                                            </h:form>
+                                        </h:panelGrid>          
+                                    </div>
+                                </article>
+                            </li>
+                            <li>
+                              <article>
+                                    <div class="comcont">
+                                       <div class="scrollable">
+                                          <div id="datos"></div>
+                                       </div>
+                                    </div>
+                              </article>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                 
+                <script type="text/javascript">
+                    function handleLoginRequest(xhr, status, args) {
+                        if(args.validationFailed || !args.loggedIn) {
+                            PF('dlg').jq.effect("shake", {times:5}, 100);
+                            //location.reload(); 
+                            //window.location.replace(window.location.href);
+                        }
+                        else {
+                            PF('dlg').hide();
+                            $('#loginLink').fadeOut();
+                        }
+                    }
+                </script>
+                  <!-- InstanceEndEditable -->
+                <div class="clear"></div>
+            </main>
+        </div>
+         
+         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                     <p:dialog id="dgl" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                         <h3>Procesando...</h3>
+                                         <img  src="images/bar.gif"/>
+                                     </p:dialog>
+     </ui:define>
+</ui:composition>

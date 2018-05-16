@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+    <h:head>
+        <title>Ingreso|AltoRendimiento</title>
+        <link href="css/demo.css" rel="stylesheet" type="text/css"/>
+        <link href="css/style.css" rel="stylesheet" type="text/css"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all"/>
+        <script name="jquery/jquery.js" library="primefaces"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dosis"/>
+        <style>
+            
+           /* .center{
+    margin: 0 auto;
+    width:650px;
+    height:200px;
+    margin-top: 70px;
+    background-color: #f7f7f7;
+}*/ 
+            #pform *{
+                clear: both;
+                //all: initial;
+                
+            }
+            
+            
+            .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: white;
+                text-align: center;
+                border-bottom: solid 1px #bcc7cf;
+            }
+            
+            .ButtonLocal:hover{
+                background: rgba(0, 0, 0, 0.0) !important;
+                color: #108470!important;
+            }
+            .ButtonLocal{
+                
+                
+                display: inline-block;
+                position: relative;
+                color: #fff;
+                font-size: 1.2rem;
+                /* width: 200px; */
+                /* height: 75px; */
+                box-shadow: 0 2px 20px rgba(0, 0, 0, 0.7), inset 0 1px rgba(255, 255, 255, 0.3);
+                text-align: center;
+                -webkit-transition: background-color 500ms, -webkit-transform 100ms;
+                transition: background-color 500ms, -webkit-transform 100ms;
+                transition: background-color 500ms, transform 100ms;
+                transition: background-color 500ms, transform 100ms, -webkit-transform 100ms;
+                border-bottom: 1px solid #cccccc;
+                border-left: 1px solid #ccc;
+                border-right: 1px solid #ccc;
+                border-radius: 25px;
+            }
+            
+            body{
+                font-family: Verdana, Geneva, sans-serif;
+            }
+            .ui-widget {
+                font-family: Verdana, Geneva, sans-serif;
+            }
+            
+
+        </style>
+       
+    <!--link rel="stylesheet" href="css/demo.css"/-->
+        
+        <script>
+
+
+        PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero','Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+                dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+                dayNamesShort: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D','L','M','M','J','V','S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText : 'Todo el día'
+        };
+        
+         document.onkeydown = function(e) {
+            if(e.keyCode === 123) {
+            return false;
+            }
+            if(e.ctrlKey &amp;&amp; e.shiftKey &amp;&amp; e.keyCode === 'I'.charCodeAt(0)){
+            return false;
+            }
+            if(e.ctrlKey &amp;&amp; e.shiftKey &amp;&amp; e.keyCode === 'J'.charCodeAt(0)){
+            return false;
+            }
+            if(e.ctrlKey &amp;&amp; e.keyCode === 'U'.charCodeAt(0)){
+            return false;
+            }
+        }
+        
+        $(document).bind("contextmenu",function(e) {
+        e.preventDefault();
+       });
+       
+        </script>
+    </h:head>
+    <h:body >
+        
+                <div class="bgded overlay" style="background-image:url(images/Collage.jpg);"> 
+            <!-- ################################################################################################ -->
+            <div class="wrapper row1">
+              <header id="header" class="hoc clear"> 
+                <!-- ################################################################################################ -->
+                <div id="logo" class="fl_left">
+                  <h1>
+                      <a>
+                        <img src="images/3Logos.png" alt="Logo" width="161" height="76" usemap="#Map"/>
+                        <map name="Map">
+                          <area shape="rect" coords="2,6,244,106" href="http://www.deporte.gob.ec/" target="_blank"/>
+                        </map>
+                        </a>
+                  </h1>
+                </div>
+                <nav id="mainav" class="fl_right">
+                  <ul class="clear">
+                    <li class="active">
+                        <h:form>
+                                <p:commandButton  style="background: #9d2b07; color: white;" value="Salir" action="#{myBean.logout()}" icon="ui-icon-extlink" />
+                            </h:form></li>
+                  </ul>
+                </nav>
+
+              </header>
+            </div>
+            <div id="pageintro" class="hoc clear"> 
+              <div class="flexslider basicslider">
+                <ul class="slides">
+                  <li style="display: block;">
+                    <article>
+                      <p>Ministerio del Deporte</p>
+                      <h3 class="heading">Proyecto de Alto Rendimiento</h3>
+                      <p>Vitae lobortis id ut mi in molestie in</p>
+
+                    </article>
+                  </li>
+
+                </ul>
+              </div>
+
+            </div>
+
+          </div>
+        
+        
+        
+        <p:layoutUnit position="center" size="auto" style="display: block; overflow: auto;" >
+                <ui:insert name="content">Put default content here, if any.</ui:insert>
+            </p:layoutUnit>
+           
+                <!-- footer start-->
+    <!--div class="footer"-->
+        <div class="wrapper row4 bgded overlay" style="background-image:url('images/demo/backgrounds/02.png');">
+            <footer id="footer" class="hoc clear"> 
+              <div class="one_third first">
+                <h3 class="heading">redes</h3>
+                <ul class="faico clear">
+                  <li><a class="faicon-facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                  <li><a class="faicon-twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                  <li><a class="faicon-dribble" href="#"><i class="fa fa-dribbble"></i></a></li>
+                  <li><a class="faicon-linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                  <li><a class="faicon-google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
+                  <li><a class="faicon-vk" href="#"><i class="fa fa-vk"></i></a></li>
+                </ul>
+              </div>
+              <div class="one_third">
+                <ul class="nospace meta">
+                  <li class="btmspace-15"><i class="fa fa-phone"></i> 0332265480</li>
+                  <li><i class="fa fa-envelope-o"></i> info@deporte.gob.ec</li>
+                </ul>
+              </div>
+              <div class="one_third">
+                <form method="post" action="#">
+                  <fieldset>
+                    <legend>Newsletter:</legend>
+                    <div class="clear">
+                      <input type="text" value="" placeholder="Type Email Here"/>
+                      <button class="fa fa-share" type="submit" title="Submit"><em>Submit</em></button>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+
+            </footer>
+          </div>
+          <div class="wrapper row5">
+            <div id="copyright" class="hoc clear">    
+            </div>
+          </div>
+          <a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+    <!--/div-->
+    <!-- footer end-->    
+               
+           
+
+            
+
+            
+      
+    </h:body>
+</html>

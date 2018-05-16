@@ -1,0 +1,1138 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+         
+     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+     <ui:define name="content">
+         
+         <p:dialog header="Foto #{myBean.selectPersona.depapellido}" widgetVar="dlg1" id="dlg1" modal="true" height="auto" width="auto">
+            <h:form enctype="multipart/form-data">
+                   <p:fileUpload  id="des" value="#{myBean.archivo}" 
+                      skinSimple="true" label="Foto"
+                      disabled="false"
+                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                     mode="advanced" 
+                     sizeLimit="3000000"
+                      multiple="false"
+                      fileLimit="1"
+                      uploadLabel="Cargar"
+                      cancelLabel="Cancelar"
+                      fileUploadListener="#{myBean.fileUploadListener}"
+                      update="mensaje"
+                      />
+                 <p:commandButton value="Aceptar imagen" ajax="false" 
+                                  onclick="PF(dlg1).hide()"
+                                  icon="ui-icon-check"
+                                  rendered="true"
+                                  update="fperfil"
+                                  />
+                </h:form>
+            <h:form id="mensaje">
+               
+                <h:panelGrid columns="2" width="500">
+                    <h:outputText value="datos0"/>
+                    
+                </h:panelGrid>
+                <p:separator></p:separator>
+                <img  style="padding-bottom: 10px;border: white;border-style: solid; border-radius: 20px 3px;" 
+                      src="../imagenes/#{myBean.selectPersona.depcedula}.jpg" 
+                      onerror="this.src='images/noprofile.jpeg'"  
+                      alt="Foto" width="80px" />
+            </h:form>
+             <img src="imagenes/1721401097.jpg" alt="NOFOTO"/>
+       </p:dialog>
+         
+         
+         <p:dialog id="modalNewHE" header="Añadir Ex Entrenador" widgetVar="newHE" modal="true" >
+              <p:growl id="growlA" sticky="true" showDetail="true" life="3000" />
+                <h:outputText value="Llene todos los campos." />
+                
+                
+                <h:form>
+                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                        <h:outputText value="Año"/>
+                        <p:inputText style="" value="#{myBean.selCvHistEnt.ano}" id="heano"  placeholder="2000"/>
+                             <p:message for="heano" />
+                        <h:outputText value="Nombres"/>
+                        <p:inputText style="" value="#{myBean.selCvHistEnt.nombres}" id="henombres" placeholder="y Apellidos"/>
+                             <p:message for="henombres" />
+                        <h:outputText value="Nacionalidad"/>
+                        <p:inputText style="" value="#{myBean.selCvHistEnt.nacionalidad}" id="henacion" placeholder="País"/>
+                             <p:message for="henacion" />
+                        
+                        <h:outputText value="Club"/>
+                        <p:inputText style="" value="#{myBean.selCvHistEnt.club}" id="heclub" placeholder="E-mail" required="false" requiredMessage="Correo obligatorio"/>
+                             <p:message for="heclub" />
+                       
+                        <h:outputText value="Teléfono"/>
+                        <p:inputText style="" value="#{myBean.selCvHistEnt.telf}" id="hetlfn" placeholder="Fijo o móvil"/>
+                             <p:message for="hetlfn" />
+                        
+                        
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton action="#{myBean.registrarExEntrenador()}" value="Guardar" 
+                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                 update="@(form) newinc"
+                                 oncomplete="if (#{not facesContext.validationFailed})PF('newHE').hide()"
+                                 
+                                 >
+                    </p:commandButton>
+                </h:form>
+                
+            </p:dialog> 
+         <p:dialog id="modalNewRD" header="Añadir Resultado Deportivo" widgetVar="newRD" modal="true" >
+              <p:growl id="growlB" sticky="true" showDetail="true" life="3000" />
+                <h:outputText value="Llene todos los campos." />
+                
+                
+                <h:form>
+                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                        
+                        <h:outputText value="Nombre Evento"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.evento}" id="rdentidad" placeholder="Evento"/>
+                             <p:message for="rdentidad" />
+                        <h:outputText value="fecha"/>
+                        <p:calendar value="#{myBean.selCvResDep.fecha}"  id="rdfecha"
+                                    pattern="dd/MM/yyyy" 
+                                    navigator="true"
+                                    required="true"
+                                    requiredMessage="Falta Fecha Evento"
+                                    locale="es"
+                                    >
+                        </p:calendar>
+                        <p:message for="rdfecha" />
+                        
+                        <h:outputText value="Lugar"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.lugar}" id="rdlugar" placeholder="Lugar Evento" required="true" requiredMessage="Lugar Obligatorio"/>
+                             <p:message for="rdlugar" />
+                       
+                        <h:outputText value="Prueba/división"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.prueba}" id="rdprueba" placeholder="Prueba"/>
+                             <p:message for="rdprueba" />
+                        <h:outputText value="Nº atletas"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.numatle}" id="rdnumatle" placeholder="Atletas"/>
+                             <p:message for="rdnumatle" />
+                        <h:outputText value="Nº paises"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.npaises}" id="rdnpaises" placeholder="Paises"/>
+                             <p:message for="rdnpaises" />
+                        <h:outputText value="Marca atleta"/>
+                        <p:calendar id="rdmarca" value="#{myBean.selCvResDep.marca}" pattern="HH:mm:ss" timeOnly="true" locale="es" />
+                        
+                             <p:message for="rdmarca" />
+                        
+                        
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton action="#{myBean.registrarResulDep()}" value="Guardar" 
+                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                 update="@(form) newinc"
+                                 oncomplete="if (#{not facesContext.validationFailed})PF('newRD').hide()"
+                                 
+                                 >
+                    </p:commandButton>
+                </h:form>
+                
+            </p:dialog> 
+         <p:dialog id="modalNewDR" header="Añadir Distinciones Recibidas" widgetVar="newDR" modal="true" >
+              <p:growl id="growlC" sticky="true" showDetail="true" life="3000" />
+                <h:outputText value="Llene todos los campos." />
+                
+                
+                <h:form>
+                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                        
+                        <h:outputText value="Distinciones Recividas como atleta"/>
+                        <p:inputText style="" value="#{myBean.selCvDistRe.distinciones}" id="drdistinciones" placeholder="Distinción"/>
+                             <p:message for="drdistinciones" />
+                        <h:outputText value="Fecha"/>
+                        <p:calendar value="#{myBean.selCvDistRe.fecha}"  id="drfecha"
+                                    pattern="dd/MM/yyyy" 
+                                    navigator="true"
+                                    required="true"
+                                    requiredMessage="Falta Fecha Evento"
+                                    locale="es"
+                                    >
+                        </p:calendar>
+                        <p:message for="drfecha" />
+                        
+                        <h:outputText value="Tipo de distinción"/>
+                        <p:inputText style="" value="#{myBean.selCvDistRe.tipo}" id="drtipo" placeholder="Tipo" required="true" requiredMessage="Falta el Tipo"/>
+                             <p:message for="drtipo" />
+                       
+                        <h:outputText value="Entidad que la otortgó"/>
+                        <p:inputText style="" value="#{myBean.selCvDistRe.entidad}" id="drentidad" placeholder="Prueba"/>
+                             <p:message for="drentidad" />
+                       
+                        
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton action="#{myBean.registrarDistRecib()}" value="Guardar" 
+                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                 update="@(form) newinc"
+                                 oncomplete="if (#{not facesContext.validationFailed})PF('newDR').hide()"
+                                 
+                                 >
+                    </p:commandButton>
+                </h:form>
+                
+            </p:dialog> 
+        
+         <style>
+            .menuSelect .ui-selectonemenu-label { 
+                //background: pink;
+               
+                box-sizing: content-box!important;
+            }
+            .panel .ui-selectonemenu-list { 
+                 //width: 100px;
+                //background: green;
+            }
+            
+            .ui-selectonemenu .ui-selectonemenu-trigger {
+                  // background-color: red;
+                width: auto!important;
+            }
+            .ui-state-highlight, .ui-widget-content .ui-state-highlight{
+                background-image: linear-gradient(to bottom, #f2dede, #254786);
+                    background-color: #555;
+            }
+             
+         </style>
+         <div id="contenido" class="wrapper row3">
+            <main class="clear"> 
+                <div class="btmspace-80 center">
+                  <h3 class="nospace">Bienvenidos</h3>
+                  <h:outputText value="Usuario con acceso"/>
+                </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+                <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                </h:outputLink>
+                <p:growl id="growl" sticky="false" showDetail="true" life="500" />
+               
+                    <h2>ANEXO 3</h2>     
+                    <div id="comments">
+                        <ul>
+                            <li>
+                                <article>
+                                    <header>
+                                      <address><h2>PROYECTO "APOYO AL DEPORTE DE ALTO RENDIMIENTO"</h2></address>
+                                    </header>
+                                    <div class="comcont">
+                                        <div class="one_third first">
+                                                        <label for="url"><B> Ingresar Nuevo Deportista</B></label>
+                                         </div>
+                                         <h:form>
+                                            <p:commandButton  style="background: #4fd48a; color: white;" value="Regresar"
+                                                            action="#{myBean.givmeLink(2)}" icon="fa fa-fw fa-undo" />
+                                        </h:form>
+                                                  
+                                    </div>
+                                    <div class="comcont">
+                                        <h:form id="newinc" class="container" style="margin-left: 0%; margin-right: 0%; margin-bottom: 0px;">
+                                            
+                                            
+                                            <p:messages id="messages" closable="true" autoUpdate="true">
+                                                <p:effect type="puff" event="load" delay="300" />
+                                            </p:messages>
+                                            <p:panel header="HOJA DE VIDA DEL ATLETA (FICHA DEPORTIVA)" id="cvd" widgetVar="regWidget" style="padding-left: 0%; padding-right: 0%; background-color: rgba(255,255,255,0.5);">
+                                                <img id="fperfil" style="width: 120px; padding-bottom: 10px;border: white;border-style: solid; border-radius: 20px 3px;" 
+                                                    src="../imagenes/#{myBean.selectPersona.depcedula}.jpg" 
+                                                    onerror="this.src='images/noprofile.jpeg'"  
+                                                    alt="Foto"/>
+                                                <p:commandButton value="Cambiar imagen" 
+                                                                  type="button"
+                                                    onclick="PF('dlg1').show()"
+                                                    icon="ui-icon-check"
+                                                    />
+                                                
+                                             
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="8">1.- DATOS PERSONALES</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Nombres </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.selectPersona.depnombre}"/>
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Apellidos</p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.selectPersona.depapellido}"/>
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Nº Cédula </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.selectPersona.depcedula}"/>
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Nº Pasaporte</p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.selectPersona.depcedula}"/>
+                                                        </p:column>                                                        
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Fecha de nacimiento </p:column>
+                                                        <p:column>
+                                                            <p:calendar value="#{myBean.selectPersona.depdob}" disabled="true"/>
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Edad</p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.getAge(myBean.selectPersona.depdob)}"/>
+                                                        </p:column>                                                       
+                                                        <p:column style="font-weight: bold;">Género </p:column>
+                                                        <p:column>                                                            
+                                                                <c:if test="#{myBean.selectPersona.idsexo eq 0}">
+                                                                   <h:outputText value="M"/>
+                                                                </c:if>
+                                                                <c:if test="#{myBean.selectPersona.idsexo eq 1}">
+                                                                    <h:outputText value="f"/>
+                                                                </c:if>                                                          
+                                                        </p:column>                                                       
+                                                        <p:column style="font-weight: bold;">Etnia</p:column>
+                                                        <p:column>                                                          
+                                                            <h:outputText value="#{myBean.selectPersona.idetnia}"/>
+                                                        </p:column>                                                        
+                                                    </p:row>                                                   
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">País de nacimiento</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selectPersona.idpais}"/>
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Provincia nacimiento</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="prov" required="false" requiredMessage="Selecione la provincia" value="#{myBean.selectPersona.idprov}" >
+                                                                <f:selectItem itemLabel="Provincia"/>
+                                                                <f:selectItem itemLabel="Extranjera" itemValue="Extranjera"/>
+                                                                <f:selectItems value="#{myBean.listaProv}" var="pv" itemLabel="#{pv.nombredivpol}" itemValue="#{pv.nombredivpol}" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>                                                        
+                                                        <p:column style="font-weight: bold;">Ciudad nacimiento</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="ciudad" required="false" requiredMessage="Selecione la ciudad" value="#{myBean.selectPersona.idciudad}"  effect="fold" editable="true">
+                                                                <f:selectItem itemLabel="Ciudad"/>
+                                                                <f:selectItem itemLabel="Extranjera" itemValue="Extranjera"/>
+                                                                <f:selectItems value="#{myBean.listaCiudad}" var="ciu" itemLabel="#{ciu.nombredivpol}" itemValue="#{ciu.nombredivpol}" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>                                                       
+                                                    </p:row>
+                                                    
+                                                </p:panelGrid>
+                                                
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="10">2.- INFORMACIÓN SOCIOECNÓMICA</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Con quien vive </p:column>
+                                                        <p:column>
+                                                            
+                                                            <p:selectOneMenu id="vivecon" value="#{myBean.selCvSociEc.vivecon}" required="false" requiredMessage="Grupo Étnico!" >
+                                                                    <f:selectItem itemLabel="Seleccione"/>
+                                                                    <f:selectItem itemLabel="Abuelos" itemValue="Abuelos" />
+                                                                    <f:selectItem itemLabel="Ambos padres" itemValue="Ambos padres" />
+                                                                    <f:selectItem itemLabel="Esposo" itemValue="Esposo"/>
+                                                                    <f:selectItem itemLabel="Hermanos" itemValue="Hermanos" />
+                                                                    <f:selectItem itemLabel="Madre" itemValue="Madre" />
+                                                                    <f:selectItem itemLabel="Otros" itemValue="Otros" />
+                                                                    <f:selectItem itemLabel="Padre" itemValue="Padre" />
+                                                                    <f:selectItem itemLabel="Solo" itemValue="Solo" />
+                                                                    <f:selectItem itemLabel="Tíos" itemValue="Tíos" />
+                                                                    <p:ajax update="vivecono" event="change" listener="#{myBean.selOtros(myBean.selCvSociEc.vivecon)}"/>
+                                                                    
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">(Otros)</p:column>
+                                                        <p:column>
+                                                            <p:inputText id="vivecono" value="#{myBean.selCvSociEc.vivecon}" disabled="#{!myBean.selOtros(myBean.selCvSociEc.vivecon)}"/>
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Estado Civil</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="estcivil" value="#{myBean.selCvSociEc.estcivil}" required="false" requiredMessage="Grupo Étnico!" >
+                                                                    <f:selectItem itemLabel="Estado Civil"/>
+                                                                    <f:selectItem itemLabel="Soltero" itemValue="Soltero" />
+                                                                    <f:selectItem itemLabel="Casado" itemValue="Casado" />
+                                                                    <f:selectItem itemLabel="Union libre" itemValue="Unión Libre"/>
+                                                                    <f:selectItem itemLabel="Divorciado" itemValue="Divorciado" />
+                                                                    <f:selectItem itemLabel="Viudo" itemValue="Viudo" />
+                                                            </p:selectOneMenu>   
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Nº hijos</p:column>
+                                                        <p:column>
+                                                            <p:inputNumber value="#{myBean.selCvSociEc.hijos}"/>
+                                                        </p:column>                                                        
+                                                        <p:column style="font-weight: bold;">Nº hermanos</p:column>
+                                                        <p:column>
+                                                            <p:inputNumber value="#{myBean.selCvSociEc.herma}"/>
+                                                        </p:column>                                                        
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Provincia residencia</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="provres" required="false" requiredMessage="Selecione la provincia" value="#{myBean.selCvSociEc.provres}" >
+                                                                <f:selectItem itemLabel="Provincia"/>
+                                                                <f:selectItems value="#{myBean.listaProv}" var="pv" itemLabel="#{pv.nombredivpol}" itemValue="#{pv.nombredivpol}" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Ciudad residencia</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="ciudadres" required="false" requiredMessage="Selecione la ciudad" value="#{myBean.selCvSociEc.ciudres}"  effect="fold" editable="true">
+                                                                <f:selectItem itemLabel="Ciudad"/>
+                                                                <f:selectItems value="#{myBean.listaCiudad}" var="ciu" itemLabel="#{ciu.nombredivpol}" itemValue="#{ciu.nombredivpol}" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>                                                       
+                                                        <p:column style="font-weight: bold;">Tipo de vivienda </p:column>
+                                                        <p:column>                                                            
+                                                            <p:selectOneMenu id="tipovi" value="#{myBean.selCvSociEc.tipovivienda}" required="false" requiredMessage="Grupo Étnico!" >
+                                                                    <f:selectItem itemLabel="Seleccione una" />
+                                                                    <f:selectItem  itemLabel="Anticresi" itemValue="Anticresi" />
+                                                                    <f:selectItem  itemLabel="Arrendada" itemValue="Arrendada" />
+                                                                    <f:selectItem   itemLabel="Familiar" itemValue="Familiar" />
+                                                                    <f:selectItem   itemLabel="Prestada" itemValue="Prestada" />
+                                                                    <f:selectItem   itemLabel="Propia" itemValue="Propia" />
+                                                                    <f:selectItem   itemLabel="Otros" itemValue="Otros" />
+                                                                    <p:ajax update="otravivi" event="change" listener="#{myBean.selOtros(myBean.selCvSociEc.tipovivienda)}"/> <p:ajax update="vivecono" event="change" listener="#{myBean.selOtros(myBean.selCvSociEc.vivecon)}"/>
+                                                                </p:selectOneMenu>                                                  
+                                                        </p:column>                                                       
+                                                        <p:column style="font-weight: bold;">Otros</p:column>
+                                                        <p:column>                                                          
+                                                            <p:inputText id="otravivi" value="#{myBean.selCvSociEc.tipovivienda}" disabled="#{!myBean.selOtros(myBean.selCvSociEc.tipovivienda)}"/>   
+                                                        </p:column>                                                        
+                                                    </p:row>                                                   
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Teléfono fijo</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvSociEc.telfijo}"/> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Celular</p:column>
+                                                        <p:column>
+                                                            
+                                                            <p:inputNumber id="cel" value="#{myBean.selCvSociEc.telfmovil}" required="false"/>
+                                                        </p:column>                                                        
+                                                        <p:column style="font-weight: bold;">Dirección domiciliaria</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvSociEc.dir}"/> 
+                                                        </p:column>                                                       
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">E-mail</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvSociEc.mail}">
+                                                                <p:keyFilter regEx="/[a-z0-9_\.\-@]/i"/>
+                                                            </p:inputText>
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Nivel Socioeconómico</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="lvlse" value="#{myBean.selCvSociEc.lvlse}" required="false" requiredMessage="Nivel socioeconómico!" >
+                                                                    <f:selectItem itemLabel="Seleccione una" />
+                                                                    <f:selectItem  itemLabel="Alto" itemValue="Alto" />
+                                                                    <f:selectItem  itemLabel="Medio" itemValue="Medio" />
+                                                                    <f:selectItem  itemLabel="Bajo" itemValue="Bajo" />                                                                   
+                                                                </p:selectOneMenu>   
+                                                        </p:column>                                                        
+                                                                                                             
+                                                    </p:row>
+                                                    
+                                                </p:panelGrid>
+                                                
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="8">3.- FORMACIÓN ACADÉMICA FORMAL</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column colspan="2" style="font-weight: bold;">Nivel de Instrucción finalizado </p:column>
+                                                        <p:column colspan="2" style="font-weight: bold;">Título obtenido (Especialidad) </p:column>
+                                                        <p:column colspan="4" style="font-weight: bold;">Nombre de la Institución Educativa en la que obtuvo el título</p:column>
+                                                    </p:row> 
+                                                    <p:row>
+                                                        <p:column colspan="2">
+                                                            <p:selectOneMenu id="lvlinst" value="#{myBean.selCvForAc.lvlinst}" required="false" requiredMessage="Instrucción!" >
+                                                                <f:selectItem itemLabel="Nivel" noSelectionOption="true"/>
+                                                                    <f:selectItem itemLabel="Básica" itemValue="Básica" />
+                                                                    <f:selectItem itemLabel="Bachillerato" itemValue="Bachillerato" />
+                                                                    <f:selectItem itemLabel="Técnico Superior" itemValue="Técnico Superior"/>
+                                                                    <f:selectItem itemLabel="Tecnología" itemValue="Tecnología" />
+                                                                    <f:selectItem itemLabel="Licenciatura" itemValue="Licenciatura" />
+                                                                    <f:selectItem itemLabel="Postgrado" itemValue="Postgrado" />
+                                                                    <f:selectItem itemLabel="Doctorado" itemValue="Doctorado" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>
+                                                        <p:column colspan="2">    
+                                                            <p:inputText value="#{myBean.selCvForAc.titulo}"/>
+                                                        </p:column>
+                                                        <p:column colspan="4">
+                                                            <p:inputText value="#{myBean.selCvForAc.insti}"/>
+                                                        </p:column>
+                                                    </p:row>                                                       
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Estudia actualmente</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="estudia" value="#{myBean.selCvForAc.estudia}" >
+                                                                <f:selectItem itemLabel="SI" itemValue="true" />
+                                                                <f:selectItem itemLabel="NO" itemValue="false" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>           
+                                                        <p:column style="font-weight: bold;">Nivel de estudio actual</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="lvlinstactual" value="#{myBean.selCvForAc.lvlactual}" required="false" requiredMessage="Instrucción Actual!" >
+                                                                    <f:selectItem itemLabel="Nivel"/>
+                                                                    <f:selectItem itemLabel="Bachillerato" itemValue="Bachillerato" />
+                                                                    <f:selectItem itemLabel="Técnico Superior" itemValue="Técnico Superior"/>
+                                                                    <f:selectItem itemLabel="Tecnología" itemValue="Tecnología" />
+                                                                    <f:selectItem itemLabel="Licenciatura" itemValue="Licenciatura" />
+                                                                    <f:selectItem itemLabel="Ingenieria" itemValue="Ingenieria" />
+                                                                    <f:selectItem itemLabel="Postgrado" itemValue="Postgrado" />
+                                                                    <f:selectItem itemLabel="Doctorado" itemValue="Doctorado" />
+                                                                    <f:selectItem itemLabel="Otro" itemValue="Otro" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Especialidad</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvForAc.esp}"/> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Periodicidad de los estudios</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="perinst"  value="#{myBean.selCvForAc.period}" >
+                                                                <f:selectItem itemLabel="Anual" itemValue="Anual" />
+                                                                <f:selectItem itemLabel="Semestral" itemValue="Semestral" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>  
+                                                        <p:column style="font-weight: bold;">Año/Semestre</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvForAc.anosemesact}"/> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Nombre institución</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvForAc.instact}"/> 
+                                                        </p:column>
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Tipo institución</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="tipoinst"  value="#{myBean.selCvForAc.tipo}" >
+                                                                <f:selectItem itemLabel="Particular" itemValue="Particular" />
+                                                                <f:selectItem itemLabel="Estatal" itemValue="Estatal" />
+                                                                <f:selectItem itemLabel="Fiscomicional" itemValue="Fiscomicional" />
+                                                                <f:selectItem itemLabel="Municipal" itemValue="Municipal" />
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Modalidad estudios</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="modoinst"  value="#{myBean.selCvForAc.modal}" >
+                                                                <f:selectItem itemLabel="Presencial" itemValue="Presencial" />
+                                                                <f:selectItem itemLabel="Semi Presencial" itemValue="Semi Presencial" />
+                                                                <f:selectItem itemLabel="On line" itemValue="On line" />
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                         <p:column style="font-weight: bold;">Provincia y ciudad Institución</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvForAc.provciu}"/> 
+                                                        </p:column>
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Dirección de la Institución Educativa</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvForAc.dir}"/> 
+                                                        </p:column>
+                                                        
+                                                    </p:row>
+                                                    
+                                                    
+                                                    
+                                                </p:panelGrid>
+                                                
+                                                
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="10">4.- INFORMACIÓN DEPORTIVA</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Deporte </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.getnombreDeporte(myBean.selectPersona.iddeporte)}"/> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Modalidad</p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.getnombreDciplina(myBean.selectPersona.iddis)}"/> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Prueba </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.selectPersona.depprueba}"/> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Cat. Edad</p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.getCatEdad(selectIncentivo.idedad)}"/>
+                                                        </p:column>                                                        
+                                                        <p:column style="font-weight: bold;">Categoría AR</p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.getCatPro(myBean.selectIncentivo.idcatpro)}"/>
+                                                        </p:column>                                                        
+                                                    </p:row>                                              
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Provincia Federado</p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.selectPersona.idprorep}"/> 
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Años en el Proyecto</p:column>
+                                                        <p:column>
+                                                            <p:inputMask value="#{myBean.selCvSociEc.anoproyecto}" mask="99"/> 
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Años iniciación Deportiva</p:column>
+                                                        <p:column>
+                                                            <p:inputMask value="#{myBean.selCvSociEc.anoinicio}" mask="99"/> 
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Años en el deporte</p:column>
+                                                        <p:column>
+                                                            <p:inputMask value="#{myBean.selCvSociEc.anoendeporte}" mask="99"/> 
+                                                        </p:column>                                              
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column colspan="10" style="font-weight: bold; text-align: center;">TALLAS INDUMENTARIA ATLETA</p:column>                                             
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column colspan="2" style="font-weight: bold;">Detalle</p:column>
+                                                        <p:column style="font-weight: bold;">Género</p:column>
+                                                        <p:column style="font-weight: bold;">Calentador</p:column>
+                                                        <p:column style="font-weight: bold;">Camiseta</p:column>
+                                                        <p:column style="font-weight: bold;">Short</p:column>
+                                                        <p:column style="font-weight: bold;">Medias</p:column>
+                                                        <p:column style="font-weight: bold;">Calzado (USA)</p:column>
+                                                        
+                                                    </p:row> 
+                                                    <p:row>
+                                                        <p:column colspan="2">
+                                                            <h:outputText value="Uniforme Presentación/Entrenamiento"/>
+                                                        </p:column>
+                                                        <p:column>    
+                                                                <c:if test="#{myBean.selectPersona.idsexo eq 0}">
+                                                                   <h:outputText value="M"/>
+                                                                </c:if>
+                                                                <c:if test="#{myBean.selectPersona.idsexo eq 1}">
+                                                                    <h:outputText value="F"/>
+                                                                </c:if>                                                            
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="tcalen"  value="#{myBean.selCvSociEc.tcalen}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="XS" itemValue="XS"/>
+                                                                    <f:selectItem itemLabel="S" itemValue="S"/>
+                                                                    <f:selectItem itemLabel="M" itemValue="M"/>
+                                                                    <f:selectItem itemLabel="L" itemValue="L"/>
+                                                                    <f:selectItem itemLabel="XL" itemValue="XL"/>
+                                                                    <f:selectItem itemLabel="XXL" itemValue="XXL"/>
+                                                                    <f:selectItem itemLabel="XXXL" itemValue="XXXL"/>
+                                                                    <f:selectItem itemLabel="XXXXL" itemValue="XXXXL"/>
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="tcami"  value="#{myBean.selCvSociEc.tcami}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="XS" itemValue="XS"/>
+                                                                    <f:selectItem itemLabel="S" itemValue="S"/>
+                                                                    <f:selectItem itemLabel="M" itemValue="M"/>
+                                                                    <f:selectItem itemLabel="L" itemValue="L"/>
+                                                                    <f:selectItem itemLabel="XL" itemValue="XL"/>
+                                                                    <f:selectItem itemLabel="XXL" itemValue="XXL"/>
+                                                                    <f:selectItem itemLabel="XXXL" itemValue="XXXL"/>
+                                                                    <f:selectItem itemLabel="XXXXL" itemValue="XXXXL"/>
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="tshort"  value="#{myBean.selCvSociEc.tshort}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="XS" itemValue="XS"/>
+                                                                    <f:selectItem itemLabel="S" itemValue="S"/>
+                                                                    <f:selectItem itemLabel="M" itemValue="M"/>
+                                                                    <f:selectItem itemLabel="L" itemValue="L"/>
+                                                                    <f:selectItem itemLabel="XL" itemValue="XL"/>
+                                                                    <f:selectItem itemLabel="XXL" itemValue="XXL"/>
+                                                                    <f:selectItem itemLabel="XXXL" itemValue="XXXL"/>
+                                                                    <f:selectItem itemLabel="XXXXL" itemValue="XXXXL"/>
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="tmedias"  value="#{myBean.selCvSociEc.tmedias}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="XS" itemValue="XS"/>
+                                                                    <f:selectItem itemLabel="S" itemValue="S"/>
+                                                                    <f:selectItem itemLabel="M" itemValue="M"/>
+                                                                    <f:selectItem itemLabel="L" itemValue="L"/>
+                                                                    <f:selectItem itemLabel="XL" itemValue="XL"/>
+                                                                    <f:selectItem itemLabel="XXL" itemValue="XXL"/>
+                                                                    <f:selectItem itemLabel="XXXL" itemValue="XXXL"/>
+                                                                    <f:selectItem itemLabel="XXXXL" itemValue="XXXXL"/>
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="tcalzado"  value="#{myBean.selCvSociEc.tcalzado}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="5" itemValue="5"/>
+                                                                        <f:selectItem itemLabel="5 1/2" itemValue="5 1/2"/>
+                                                                        <f:selectItem itemLabel="6" itemValue="6"/>
+                                                                        <f:selectItem itemLabel="6 1/2" itemValue="6 1/2"/>
+                                                                        <f:selectItem itemLabel="7" itemValue="7"/>
+                                                                        <f:selectItem itemLabel="7 1/2" itemValue="7 1/2"/>
+                                                                        <f:selectItem itemLabel="8" itemValue="8"/>
+                                                                        <f:selectItem itemLabel="7 1/2" itemValue="7 1/2"/>
+                                                                        <f:selectItem itemLabel="9" itemValue="9"/>
+                                                                        <f:selectItem itemLabel="9 1/2" itemValue="9 1/2"/>
+                                                                        <f:selectItem itemLabel="10" itemValue="10"/>
+                                                                        <f:selectItem itemLabel="10 1/2" itemValue="10 1/2"/>
+                                                                        <f:selectItem itemLabel="11" itemValue="11"/>
+                                                                        <f:selectItem itemLabel="11 1/2" itemValue="11 1/2"/>
+                                                                        <f:selectItem itemLabel="12" itemValue="12"/>
+                                                                        <f:selectItem itemLabel="12 1/2" itemValue="12 1/2"/>
+                                                                        <f:selectItem itemLabel="13" itemValue="13"/>
+                                                                        <f:selectItem itemLabel="13 1/2" itemValue="13 1/2"/>
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                    </p:row>  
+                                                    
+                                                    
+                                                </p:panelGrid>
+                                                
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="8">5.- INFORMACIÓN ENTRENADOR</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Nombres </p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.nombres}"/> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Apellidos</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.apellidos}"/> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Nº Cédula </p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.ci}"/> 
+                                                        </p:column>
+                                                        <p:column style="font-weight: bold;">Nº Pasaporte</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.passport}"/> 
+                                                        </p:column>                                                        
+                                                                                                             
+                                                    </p:row>                                              
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Fecha nacimiento</p:column>
+                                                        <p:column>                                                            
+                                                            <p:calendar value="#{myBean.selCvInfEnt.dob}"
+                                                                pattern="dd/MM/yyyy" 
+                                                                navigator="true"
+                                                                locale="es"
+                                                                >
+                                                            </p:calendar>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Edad</p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{myBean.getAge(myBean.selCvInfEnt.dob)}"/>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Género</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu 
+                                                                id="iegenerot" value="#{myBean.selCvInfEnt.genero}">
+                                                                <f:selectItem itemLabel="Seleccione"/>
+                                                                <f:selectItem itemLabel="HOMBRE" itemValue="0" />
+                                                                <f:selectItem itemLabel="MUJER" itemValue="1" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Etnia</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="iegret" value="#{myBean.selCvInfEnt.etnia}">
+                                                                    <f:selectItem itemLabel="Seleccione una" />
+                                                                    <f:selectItem  itemLabel="Blanco" itemValue="Blanco" />
+                                                                    <f:selectItem  itemLabel="Afroecuatoriano" itemValue="Afroecuatoriano" />
+                                                                    <f:selectItem   itemLabel="Mestizo" itemValue="Mestizo" />
+                                                                    <f:selectItem   itemLabel="Indigena" itemValue="Indigena" />
+                                                                    <f:selectItem   itemLabel="Montubio" itemValue="Montubio" />
+                                                                    <f:selectItem   itemLabel="Mulato" itemValue="Mulato" />
+                                                                    <f:selectItem   itemLabel="Negro" itemValue="Negro" />
+                                                                    <f:selectItem   itemLabel="Otro" itemValue="Otro" />
+                                                                </p:selectOneMenu>
+                                                        </p:column>                                              
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Estado civil</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="ieestciv" value="#{myBean.selCvInfEnt.estcivl}">
+                                                                    <f:selectItem itemLabel="Estado Civil"/>
+                                                                    <f:selectItem itemLabel="Soltero" itemValue="Soltero" />
+                                                                    <f:selectItem itemLabel="Casado" itemValue="Casado" />
+                                                                    <f:selectItem itemLabel="Union libre" itemValue="Unión Libre"/>
+                                                                    <f:selectItem itemLabel="Divorciado" itemValue="Divorciado" />
+                                                                    <f:selectItem itemLabel="Viudo" itemValue="Viudo" />
+                                                            </p:selectOneMenu>   
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">País</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.pais}"/> 
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Provincia</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.prov}"/> 
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Ciudad</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.ciudad}"/> 
+                                                        </p:column>                                              
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Nacionalidad</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.nacionalidad}"/>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Provincia residencia</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.provres}"/>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Ciudad residencia</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.ciudad}"/>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Contratado por el proyecto</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="iecontraproy" value="#{myBean.selCvInfEnt.contraproy}" >
+                                                                <f:selectItem itemLabel="SI" itemValue="true" />
+                                                                <f:selectItem itemLabel="NO" itemValue="false" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>                                              
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Contratado por la FDP</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="iecontrafdp" value="#{myBean.selCvInfEnt.contrafdp}" >
+                                                                <f:selectItem itemLabel="SI" itemValue="true" />
+                                                                <f:selectItem itemLabel="NO" itemValue="false" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Tipo de contrato</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.tipocontra}"/>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Nivel de instrucción</p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="ielvlinst" value="#{myBean.selCvInfEnt.lvlinst}">
+                                                                    <f:selectItem itemLabel="Nivel"/>
+                                                                    <f:selectItem itemLabel="Básica" itemValue="Básica" />
+                                                                    <f:selectItem itemLabel="Bachillerato" itemValue="Bachillerato" />
+                                                                    <f:selectItem itemLabel="Técnico Superior" itemValue="Técnico Superior"/>
+                                                                    <f:selectItem itemLabel="Tecnología" itemValue="Tecnología" />
+                                                                    <f:selectItem itemLabel="Licenciatura" itemValue="Licenciatura" />
+                                                                    <f:selectItem itemLabel="Postgrado" itemValue="Postgrado" />
+                                                                    <f:selectItem itemLabel="Doctorado" itemValue="Doctorado" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Especialidad</p:column>
+                                                        <p:column>
+                                                            <p:inputText value="#{myBean.selCvInfEnt.esp}"/>
+                                                        </p:column>                                              
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column colspan="2" style="font-weight: bold;">Año de ingreso</p:column>
+                                                        <p:column>
+                                                            <p:inputMask value="#{myBean.selCvInfEnt.ingresoar}" mask="99"/>
+                                                        </p:column>                                              
+                                                        <p:column style="font-weight: bold;">Dirección Domiciliaria</p:column>
+                                                        <p:column colspan="6">
+                                                            <p:inputText value="#{myBean.selCvInfEnt.dir}"/>
+                                                        </p:column>                                              
+                                                                                                     
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column colspan="8" style="font-weight: bold; text-align: center;">TALLAS INDUMENTARIA ATLETA</p:column>                                             
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column colspan="2" style="font-weight: bold;">Detalle</p:column>
+                                                        <p:column style="font-weight: bold;">Género</p:column>
+                                                        <p:column style="font-weight: bold;">Calentador</p:column>
+                                                        <p:column style="font-weight: bold;">Camiseta</p:column>
+                                                        <p:column style="font-weight: bold;">Short</p:column>
+                                                        <p:column style="font-weight: bold;">Medias</p:column>
+                                                        <p:column style="font-weight: bold;">Calzado (USA)</p:column>
+                                                        
+                                                    </p:row> 
+                                                    <p:row>
+                                                        <p:column colspan="2">
+                                                            <h:outputText value="Uniforme Presentación/Entrenamiento"/>
+                                                        </p:column>
+                                                        <p:column>    
+                                                            <p:selectOneMenu id="iegenero" value="#{myBean.selCvInfEnt.genero}" >
+                                                                <f:selectItem itemLabel="Hombre" itemValue="true" />
+                                                                <f:selectItem itemLabel="Mujer" itemValue="false" />
+                                                            </p:selectOneMenu>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="ietcalent"  value="#{myBean.selCvInfEnt.tcalent}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="XS" itemValue="XS"/>
+                                                                    <f:selectItem itemLabel="S" itemValue="S"/>
+                                                                    <f:selectItem itemLabel="M" itemValue="M"/>
+                                                                    <f:selectItem itemLabel="L" itemValue="L"/>
+                                                                    <f:selectItem itemLabel="XL" itemValue="XL"/>
+                                                                    <f:selectItem itemLabel="XXL" itemValue="XXL"/>
+                                                                    <f:selectItem itemLabel="XXXL" itemValue="XXXL"/>
+                                                                    <f:selectItem itemLabel="XXXXL" itemValue="XXXXL"/>
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="ietcamiseta"  value="#{myBean.selCvInfEnt.tcamiseta}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="XS" itemValue="XS"/>
+                                                                    <f:selectItem itemLabel="S" itemValue="S"/>
+                                                                    <f:selectItem itemLabel="M" itemValue="M"/>
+                                                                    <f:selectItem itemLabel="L" itemValue="L"/>
+                                                                    <f:selectItem itemLabel="XL" itemValue="XL"/>
+                                                                    <f:selectItem itemLabel="XXL" itemValue="XXL"/>
+                                                                    <f:selectItem itemLabel="XXXL" itemValue="XXXL"/>
+                                                                    <f:selectItem itemLabel="XXXXL" itemValue="XXXXL"/>
+                                                            </p:selectOneMenu>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="ietshort"  value="#{myBean.selCvInfEnt.tshort}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="XS" itemValue="XS"/>
+                                                                    <f:selectItem itemLabel="S" itemValue="S"/>
+                                                                    <f:selectItem itemLabel="M" itemValue="M"/>
+                                                                    <f:selectItem itemLabel="L" itemValue="L"/>
+                                                                    <f:selectItem itemLabel="XL" itemValue="XL"/>
+                                                                    <f:selectItem itemLabel="XXL" itemValue="XXL"/>
+                                                                    <f:selectItem itemLabel="XXXL" itemValue="XXXL"/>
+                                                                    <f:selectItem itemLabel="XXXXL" itemValue="XXXXL"/>
+                                                            </p:selectOneMenu>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="ietmedias"  value="#{myBean.selCvInfEnt.tmedias}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="XS" itemValue="XS"/>
+                                                                    <f:selectItem itemLabel="S" itemValue="S"/>
+                                                                    <f:selectItem itemLabel="M" itemValue="M"/>
+                                                                    <f:selectItem itemLabel="L" itemValue="L"/>
+                                                                    <f:selectItem itemLabel="XL" itemValue="XL"/>
+                                                                    <f:selectItem itemLabel="XXL" itemValue="XXL"/>
+                                                                    <f:selectItem itemLabel="XXXL" itemValue="XXXL"/>
+                                                                    <f:selectItem itemLabel="XXXXL" itemValue="XXXXL"/>
+                                                            </p:selectOneMenu>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:selectOneMenu id="ietcalzado"  value="#{myBean.selCvInfEnt.tcalzado}" >
+                                                                <f:selectItem itemLabel="XXS" itemValue="XXS"/>
+                                                                    <f:selectItem itemLabel="5" itemValue="5"/>
+                                                                        <f:selectItem itemLabel="5 1/2" itemValue="5 1/2"/>
+                                                                        <f:selectItem itemLabel="6" itemValue="6"/>
+                                                                        <f:selectItem itemLabel="6 1/2" itemValue="6 1/2"/>
+                                                                        <f:selectItem itemLabel="7" itemValue="7"/>
+                                                                        <f:selectItem itemLabel="7 1/2" itemValue="7 1/2"/>
+                                                                        <f:selectItem itemLabel="8" itemValue="8"/>
+                                                                        <f:selectItem itemLabel="7 1/2" itemValue="7 1/2"/>
+                                                                        <f:selectItem itemLabel="9" itemValue="9"/>
+                                                                        <f:selectItem itemLabel="9 1/2" itemValue="9 1/2"/>
+                                                                        <f:selectItem itemLabel="10" itemValue="10"/>
+                                                                        <f:selectItem itemLabel="10 1/2" itemValue="10 1/2"/>
+                                                                        <f:selectItem itemLabel="11" itemValue="11"/>
+                                                                        <f:selectItem itemLabel="11 1/2" itemValue="11 1/2"/>
+                                                                        <f:selectItem itemLabel="12" itemValue="12"/>
+                                                                        <f:selectItem itemLabel="12 1/2" itemValue="12 1/2"/>
+                                                                        <f:selectItem itemLabel="13" itemValue="13"/>
+                                                                        <f:selectItem itemLabel="13 1/2" itemValue="13 1/2"/>
+                                                            </p:selectOneMenu> 
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>                                              
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <p:row>
+                                                            <p:column style="font-weight: bold; text-align: center;">ENTRENADORES QUE HAN ESTADO A CARGO DEL ATLETA DURANTE SU PERMANENCIA EN EL PROYECTO</p:column>  
+                                                    </p:row>  
+                                                    <p:row>
+                                                        <p:column>
+                                                                <p:commandButton rendered="true" id="nuevoHE" value="Añadir Ex Entrenador" 
+                                                                        style="color: #2196f3;"
+                                                                        onclick="PF('newHE').show()" 
+                                                                        icon="fa fa-fw fa-plus" 
+                                                                ></p:commandButton>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>                                                           
+                                                    <p:dataTable var="he" value="#{myBean.listHistEnt}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                        <p:column headerText="Nº">
+                                                            <h:outputText value="#{index+1}" />
+                                                        </p:column>
+                                                        <p:column headerText="Año">
+                                                            <h:outputText value="#{he.ano}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nombres y apellidos">
+                                                            <h:outputText value="#{he.nombres}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nacionalidad">
+                                                            <h:outputText value="#{he.nacionalidad}" />
+                                                        </p:column>
+                                                        <p:column headerText="Club - Federación">
+                                                            <h:outputText value="#{he.club}" />
+                                                        </p:column>
+                                                        <p:column headerText="Teléfono">
+                                                            <h:outputText value="#{he.telf}" />
+                                                        </p:column>
+                                                    </p:dataTable>                          
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="9">6.- RESULTADOS DEPORTIVOS AÑO 2016 - 2017</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column>
+                                                                <p:commandButton rendered="true" id="nuevoRD" value="Añadir Resultado" 
+                                                                        style="color: #2196f3;"
+                                                                        onclick="PF('newRD').show()" 
+                                                                        icon="fa fa-fw fa-plus" 
+                                                                ></p:commandButton>
+                                                        </p:column>
+                                                    </p:row>                                                 
+                                                </p:panelGrid>                                                
+                                                <p:dataTable var="rd" value="#{myBean.listReconDep}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                        <p:column headerText="Nº">
+                                                            <h:outputText value="#{index+1}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nombre Evento">
+                                                            <h:outputText value="#{rd.evento}" />
+                                                        </p:column>
+                                                        <p:column headerText="Fecha">
+                                                            <p:calendar value="#{rd.fecha}" pattern="dd/MM/yyyy" readonly="true"/>
+                                                        </p:column>
+                                                        <p:column headerText="Lugar">
+                                                            <h:outputText value="#{rd.lugar}" />
+                                                        </p:column>
+                                                        <p:column headerText="Prueba/división">
+                                                            <h:outputText value="#{rd.prueba}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nº atletas">
+                                                            <h:outputText value="#{rd.numatle}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nº paises">
+                                                            <h:outputText value="#{rd.npaises}" />
+                                                        </p:column>
+                                                        <p:column headerText="Marca atleta">
+                                                            <p:calendar value="#{rd.marca}"  pattern="HH:mm:ss"  readonly="true"/>
+                                                        </p:column>
+                                                </p:dataTable>
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="6">7.- DISTINCIONES RECIBIDAS POR EL DEPORTISTA</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column>
+                                                                <p:commandButton rendered="true" id="nuevoDR" value="Añadir Distinción" 
+                                                                        style="color: #2196f3;"
+                                                                        onclick="PF('newDR').show()" 
+                                                                        icon="fa fa-fw fa-plus" 
+                                                                ></p:commandButton>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>
+                                                <p:dataTable var="dr" value="#{myBean.listDistReci}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                        <p:column headerText="Nº">
+                                                            <h:outputText value="#{index+1}" />
+                                                        </p:column>
+                                                        <p:column headerText="Distinciones Recividas como atleta">
+                                                            <h:outputText value="#{dr.distinciones}" />
+                                                        </p:column>
+                                                        <p:column headerText="Fecha">
+                                                            <p:calendar value="#{dr.fecha}"  pattern="dd/MM/yyyy"  readonly="true"/>
+                                                            
+                                                        </p:column>
+                                                        <p:column headerText="Tipo de distinción">
+                                                            <h:outputText value="#{dr.tipo}" />
+                                                        </p:column>
+                                                        <p:column headerText="Entidad que la otortgó">
+                                                            <h:outputText value="#{dr.entidad}" />
+                                                        </p:column>
+                                                </p:dataTable>
+                                                <p:separator />
+
+                                               
+                                                <p:separator />
+                                                <p:commandButton id="gt" 
+                                                style=" background: #FBFBFB; color: black;" 
+                                                value="Guardado temporal" 
+                                                action="#{myBean.registraPersona()}"
+                                                icon="fa fa-fw fa-save"
+
+                                                update="newinc"
+                                                ></p:commandButton>       
+                                                <p:commandButton id="cv" 
+                                                style=" background: #FBFBFB; color: black;" 
+                                                value="Hoja de Vida" 
+                                                action="#{myBean.cv(myBean.selectPersona)}"
+                                                icon="fa fa-fw fa-address-book"
+
+                                                update="newinc"
+                                                ></p:commandButton>       
+                                            </p:panel>
+                </h:form>     
+                                    </div>
+                                </article>
+                            </li>
+                            <li>
+                              <article>
+                                    <div class="comcont">
+                                       <div class="scrollable">
+                                          <div id="datos"></div>
+                                       </div>
+                                    </div>
+                              </article>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                 
+                <script type="text/javascript">
+                    function handleLoginRequest(xhr, status, args) {
+                        if(args.validationFailed || !args.loggedIn) {
+                            PF('dlg').jq.effect("shake", {times:5}, 100);
+                            //location.reload(); 
+                            //window.location.replace(window.location.href);
+                        }
+                        else {
+                            PF('dlg').hide();
+                            $('#loginLink').fadeOut();
+                        }
+                    }
+                </script>
+                  <!-- InstanceEndEditable -->
+                <div class="clear"></div>
+            </main>
+        </div>
+         
+         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                     <p:dialog id="dgl" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                         <h3>Procesando...</h3>
+                                         <img  src="images/bar.gif"/>
+                                     </p:dialog>
+         
+         
+         
+         
+         
+         
+         
+     </ui:define>
+</ui:composition>
