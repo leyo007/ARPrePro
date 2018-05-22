@@ -25,6 +25,7 @@ import entities.Mdconvocatoriat;
 import entities.Mddeportest;
 import entities.Mddisciplinat;
 import entities.Mddivisionpolitica;
+import entities.Mdincentivoshistt;
 import entities.Mdincentivost;
 import entities.Mdmenut;
 import entities.Mdmodulot;
@@ -36,6 +37,7 @@ import entities.Mdusuariot;
 import facades.MdcategoriaactualtFacadeLocal;
 import facades.MdcategoriaedadtFacadeLocal;
 import facades.MdcategoriapropuestatFacadeLocal;
+import facades.MdcodigosFacadeLocal;
 import facades.MdconvocatoriatFacadeLocal;
 import facades.MddeportestFacadeLocal;
 import facades.MddisciplinatFacadeLocal;
@@ -79,6 +81,9 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 //@ViewScoped
 public class mainBean implements Serializable {
+
+    @EJB
+    private MdcodigosFacadeLocal mdcodigosFacade;
 
 
     @EJB
@@ -199,6 +204,16 @@ public class mainBean implements Serializable {
     private List<Mddivisionpolitica> listaProv;
     private List<Mddivisionpolitica> listaCiudad;
     
+    private Mdincentivoshistt newIncHist;
+    private Mdincentivoshistt selIncHist;
+    
+    private boolean nuevoDeportista;
+    
+    private Mdpersonast selAprobados;
+    
+    private boolean aprovacion;
+    private Mdcodigos codigo;
+    
     
     private Mdcodigos selCode;
     public String accessLogin() throws IOException{
@@ -218,7 +233,7 @@ public class mainBean implements Serializable {
                 }
                 else{
                     uPerfil=mdusuarioperfiltFacade.findThisUser(uActual);
-                    System.out.println("1.- uPerfil Uuuu: "+uPerfil.getIdusuario().getIdusuario());
+                    System.out.println("1.- uPerfil Cod Usuario: "+uPerfil.getIdusuario().getIdusuario());
                     System.out.println("2.- uPerfil P: "+uPerfil.getIdperfil().getIdperfil());
                     Mdperfilt x =mdperfiltFacade.find(uPerfil.getIdperfil().getIdperfil());
                     System.out.println("3.- perfil: "+x.toString());
@@ -342,7 +357,8 @@ public class mainBean implements Serializable {
             
     }
     
-    public String newinc(){
+    public String newinc(){ 
+        nuevoDeportista=true;
         selectPersona= new Mdpersonast();
         selectIncentivo= new Mdincentivost();
         selCvDistRe=new Mdcvdr();
@@ -408,11 +424,26 @@ public class mainBean implements Serializable {
     
     }
     public String registraPersona(){
+        String resultado="";
+                System.out.println("getIddep: "+ selectPersona.getIddep());
+                System.out.println("ControlNuevo?: "+ nuevoDeportista);
+        
         System.out.println("Dentor");
-                System.out.println("Persona Actual: "+ selectPersona.getDepcedula());
-                System.out.println("Persona Nombre: "+ selectPersona.getDepnombre());
-                System.out.println("Persona Sexo: "+ selectPersona.getIdsexo());
-                
+
+        System.out.println("Persona Actual: "+ selectPersona.getDepcedula());
+        System.out.println("Persona Nombre: "+ selectPersona.getDepnombre());
+        System.out.println("Persona Sexo: "+ selectPersona.getIdsexo());
+        System.out.println("Cédula: "+ selectPersona.getDepcedula());
+        
+        if(mdpersonastFacade.findById(selectPersona.getDepcedula())&&nuevoDeportista){
+            System.out.println("record ya existe...");
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Deportista ya registrado","Controle la lista"));
+            resultado="";
+        
+        }else{
+            if(selectPersona.getIddep()==null&&nuevoDeportista){
+                System.out.println("puedo registrar nuevo");
+                resultado="incentivos_list";
                 nombres = selectPersona.getDepnombre().split("\\s+");
                 int numnom=nombres.length;
                 switch (numnom) {
@@ -421,48 +452,44 @@ public class mainBean implements Serializable {
                                 break;
                        case 5:  selectPersona.setDepnombre(nombres[2]+" "+nombres[3]+" "+nombres[4]);
                                 selectPersona.setDepapellido(nombres[0]+" "+nombres[1]);
-                                   
+
                                 break;
                        case 4:  selectPersona.setDepnombre(nombres[2]+" "+nombres[3]);
                                 selectPersona.setDepapellido(nombres[0]+" "+nombres[1]);
                                 break;
                 }
+                System.out.println("Persona Nombre: "+ selectPersona.getDepnombre());
+                System.out.println("Persona Apellidos: "+ selectPersona.getDepapellido());
+                System.out.println(selectPersona.getIddeporte()); 
+                selectPersona.setIdcreador(uActual.getIdusuario());
+                mdpersonastFacade.guardarDatos(selectPersona);  
+                selectIncentivo.setIddep(selectPersona.getIddep());
+                mdincentivostFacade.guardarDatos(selectIncentivo);
+                selCvSociEc.setPersona(selectPersona);
+                mdcvdpFacade.guardarDatos(selCvSociEc);
+                selCvForAc.setPersona(selectPersona);
+                mdcvfaFacade.guardarDatos(selCvForAc);
+                selCvInfEnt.setPersona(selectPersona);
+                mdcvieFacade.guardarDatos(selCvInfEnt);
+            }
+            else{
+
+                System.out.println("modifico solo algunos datos");
+                mdpersonastFacade.modificarDatos(selectPersona);  
+                mdincentivostFacade.modificarDatos(selectIncentivo);
+                mdcvdpFacade.modificarDatos(selCvSociEc);
+                mdcvfaFacade.modificarDatos(selCvForAc);
+                mdcvieFacade.modificarDatos(selCvInfEnt);
                 
-       
-                        System.out.println("Persona Nombre: "+ selectPersona.getDepnombre());
-                        System.out.println("Persona Apellidos: "+ selectPersona.getDepapellido());
-      //  selectPersona.setIdsexo(x);
-        
-        
-        System.out.println(selectPersona.getIddeporte()); 
-        selectPersona.setIdcreador(uActual.getIdusuario());
-        mdpersonastFacade.guardarDatos(selectPersona);  
-        selectIncentivo.setIddep(selectPersona.getIddep());
-        mdincentivostFacade.guardarDatos(selectIncentivo);
-        
-        
-        
-        
-        selCvSociEc.setPersona(selectPersona);
-        mdcvdpFacade.guardarDatos(selCvSociEc);
-        selCvForAc.setPersona(selectPersona);
-        mdcvfaFacade.guardarDatos(selCvForAc);
-        selCvInfEnt.setPersona(selectPersona);
-        mdcvieFacade.guardarDatos(selCvInfEnt);
-        
-        //max 5 - 10 - 5 for each selectPerson
-        /*
-        selCvHistEnt.setPersona(selectPersona.getIddep());
-        mdcvheFacade.guardarDatos(selCvHistEnt);
-        selCvResDep.setPersona(selectPersona.getIddep());
-        mdcvrdFacade.guardarDatos(selCvResDep);
-        selCvDistRe.setPersona(selectPersona.getIddep());
-        mdcvdrFacade.guardarDatos(selCvDistRe);
-        */
-        
+                
+                
+                
+                resultado="incentivos_list";
+            }
+        }
         listaPersonas=mdpersonastFacade.findAll();
-        
-        return "incentivos_list";
+        nuevoDeportista=false;
+        return resultado;
     }
     
     public void registrarExEntrenador(){
@@ -577,8 +604,14 @@ public class mainBean implements Serializable {
     
     public double getincentivosMenXpersona(Mdpersonast p){
         double x=0.0;
+        System.out.println("Incentivos por mes 607");
+        
         if(mdincentivostFacade.buscaXpersona(p).getIncvalormensual()!=null && mdincentivostFacade.buscaXpersona(p).getIncvalormensual() >0){
             x=mdincentivostFacade.buscaXpersona(p).getIncvalormensual();
+            
+            System.out.println("XXXXXXXXXXXXXXXXXXX");
+            System.out.println(x);
+           // codigo=mdcodigosFacade.find(x)
         }
         return x;
         
@@ -624,6 +657,20 @@ public class mainBean implements Serializable {
             y="sin dicplina";
         return y;
     }
+    
+    public void getDisXDep(int x){
+        System.out.println("Seleccionar deporte: "+x);
+            Mddeportest dep=new Mddeportest();
+            dep=mddeportestFacade.find(x);
+            listDisciplina=mddisciplinatFacade.findByDeporte(dep);
+            for(Mddisciplinat y: listDisciplina ){
+                System.out.println("Diciplinas: "+y.getDisdescripcion());
+        
+            }
+        
+       
+        
+    }
     public String getCatPro(int x){
         String y="No tiene categoría propuesta";
         if(x>0){
@@ -644,6 +691,9 @@ public class mainBean implements Serializable {
     
     public void onRowEdit(RowEditEvent event) {
         
+        
+        
+        
          selCatProp=(Mdcategoriapropuestat)event.getObject();
          
          if(mdcategoriapropuestatFacade.modificarDatos(selCatProp)){
@@ -658,6 +708,31 @@ public class mainBean implements Serializable {
      
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Cambios no realizados para", ""+((Mdcategoriapropuestat) event.getObject()).getCatdescripcion());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    //editor de propuestas de admin:
+    
+    public void onRowEditPro(RowEditEvent event) {
+        
+          selAprobados=(Mdpersonast) event.getObject();
+        selAprobados.setAprobado(aprovacion);
+        if(mdpersonastFacade.modificarDatos(selAprobados)){
+            FacesMessage msg = new FacesMessage("Usuario Actualizado", ((Mdpersonast) event.getObject()).getAprobado().toString());
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "No se han realizado modificaciones."));
+               
+        
+        }
+    }
+    public void aprobadoValue(boolean x){
+         aprovacion=x;
+    
+    }
+     
+    public void onRowCancelPro(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Cambios no realizados para", ""+((Mdpersonast) event.getObject()).getDepcedula());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
@@ -695,6 +770,10 @@ public class mainBean implements Serializable {
     
     }
     
+    public String getInstitucion(int x){
+       return mdusuariotFacade.find(x).getInstitucion();
+    
+    }
     
     
     
@@ -764,12 +843,23 @@ public class mainBean implements Serializable {
     }
 
     public List<Mdpersonast> getListaPersonas() {
+       
+       
+        // System.out.println("Perfil: "+uPerfil.getIdperfil().getIdperfil() );
         //if(listaPersonas==null){
-            listaPersonas=mdpersonastFacade.findAll();
-            for(Mdpersonast x: listaPersonas ){
+            
+            if(uPerfil.getIdperfil().getIdperfil()==3){
+                 System.out.println("buscando personas de federación: "+uPerfil.getIdperfil().getPernombre() );
+                listaPersonas=mdpersonastFacade.findByPerfil(uActual.getIdusuario());
+            }
+            else{
+                //System.out.println("buscando todas las personas ");
+                listaPersonas=mdpersonastFacade.findAll();
+            }
+            /*for(Mdpersonast x: listaPersonas ){
                 System.out.println("Persona: "+x.getDepcedula());
-        //    }
-        }
+        
+            }*/
         return listaPersonas;
     }
 
@@ -778,12 +868,6 @@ public class mainBean implements Serializable {
     }
 
     public List<Mdpersonast> getFiltroPersonas() {
-        /*if(filtroPersonas==null){
-            filtroPersonas=mdpersonastFacade.findAll();
-            for(Mdpersonast x: filtroPersonas ){
-                System.out.println("Persona: "+x.getDepcedula());
-            }
-        }*/
         return filtroPersonas;
     }
 
@@ -792,8 +876,11 @@ public class mainBean implements Serializable {
     }
 
     public Mdpersonast getSelectPersona() {
-        if(selectPersona==null)
+        if(selectPersona==null){
+            System.out.println("XXXXXXXXX --- Persona nulla --- XXXXXXXXXXXX");
             selectPersona=new Mdpersonast();
+        }
+       
         return selectPersona;
     }
 
@@ -882,10 +969,12 @@ public class mainBean implements Serializable {
     }
 
     public List<Mddeportest> getListDeporte() {
+        System.out.println("DEPORTES - XXXXXXXXXXXXXXXXX");
         if(listDeporte==null){
             System.out.println("LISTA DEPORTES");
             listDeporte=mddeportestFacade.findAll();
-        }
+        }else
+            System.out.println("No está vacia....");
         return listDeporte;
     }
 
@@ -1100,6 +1189,46 @@ public class mainBean implements Serializable {
 
     public void setNewCatActual(Mdcategoriaactualt newCatActual) {
         this.newCatActual = newCatActual;
+    }
+
+    public Mdincentivoshistt getNewIncHist() {
+        return newIncHist;
+    }
+
+    public void setNewIncHist(Mdincentivoshistt newIncHist) {
+        this.newIncHist = newIncHist;
+    }
+
+    public boolean isNuevoDeportista() {
+        return nuevoDeportista;
+    }
+
+    public void setNuevoDeportista(boolean nuevoDeportista) {
+        this.nuevoDeportista = nuevoDeportista;
+    }
+
+    public Mdpersonast getSelAprobados() {
+        return selAprobados;
+    }
+
+    public void setSelAprobados(Mdpersonast selAprobados) {
+        this.selAprobados = selAprobados;
+    }
+
+    public boolean isAprovacion() {
+        return aprovacion;
+    }
+
+    public void setAprovacion(boolean aprovacion) {
+        this.aprovacion = aprovacion;
+    }
+
+    public Mdcodigos getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Mdcodigos codigo) {
+        this.codigo = codigo;
     }
 
     

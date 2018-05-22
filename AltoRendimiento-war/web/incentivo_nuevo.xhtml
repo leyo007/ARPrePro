@@ -15,9 +15,17 @@
                 fecha='';
               
     function verifica(x){
-        var y=x+'';         
+        var y=x+'';      
+        
         console.log("Size: "+y.length);
         console.log("value  "+y);
+        
+        if(y.length===8){
+            var num = parseInt(x, 10);
+            y='0'+num.toString(8);
+            console.log("valueOK  "+y);
+        }
+        
         if(y.length===9){
             console.log("inseide 9...;");
              y='0'+y;
@@ -164,7 +172,7 @@
                                     </div>
                                     <div class="comcont">
                                         <h:form id="newinc" class="container" style="margin-left: 0%; margin-right: 0%; margin-bottom: 0px;">
-                                            <p:growl id="growl" sticky="false" showDetail="true" autoUpdate="true" life="500"/>
+                                            <p:growl id="growl" sticky="false" showDetail="true" autoUpdate="true" life="1500"/>
                                             <p:messages id="messages" closable="true">
                                                 <p:effect type="puff" event="load" delay="300" />
                                             </p:messages>
@@ -237,6 +245,7 @@
                                                     <p:selectOneMenu id="dep" required="true" requiredMessage="Deporte obligatorio" value="#{myBean.selectPersona.iddeporte}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Deportes"/>
                                                         <f:selectItems value="#{myBean.listDeporte}" var="de" itemLabel="#{de.depdescripcion}" itemValue="#{de.iddeporte}"  />
+                                                        <p:ajax update="disc" listener="#{myBean.getDisXDep(myBean.selectPersona.iddeporte)}" event="change"/>
                                                     </p:selectOneMenu>
                                                      <h:outputText value=""/>
                                                      <p:message for="dep" display="text"/>

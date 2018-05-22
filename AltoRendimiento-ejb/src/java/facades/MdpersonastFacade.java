@@ -6,6 +6,7 @@
 package facades;
 
 import entities.Mdpersonast;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -50,6 +51,33 @@ public class MdpersonastFacade extends AbstractFacade<Mdpersonast> implements Md
             System.out.println("Error al modificar Persona "+e.getMessage());
             return false;
             
+        }
+    }
+
+    @Override
+    public List<Mdpersonast> findByPerfil(int x) {
+        try {
+              return  em.createQuery("SELECT p from Mdpersonast p WHERE p.idcreador =:x")
+                      .setParameter("x", x)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré las personas del perfil: "+x+" Error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public boolean findById(String x) {
+       
+        try {
+               em.createQuery("SELECT p FROM Mdpersonast p WHERE p.depcedula =:us")
+                    .setParameter("us", x)                    
+                    .getSingleResult();
+               return true;
+               
+        } catch (Exception e) {
+            System.out.println("Error, deportista no registrado: " + e.getMessage());
+            return false;
         }
     }
     

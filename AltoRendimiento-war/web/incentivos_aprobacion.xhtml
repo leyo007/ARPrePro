@@ -4,7 +4,8 @@
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:p="http://primefaces.org/ui"
->
+         
+     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
      <ui:define name="content">
          
   
@@ -40,39 +41,13 @@
             }
              
          </style>
-         <p:dialog id="modalNewCP" header="Añadir Categoría Propuesta" widgetVar="newCatPro" modal="true" >
-             <p:growl id="growlA" sticky="false" showDetail="true" life="1000" autoUpdate="true" />
-                <h:outputText value="Llene todos los campos." />
-                
-                
-                <h:form>
-                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
-
-                        <h:outputText value="Nombre"/>
-                        <p:inputText style="" value="#{myBean.newCatpro.catdescripcion}" id="cpnombre"  placeholder="Categoría"/>
-                             <p:message for="cpnombre" />
-                        <h:outputText value="Nº RBU"/>
-                        <p:inputText style="" value="#{myBean.newCatpro.numrbu}" id="cpnumrbu" placeholder="formato 0.0"/>
-                             <p:message for="cpnumrbu" />
-                    </h:panelGrid>
-                    <p:separator/>
-                    <p:commandButton action="#{myBean.registraCatpro()}" value="Guardar" 
-                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
-                                 update="@(form) form-lista"
-                                 oncomplete="if (#{not facesContext.validationFailed})PF('newCatPro').hide()"
-                                 
-                                 >
-                    </p:commandButton>
-                </h:form>
-                
-            </p:dialog> 
          
          
          
          
          
          <div id="contenido" class="wrapper row3">
-            <main class="hoc container clear"> 
+            <main class="clear"> 
                 <div class="btmspace-80 center">
                   <h3 class="nospace">Bienvenidos</h3>
                   <h:outputText value="Usuario con acceso"/>
@@ -119,26 +94,65 @@
                                                     options="#{myBean.pdfOpt}"
                                                     />
                                                 </p:commandButton>
-                                                <p:dataTable id="all" value="#{myBean.listCatP}" var="cat" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
-                                                             selectionMode="single" selection="#{myBean.selCatProp}" rowKey="#{cat.idcatpro}"
-                                                             widgetVar="listaR" filteredValue="#{myBean.filtroCatP}" emptyMessage="No hay registros..."
+                                                <p:dataTable id="perAprobacion" value="#{myBean.listaPersonas}" var="persona" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
+                                                             selection="#{myBean.selAprobados}" rowKey="#{persona.iddep}"
+                                                             widgetVar="listaR" filteredValue="#{myBean.filtroPersonas}" emptyMessage="No hay registros..."
                                                              editable="true"
                                                 >
                                                     
-                                                    <p:ajax event="rowEdit" listener="#{myBean.onRowEdit}" update="growl" />
-                                                    <p:ajax event="rowEditCancel" listener="#{myBean.onRowCancel}" update="growl" />
+                                                    <p:ajax event="rowEdit" listener="#{myBean.onRowEditPro}" update="growl perAprobacion" />
+                                                    <p:ajax event="rowEditCancel" listener="#{myBean.onRowCancelPro}" update="growl" />
                                                     
                                                     <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
-                                                    <p:column filterBy="#{cat.catdescripcion}" headerText="Categoría"  filterMatchMode="contains">
-                                                        <p:cellEditor>
-                                                            <f:facet name="output"><h:outputText value="#{cat.catdescripcion}" /></f:facet>
-                                                            <f:facet name="input"><p:inputText value="#{cat.catdescripcion}" style="width:96%" label="Categoría"/></f:facet>
-                                                        </p:cellEditor>
+                                                    <p:column filterBy="#{persona.depcedula}" headerText="CI"  filterMatchMode="contains">
+                                                        
+                                                        <h:outputText value="#{persona.depcedula}" />
+                                                        
                                                     </p:column>
-                                                    <p:column filterBy="#{cat.numrbu}" headerText="Número RBU"  filterMatchMode="contains">
+                                                    <p:column filterBy="#{persona.depapellido}" headerText="Apellidos"  filterMatchMode="contains">
+                                                        
+                                                        <h:outputText value="#{persona.depapellido}" />
+                                                        
+                                                    </p:column>
+                                                    <p:column filterBy="#{persona.depnombre}" headerText="Nombres"  filterMatchMode="contains">
+                                                        <h:outputText value="#{persona.depnombre}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{persona.depprueba}" headerText="Prueba"  filterMatchMode="contains">
+                                                        <h:outputText value="#{persona.depprueba}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{persona.depproyeccion}" headerText="Proyección"  filterMatchMode="contains">
+                                                        <h:outputText value="#{persona.depproyeccion}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{persona.depresultados}" headerText="Resultados"  filterMatchMode="contains">
+                                                        <h:outputText value="#{persona.depresultados}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{persona.idanosproy}" headerText="Años en el proyecto"  filterMatchMode="contains">
+                                                        <h:outputText value="#{persona.idanosproy}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{myBean.getnombreDeporte(persona.iddeporte)}" headerText="Deporte"  filterMatchMode="contains">
+                                                        <h:outputText value="#{myBean.getnombreDeporte(persona.iddeporte)}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{myBean.getnombreDciplina(persona.iddeporte)}" headerText="Diciplina"  filterMatchMode="contains">
+                                                        <h:outputText value="#{myBean.getnombreDciplina(persona.iddeporte)}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{myBean.getIncePropuesta(persona)}" headerText="Cat. Propuesta"  filterMatchMode="contains">
+                                                        <h:outputText value="#{myBean.getIncePropuesta(persona)}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{myBean.getincentivosMenXpersona(persona)}" headerText="Mensual"  filterMatchMode="contains">
+                                                        <h:outputText value="#{myBean.getincentivosMenXpersona(persona)}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{persona.aprobado}" headerText="Aprobación"  filterMatchMode="contains">
                                                         <p:cellEditor>
-                                                            <f:facet name="output"><h:outputText value="#{cat.numrbu}" /></f:facet>
-                                                            <f:facet name="input"><p:inputText value="#{cat.numrbu}" style="width:96%" label="x RBU"/></f:facet>
+                                                            <f:facet name="output"> <h:outputText id="apr" value="#{persona.aprobado ? 'Aprobado': 'Negado'}"/></f:facet>
+                                                            <f:facet name="input">
+                                                                <p:selectBooleanButton id="currentAprob" value="#{myBean.aprovacion}" 
+                                                                    onLabel="Aprobado" offLabel="Negado" style="" 
+                                                                    disabled="false"
+                                                                    
+                                                                    >
+                                                                    
+                                                                </p:selectBooleanButton>
+                                                            </f:facet>
                                                         </p:cellEditor>
                                                     </p:column>
                                                     <p:column style="width:32px">

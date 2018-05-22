@@ -29,8 +29,9 @@ public interface MdpersonastFacadeLocal {
     List<Mdpersonast> findRange(int[] range);
 
     int count();
-    
+    public List<Mdpersonast>findByPerfil(int x);
     public boolean guardarDatos(Mdpersonast x);
     public boolean modificarDatos(Mdpersonast x);
+    public boolean findById(String x);
     
 }

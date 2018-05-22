@@ -57,6 +57,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Mdpersonast.findByIdciudad", query = "SELECT m FROM Mdpersonast m WHERE m.idciudad = :idciudad")})
 public class Mdpersonast implements Serializable {
 
+    @Column(name = "aprobado")
+    private Boolean aprobado;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
     private List<Mdcvdp> mdcvdpList;
 
@@ -360,6 +363,14 @@ public class Mdpersonast implements Serializable {
 
     public void setMdcvdpList(List<Mdcvdp> mdcvdpList) {
         this.mdcvdpList = mdcvdpList;
+    }
+
+    public Boolean getAprobado() {
+        return aprobado;
+    }
+
+    public void setAprobado(Boolean aprobado) {
+        this.aprobado = aprobado;
     }
     
 }
