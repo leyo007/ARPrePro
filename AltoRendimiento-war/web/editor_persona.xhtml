@@ -7,9 +7,14 @@
          
      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
      <ui:define name="content">
-         
+         <style>
+             .ui-fileupload-choose{
+                 overflow: visible!important;
+             }
+             
+         </style> 
          <p:dialog header="Foto #{myBean.selectPersona.depapellido}" widgetVar="dlg1" id="dlg1" modal="true" height="auto" width="auto">
-            <h:form enctype="multipart/form-data">
+            <h:form id="foto" enctype="multipart/form-data">
                    <p:fileUpload  id="des" value="#{myBean.archivo}" 
                       skinSimple="true" label="Foto"
                       disabled="false"
@@ -17,30 +22,26 @@
                      mode="advanced" 
                      sizeLimit="3000000"
                       multiple="false"
-                      fileLimit="1"
+                      fileLimit="2"
                       uploadLabel="Cargar"
                       cancelLabel="Cancelar"
                       fileUploadListener="#{myBean.fileUploadListener}"
-                      update="mensaje"
+                      update=":newinc"
+                      oncomplete="PF(dlg1).hide()"
                       />
-                 <p:commandButton value="Aceptar imagen" ajax="false" 
-                                  onclick="PF(dlg1).hide()"
-                                  icon="ui-icon-check"
-                                  rendered="true"
-                                  update="fperfil"
-                                  />
+                 
                 </h:form>
             <h:form id="mensaje">
                
                 <h:panelGrid columns="2" width="500">
-                    <h:outputText value="datos0"/>
+                    <h:outputText value="Foto: "/>
                     
                 </h:panelGrid>
                 <p:separator></p:separator>
-                <img  style="padding-bottom: 10px;border: white;border-style: solid; border-radius: 20px 3px;" 
+                <img  style="padding-bottom: 10px;border: white;border-style: solid; border-radius: 20px 3px; width: 80px;" 
                       src="../imagenes/#{myBean.selectPersona.depcedula}.jpg" 
                       onerror="this.src='images/noprofile.jpeg'"  
-                      alt="Foto" width="80px" />
+                      alt="Foto"/>
             </h:form>
             
        </p:dialog>

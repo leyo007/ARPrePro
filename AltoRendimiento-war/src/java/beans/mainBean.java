@@ -714,23 +714,30 @@ public class mainBean implements Serializable {
     
     public void onRowEditPro(RowEditEvent event) {
         
-          selAprobados=(Mdpersonast) event.getObject();
+        selAprobados=(Mdpersonast) event.getObject();
         selAprobados.setAprobado(aprovacion);
+        selectIncentivo=mdincentivostFacade.buscaXpersona(selAprobados);
+        selectIncentivo.setIdestado(aprovacion);
+        if(aprovacion){
+            selectIncentivo.setIncvalormensual(mdcodigosFacade.find(1).getValor()*mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getNumrbu());
+            newIncHist.setInchcedula(selAprobados.getDepcedula());
+            //newIncHist.setInchdeporte(selAprobados.getIddeporte().);
+            
+        }
+        else{
+            selectIncentivo.setIncvalormensual(new Float(0));
+        }
         if(mdpersonastFacade.modificarDatos(selAprobados)){
+            mdincentivostFacade.modificarDatos(selectIncentivo);
             FacesMessage msg = new FacesMessage("Usuario Actualizado", ((Mdpersonast) event.getObject()).getAprobado().toString());
                 FacesContext.getCurrentInstance().addMessage(null, msg);
-        
         }else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "No se han realizado modificaciones."));
-               
-        
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "No se han realizado modificaciones."));   
         }
     }
     public void aprobadoValue(boolean x){
          aprovacion=x;
-    
-    }
-     
+    }    
     public void onRowCancelPro(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Cambios no realizados para", ""+((Mdpersonast) event.getObject()).getDepcedula());
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -1229,6 +1236,14 @@ public class mainBean implements Serializable {
 
     public void setCodigo(Mdcodigos codigo) {
         this.codigo = codigo;
+    }
+
+    public Mdincentivoshistt getSelIncHist() {
+        return selIncHist;
+    }
+
+    public void setSelIncHist(Mdincentivoshistt selIncHist) {
+        this.selIncHist = selIncHist;
     }
 
     
