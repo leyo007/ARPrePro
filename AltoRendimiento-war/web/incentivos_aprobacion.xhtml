@@ -26,9 +26,9 @@
                 width: auto!important;
             }
             .ui-state-highlight, .ui-widget-content .ui-state-highlight{
-                background-image: linear-gradient(to bottom, #ffffff, #d6d6d6);
+                background-image: linear-gradient(to bottom, #28bbc6, #1586f5);
                 background-color: #fff;
-                color: #337ab7;
+                color: #fff;
             }
             
             th{
@@ -102,7 +102,7 @@
                                                     
                                                     <p:ajax event="rowEdit" listener="#{myBean.onRowEditPro}" update="growl perAprobacion" />
                                                     <p:ajax event="rowEditCancel" listener="#{myBean.onRowCancelPro}" update="growl" />
-                                                    
+                                                    <p:ajax event="rowEditInit" listener="#{myBean.printevent}" />
                                                     <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
                                                     <p:column filterBy="#{persona.depcedula}" headerText="CI"  filterMatchMode="contains">
                                                         
@@ -156,7 +156,7 @@
                                                         </p:cellEditor>
                                                     </p:column>
                                                     <p:column style="width:32px">
-                                                        <p:rowEditor />
+                                                        <p:rowEditor/>
                                                     </p:column>   
                                                     
                                                 </p:dataTable>

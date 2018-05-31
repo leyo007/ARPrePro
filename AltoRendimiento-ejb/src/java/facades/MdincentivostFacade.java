@@ -57,7 +57,7 @@ public class MdincentivostFacade extends AbstractFacade<Mdincentivost> implement
     @Override
     public Mdincentivost buscaXpersona(Mdpersonast p) {
         
-        System.out.println("Perosna incentivo join: "+p.getIddep());
+        //System.out.println("Perosna incentivo join: "+p.getIddep());
          try {
               return (Mdincentivost) em.createQuery("SELECT i FROM Mdincentivost i JOIN Mdpersonast p ON i.iddep=p.iddep AND i.iddep=:us")
                     .setParameter("us", p.getIddep())

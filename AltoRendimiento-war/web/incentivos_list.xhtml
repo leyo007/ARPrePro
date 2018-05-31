@@ -117,9 +117,19 @@
                                                     </p:column>
                                                     <p:column headerText="Estado">
                                                         <p:commandButton id="gt" 
-                                                            style=" background: #FBFBFB; color: black;" 
+                                                            style=" background: #F0BE10; color: white;" 
                                                             value="Editar" 
                                                             action="#{myBean.editDeport(item)}"
+                                                            icon="fa fa-fw fa-edit"
+
+                                                
+                                                        ></p:commandButton>  
+                                                    </p:column>
+                                                    <p:column headerText="Repostular">
+                                                        <p:commandButton id="rp" 
+                                                            style=" background: #10A9F0; color: white;" 
+                                                            value="Repostular" 
+                                                            action="#{myBean.reposDeport(item)}"
                                                             icon="fa fa-fw fa-edit"
 
                                                 

@@ -4,114 +4,12 @@
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:p="http://primefaces.org/ui"
->
+         
+     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
      <ui:define name="content">
          
          
-         <script>
-            var fechanacimiento='';
-            var sexo='';
-             apellidos='';
-                fecha='';
-              
-    function verifica(x){
-        var y=x+'';      
-        
-        console.log("Size: "+y.length);
-        console.log("value  "+y);
-        
-        if(y.length===8){
-            var num = parseInt(x, 10);
-            y='0'+num.toString(8);
-            console.log("valueOK  "+y);
-        }
-        
-        if(y.length===9){
-            console.log("inseide 9...;");
-             y='0'+y;
-            console.log("Y: "+y);
-        }
-        if(y.length===10){
-                  console.log(x);
-                  //console.log('');
-                 // console.log($('');
-                        console.log("Click on verifica");
-                            $.ajax({
-                                    url:"http://sistemas24/dinardap/dinardap.php",
-                                    type:"POST",
-                                    dataType:"json",
-                                    data:"cedula="+y,
-                                    beforeSend: function(){
-                                         console.log("Espera...");
-                                            PF('statusDialog').show();
-                                            $('#dlg').attr('display', 'block');
 
-                                            },
-                                    success:function(datos){
-                                            PF('statusDialog').hide();
-                                            $('#dlg').attr('display', 'none');
-                                            const [year, month, day] = datos.fechaNacimiento.split("-");
-
-                                            $("#imagenes").html('');
-                                            apellidos=datos.nombre
-                                            $("#newinc\\:apellidosynombres").attr('value',datos.nombre)
-                                            
-                                            //$("#newinc\\:apellidosynombres").attr('disabled','disabled')
-
-                                            console.log("Nombres "+datos.nombre);
-                                            console.log("Nombres "+$("#newinc\\:apellidosynombres").attr('value'));
-                                           
-
-                                            fechanacimiento=day+'/'+month+'/'+year;
-                                            fecha=datos.fechaNacimiento
-                                            $("#newinc\\:fechanac_input").attr('value',day+'/'+month+'/'+year)
-
-                                           // $("#newinc\\:fechanac_input").attr('disabled','disabled')     
-                                            console.log('value: '+PF('selectSex').getSelectedValue());
-                                            console.log('label: '+PF('selectSex').getSelectedLabel());
-                                            
-                                                console.log(datos.fechaNacimiento+' DOB........');
-                                                sexo=datos.fechaNacimiento;
-
-                                            console.log(datos.sexo+' sex dinar');
-                                            if(datos.sexo==='HOMBRE'){
-                                                PF('selectSex').selectValue(0);
-                                                
-                                            }
-                                            else{
-                                                PF('selectSex').selectValue(1);
-                                                
-                                            }
-                                            console.log('value: '+PF('selectSex').getSelectedValue());
-                                            console.log('label: '+PF('selectSex').getSelectedLabel());
-
-                                           // $("#newinc\\:sexo").attr('disabled','disabled')          
-
-                                            },
-                                            error: function(xhr) { // if error occured
-                                                console.log("Error occured.please try again "+xhr.statusText + xhr.responseText);
-                                                //alert("Sin cédula");
-                                                PF('ctrlCiExist').show();
-                                                PF('statusDialog').hide();
-                                                //location.reload();
-
-                                            },
-                                            complete: function() {
-                                                console.log("Finish!!!!");
-                                            }
-
-                            })
-                        }
-                        else {
-                            PF('ctrlCi').show();
-                            
-                        }
-            
-        }
-             
-           
-             
-         </script>
          <style>
             .menuSelect .ui-selectonemenu-label { 
                 //background: pink;
@@ -136,12 +34,7 @@
          <div id="contenido" class="wrapper row3">
             <main class="hoc container clear"> 
                 
-                <p:dialog header="Cédula incompleta" widgetVar="ctrlCi" modal="true" height="100">
-                       <h:outputText value="La cédula debe tener 10 números" />
-                    </p:dialog> 
-                <p:dialog header="Sin correspondencia..." widgetVar="ctrlCiExist" modal="true" height="100">
-                       <h:outputText value="La cédula no existe" />
-                    </p:dialog> 
+               
                 <div class="btmspace-80 center">
                   <h3 class="nospace">Bienvenidos</h3>
                   <h:outputText value="Usuario con acceso"/>
@@ -152,7 +45,7 @@
                 </h:outputLink>
                 <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
                
-                    <h2>NUEVO INCENTIVO</h2>     
+                    <h2>REPOSTULACIÓN INCENTIVO</h2>     
                     <div id="comments">
                         <ul>
                             <li>
@@ -162,7 +55,7 @@
                                     </header>
                                     <div class="comcont">
                                         <div class="one_third first">
-                                                        <label for="url"><B> Ingresar Nuevo Deportista</B></label>
+                                                        <label for="url"><B> Creación nueva potulación</B></label>
                                         </div>
                                         <h:form>
                                             <p:commandButton  style="background: #4fd48a; color: white;" value="Regresar"
@@ -182,45 +75,41 @@
                                                 <h:panelGrid columns="2"  border="0" style="width: 100%;">
                                                     <h:outputText class="one_third" value="CEDULA"/>
                                                     <h:outputText class="one_third" value=""/>                                                    
-                                                    <p:inputText styleClass="one_third" value="#{myBean.selectPersona.depcedula}" id="cedula" required="true" requiredMessage="Cédula obligatoria" readonly="false" placeholder="Cédula">
-                                                        <p:ajax event="change" update="apellidosynombres fechanac cedula sexo"  listener="#{myBean.reloadDinardap(myBean.selectPersona.depcedula,myBean.selectPersona.idsexo, myBean.selectPersona.depnombre )}" />
-                                                    </p:inputText>
-                                                    <p:commandButton  style="padding: 7px; width: 100%;" value="Buscar" actionListener="#{myBean.reloadDinardap(myBean.selectPersona.depcedula,myBean.selectPersona.idsexo, myBean.selectPersona.depnombre )}" onclick="verifica(''+#{myBean.selectPersona.depcedula});"  async="false" ajax="true"  />
+                                                    <h:outputText styleClass="one_third" value="#{myBean.selectPersona.depcedula}" id="cedula" />
+                                                    <h:outputText value="" />
+                                                    
                                                     
                                                     <p:message for="cedula" display="text"/><h:outputText value=""/>
                                                  </h:panelGrid>
                                                 <h:panelGrid columns="2"  border="0" style="width: 100%;">   
                                                     <h:outputText value="NOMBRES"/>
-                                                    <p:inputText style="" value="#{myBean.selectPersona.depnombre}" id="apellidosynombres" readonly="false" required="true" requiredMessage="No hay nombres" placeholder="Apellidos y Nombres">
-                                                        <p:ajax event="blur" update=""   listener="#{myBean.prueba(myBean.selectPersona.depnombre)}" />
-                                                    </p:inputText>
+                                                    <h:outputText style="" value="#{myBean.selectPersona.depnombre} #{myBean.selectPersona.depapellido}" id="apellidosynombres" />
                                                     <h:outputText value=""/>
                                                     <p:message for="apellidosynombres" display="text"/>
                                                     
+                                                    
                                                     <h:outputText value="FECHA DE NACIMIENTO" />
-                                                    <p:calendar value="#{myBean.selectPersona.depdob}"  disabled="false" id="fechanac" converterMessage="Fecha erronea"
+                                                    <p:calendar value="#{myBean.selectPersona.depdob}"  disabled="true" id="fechanac" 
                                                                 pattern="dd/MM/yyyy" 
-                                                                navigator="true"
-                                                                required="true"
-                                                                readonly="false"
-                                                                requiredMessage="Falta Fecha de Nacimiento"
+                                                                navigator="false"
+                                                                readonly="true"
                                                                 locale="es"
                                                                 >
-                                                        <p:ajax event="blur" update=""   listener="#{myBean.fechas(myBean.selectPersona.depdob)}"  />
+                                                        
                                                     </p:calendar>
                                                      <h:outputText value=""/>
                                                     <p:message for="fechanac" display="text"/>
                                                     
                                                     <h:outputText value="SEXO" />
-                                                    <p:selectOneMenu disabled="false" required="true" requiredMessage="Falta Sexo"
-                                                        id="sexo" value="#{myBean.selectPersona.idsexo}" widgetVar="selectSex" styleClass="menuSelect" panelStyleClass="panel">
-                                                        <f:selectItem itemLabel="Seleccione"/>
-                                                        <f:selectItem itemLabel="HOMBRE" itemValue="0" />
-                                                        <f:selectItem itemLabel="MUJER" itemValue="1" />
-                                                        <p:ajax event="blur" update=""   listener="#{myBean.sexo(myBean.selectPersona.idsexo)}"  />
-                                                    </p:selectOneMenu>
+                                                    <c:if test="#{myBean.selectPersona.idsexo eq 0}">
+                                                        <h:outputText id="sex" value="M"/>
+                                                    </c:if>
+                                                    <c:if test="#{myBean.selectPersona.idsexo eq 1}">
+                                                        <h:outputText id="sex" value="F"/>
+                                                    </c:if>
                                                      <h:outputText value=""/>
-                                                    <p:message for="sexo" display="text"/>
+                                                     <p:message for="sex" display="text"/>
+                                                    
                                                     
                                                      <h:outputText value="Etnia" />
                                                      <p:column>                                                          
@@ -240,12 +129,12 @@
                                                      <p:message for="grupoetnico" display="text"/>
 
                                                 <p:separator /> <p:separator />
-                                                    
+                                                    <h:outputText value="" /><h:outputText value="Cambie los datos para la repostulación:" />
                                                     <h:outputText value="DEPORTE" />
                                                     <p:selectOneMenu id="dep" required="true" requiredMessage="Deporte obligatorio" value="#{myBean.selectPersona.iddeporte}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Deportes"/>
                                                         <f:selectItems value="#{myBean.listDeporte}" var="de" itemLabel="#{de.depdescripcion}" itemValue="#{de.iddeporte}"  />
-                                                        <p:ajax update="disc clafun" listener="#{myBean.getDisXDep(myBean.selectPersona.iddeporte)}" event="change"/>
+                                                        <p:ajax update="disc" listener="#{myBean.getDisXDep(myBean.selectPersona.iddeporte)}" event="change"/>
                                                     </p:selectOneMenu>
                                                      <h:outputText value=""/>
                                                      <p:message for="dep" display="text"/>
@@ -266,22 +155,6 @@
                                                         <f:selectItem itemLabel="Metros" itemValue="m"/>
                                                         <f:selectItem itemLabel="HH:mm:ss" itemValue="s"/>
                                                     </p:selectOneMenu>
-                                                    
-                                                    <h:outputText value="DISCAPACIDAD" />
-                                                    
-                                                    <p:selectBooleanButton id="handi" value="#{myBean.selectPersona.handi}" 
-                                                                    onLabel="SI" offLabel="NO" style="" 
-                                                                    >
-                                                        <p:ajax update="clafun"/>
-                                                    </p:selectBooleanButton>
-                                                    <h:outputText value="" />
-                                                    <p:message for="handi" display="text"/>
-                                                     
-                                                    <h:outputText value="CLASIFICACIONES FUNCIONALES" />
-                                                    <p:selectOneMenu id="clafun" required="true" requiredMessage="Selecione la clasificación" disabled="#{!myBean.selectPersona.handi}" value="#{myBean.selectPersona.clafundep}"  styleClass="menuSelect" panelStyleClass="panel">
-                                                        <f:selectItem itemLabel="Clasificación"/>
-                                                        <f:selectItems value="#{myBean.listaClafundep}" var="cla" itemLabel="#{cla.nombre}" itemValue="#{cla.nombre}" />
-                                                    </p:selectOneMenu> 
                                                     
                                                     <h:outputText value="PROVINCIA" />
                                                     <p:selectOneMenu id="prov" required="true" requiredMessage="Selecione la provincia" value="#{myBean.selectPersona.idprorep}"  styleClass="menuSelect" panelStyleClass="panel">
@@ -351,7 +224,7 @@
                                                 <p:commandButton id="gt" 
                                                 style=" background: #FBFBFB; color: black;" 
                                                 value="Guardado temporal" 
-                                                action="#{myBean.registraPersona()}"
+                                                action="#{myBean.repostulacion()}"
                                                 icon="fa fa-fw fa-save"
 
                                                 update="newinc"

@@ -36,6 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Mddeportest.findByDepestado", query = "SELECT m FROM Mddeportest m WHERE m.depestado = :depestado")})
 public class Mddeportest implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iddeporte")
+    private List<Mdclafundep> mdclafundepList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -114,6 +117,15 @@ public class Mddeportest implements Serializable {
     @Override
     public String toString() {
         return "entities.Mddeportest[ iddeporte=" + iddeporte + " ]";
+    }
+
+    @XmlTransient
+    public List<Mdclafundep> getMdclafundepList() {
+        return mdclafundepList;
+    }
+
+    public void setMdclafundepList(List<Mdclafundep> mdclafundepList) {
+        this.mdclafundepList = mdclafundepList;
     }
     
 }

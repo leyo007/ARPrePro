@@ -20,6 +20,7 @@ import facades.MdcvieFacadeLocal;
 import facades.MdcvrdFacadeLocal;
 import entities.Mdcategoriaedadt;
 import entities.Mdcategoriapropuestat;
+import entities.Mdclafundep;
 import entities.Mdcodigos;
 import entities.Mdconvocatoriat;
 import entities.Mddeportest;
@@ -37,6 +38,7 @@ import entities.Mdusuariot;
 import facades.MdcategoriaactualtFacadeLocal;
 import facades.MdcategoriaedadtFacadeLocal;
 import facades.MdcategoriapropuestatFacadeLocal;
+import facades.MdclafundepFacadeLocal;
 import facades.MdcodigosFacadeLocal;
 import facades.MdconvocatoriatFacadeLocal;
 import facades.MddeportestFacadeLocal;
@@ -83,8 +85,10 @@ import org.primefaces.model.UploadedFile;
 public class mainBean implements Serializable {
 
     @EJB
-    private MdcodigosFacadeLocal mdcodigosFacade;
+    private MdclafundepFacadeLocal mdclafundepFacade;
 
+    @EJB
+    private MdcodigosFacadeLocal mdcodigosFacade;
 
     @EJB
     private MddivisionpoliticaFacadeLocal mddivisionpoliticaFacade;
@@ -213,7 +217,8 @@ public class mainBean implements Serializable {
     
     private boolean aprovacion;
     private Mdcodigos codigo;
-    
+    private String medida;
+    private List<Mdclafundep> listaClafundep;
     
     private Mdcodigos selCode;
     public String accessLogin() throws IOException{
@@ -319,6 +324,14 @@ public class mainBean implements Serializable {
         listReconDep=mdcvrdFacade.getListByPersona(x.getIddep());
         
         return "editor_persona";
+    }
+    public String reposDeport(Mdpersonast x){
+        selectPersona=x;
+        selectIncentivo=mdincentivostFacade.buscaXpersona(x);
+       
+        
+        
+        return "incentivo_repost";
     }
     public String cv(Mdpersonast x){
         
@@ -462,6 +475,7 @@ public class mainBean implements Serializable {
                 System.out.println("Persona Apellidos: "+ selectPersona.getDepapellido());
                 System.out.println(selectPersona.getIddeporte()); 
                 selectPersona.setIdcreador(uActual.getIdusuario());
+                selectPersona.setDepprueba(selectPersona.getDepprueba()+" "+medida);
                 mdpersonastFacade.guardarDatos(selectPersona);  
                 selectIncentivo.setIddep(selectPersona.getIddep());
                 mdincentivostFacade.guardarDatos(selectIncentivo);
@@ -490,6 +504,16 @@ public class mainBean implements Serializable {
         listaPersonas=mdpersonastFacade.findAll();
         nuevoDeportista=false;
         return resultado;
+    }
+    
+    public String repostulacion(){
+        mdpersonastFacade.modificarDatos(selectPersona);  
+        return "incentivos_list";
+    }
+    
+    public void printevent(){
+        System.out.println("EVENT PRESSED");
+    
     }
     
     public void registrarExEntrenador(){
@@ -609,8 +633,8 @@ public class mainBean implements Serializable {
         if(mdincentivostFacade.buscaXpersona(p).getIncvalormensual()!=null && mdincentivostFacade.buscaXpersona(p).getIncvalormensual() >0){
             x=mdincentivostFacade.buscaXpersona(p).getIncvalormensual();
             
-            System.out.println("XXXXXXXXXXXXXXXXXXX");
-            System.out.println(x);
+            //System.out.println("XXXXXXXXXXXXXXXXXXX");
+           // System.out.println(x);
            // codigo=mdcodigosFacade.find(x)
         }
         return x;
@@ -663,6 +687,7 @@ public class mainBean implements Serializable {
             Mddeportest dep=new Mddeportest();
             dep=mddeportestFacade.find(x);
             listDisciplina=mddisciplinatFacade.findByDeporte(dep);
+            listaClafundep=mdclafundepFacade.findByDeporte(dep);
             for(Mddisciplinat y: listDisciplina ){
                 System.out.println("Diciplinas: "+y.getDisdescripcion());
         
@@ -690,19 +715,12 @@ public class mainBean implements Serializable {
     //editor de categorias:
     
     public void onRowEdit(RowEditEvent event) {
-        
-        
-        
-        
          selCatProp=(Mdcategoriapropuestat)event.getObject();
-         
          if(mdcategoriapropuestatFacade.modificarDatos(selCatProp)){
-                   
                 FacesMessage msg = new FacesMessage("Usuario Actualizado", ((Mdcategoriapropuestat) event.getObject()).getCatdescripcion());
                 FacesContext.getCurrentInstance().addMessage(null, msg);
          }else{
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "No se han realizado modificaciones."));
-               
          }
     }
      
@@ -712,27 +730,30 @@ public class mainBean implements Serializable {
     }
     //editor de propuestas de admin:
     
-    public void onRowEditPro(RowEditEvent event) {
-        
+    public void onRowEditPro(RowEditEvent event) {    
         selAprobados=(Mdpersonast) event.getObject();
         selAprobados.setAprobado(aprovacion);
         selectIncentivo=mdincentivostFacade.buscaXpersona(selAprobados);
         selectIncentivo.setIdestado(aprovacion);
         if(aprovacion){
             selectIncentivo.setIncvalormensual(mdcodigosFacade.find(1).getValor()*mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getNumrbu());
-            newIncHist.setInchcedula(selAprobados.getDepcedula());
-            //newIncHist.setInchdeporte(selAprobados.getIddeporte().);
-            
+            //newIncHist.setInchcedula(selAprobados.getDepcedula());
+            //newIncHist.setInchdeporte(selAprobados.getIddeporte().);  
         }
         else{
             selectIncentivo.setIncvalormensual(new Float(0));
         }
+        
         if(mdpersonastFacade.modificarDatos(selAprobados)){
             mdincentivostFacade.modificarDatos(selectIncentivo);
             FacesMessage msg = new FacesMessage("Usuario Actualizado", ((Mdpersonast) event.getObject()).getAprobado().toString());
                 FacesContext.getCurrentInstance().addMessage(null, msg);
+                //listaPersonas=mdpersonastFacade.findAll();
+                selAprobados=(Mdpersonast) event.getObject();
+                //onRowCancelPro(event);
         }else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "No se han realizado modificaciones."));   
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "No se han realizado modificaciones.")); 
+            selAprobados=new Mdpersonast();
         }
     }
     public void aprobadoValue(boolean x){
@@ -1244,6 +1265,24 @@ public class mainBean implements Serializable {
 
     public void setSelIncHist(Mdincentivoshistt selIncHist) {
         this.selIncHist = selIncHist;
+    }
+
+    public String getMedida() {
+        return medida;
+    }
+
+    public void setMedida(String medida) {
+        this.medida = medida;
+    }
+
+    public List<Mdclafundep> getListaClafundep() {
+        if(listaClafundep==null)
+            listaClafundep=mdclafundepFacade.findAll();
+        return listaClafundep;
+    }
+
+    public void setListaClafundep(List<Mdclafundep> listaClafundep) {
+        this.listaClafundep = listaClafundep;
     }
 
     

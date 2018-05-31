@@ -57,6 +57,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Mdpersonast.findByIdciudad", query = "SELECT m FROM Mdpersonast m WHERE m.idciudad = :idciudad")})
 public class Mdpersonast implements Serializable {
 
+    @Size(max = 2147483647)
+    @Column(name = "clafundep")
+    private String clafundep;
+
+    @Column(name = "handi")
+    private Boolean handi;
+
     @Column(name = "aprobado")
     private Boolean aprobado;
 
@@ -371,6 +378,22 @@ public class Mdpersonast implements Serializable {
 
     public void setAprobado(Boolean aprobado) {
         this.aprobado = aprobado;
+    }
+
+    public Boolean getHandi() {
+        return handi;
+    }
+
+    public void setHandi(Boolean handi) {
+        this.handi = handi;
+    }
+
+    public String getClafundep() {
+        return clafundep;
+    }
+
+    public void setClafundep(String clafundep) {
+        this.clafundep = clafundep;
     }
     
 }
