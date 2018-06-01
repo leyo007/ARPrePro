@@ -64,5 +64,18 @@ public class MddivisionpoliticaFacade extends AbstractFacade<Mddivisionpolitica>
             return null;
         }
     }
+
+    @Override
+    public Mddivisionpolitica getProvSingle(int x) {
+        try{
+            return (Mddivisionpolitica) em.createQuery("SELECT pv FROM Mddivisionpolitica pv WHERE pv.idparroquiaorgdep=0 and pv.idcantonorgdep=0 and pv.idprovinciaorgdep =:x")
+                    .setParameter("x", x)
+                    .getSingleResult();
+        }catch(Exception e){
+            
+            System.out.println("Error al buscar una Provincia de "+x+" error"+e.getMessage());
+            return new Mddivisionpolitica();
+        }
+    }
     
 }

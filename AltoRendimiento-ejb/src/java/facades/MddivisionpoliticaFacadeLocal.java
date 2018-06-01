@@ -33,6 +33,7 @@ public interface MddivisionpoliticaFacadeLocal {
     public List<Mddivisionpolitica> getProv();
     public List<Mddivisionpolitica> getCiudades();
     public List<Mddivisionpolitica> getCiudades(int pv);
+    public Mddivisionpolitica getProvSingle(int x);
     
     
 }

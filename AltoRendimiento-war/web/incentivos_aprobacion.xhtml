@@ -85,6 +85,38 @@
                                                   
                                     </div>
                                     <div class="comcont">
+                                        <p:dialog header="Aprobación de #{myBean.selAprobados.depapellido} " widgetVar="dlg1" id="dlg" modal="true" height="auto" width="auto">
+	<h:form id="mensaje">
+		<p:growl id="messages" showDetail="true"  autoUpdate="true"/>
+		<h:panelGrid columns="2" width="500">
+                    <h:outputText value="Aprobación de #{myBean.selAprobados.depapellido} "/>
+		</h:panelGrid>
+		<p:separator></p:separator>
+		<h:panelGrid columns="2"  border="0" style="width: 100%; height: 500px;" >
+		<h:outputLabel value="Teléfono" />
+		<h:outputLabel  value=""/>
+		<h:outputLabel value="Celular" />
+		<h:outputLabel value="" />
+		</h:panelGrid>
+		<p:commandButton action="#{myBean.modificarFicha()}" value="Modificar" 
+						 icon="fa fa-fw fa-external-link" styleClass="w3-btn botones" 
+						 ondblclick="PF('dlg1').hide()"
+						 >
+		</p:commandButton>
+		<p:commandButton action="#{myBean.cambiarEstado()}" value="Desbloquear" 
+						 icon="fa fa-fw fa-external-link" styleClass="w3-btn botones" 
+						 onclick="PF('dlg1').hide()"
+						 update="@(form)"
+						 rendered="true"
+						 >
+		</p:commandButton>
+		<p:commandButton action="#{myBean.givmeLink(4)}" value="Resultados" icon="fa fa-fw fa-user"
+						   style="color: #2196f3;"
+						   styleClass="w3-btn botones"
+						   >
+		</p:commandButton>
+	</h:form>
+</p:dialog> 
                                         <h:panelGrid id="panel-principal" style="margin-bottom: 100px;">
                                             <h:form id="form-lista">
                                                
@@ -94,12 +126,41 @@
                                                     options="#{myBean.pdfOpt}"
                                                     />
                                                 </p:commandButton>
+                                                <p:dataTable id="all" value="#{myBean.listaPersonas}" var="persona" style='text-align: center;'   rowIndexVar="index" 
+                                                                            selectionMode="single" selection="#{myBean.selAprobados}" rowKey="#{persona.iddep}"
+                                                                            widgetVar="listaR" filteredValue="#{myBean.filtroPersonas}" emptyMessage="No hay registros..."
+
+                                                                            >
+                                                           <p:ajax event="rowSelect" listener="#{myBean.filtroPersonas}"  update=":dlg" oncomplete="PF('dlg1').show()"  />
+                                                             <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
+
+                                                             <p:column filterBy="#{persona.depnombre}" headerText="Nombres"  filterMatchMode="contains">
+                                                                     <h:outputText value="#{persona.depnombre}" />
+                                                           </p:column>
+
+                                                             <p:column filterBy="#{persona.depapellido}" headerText="Apellidos"  filterMatchMode="contains">
+
+                                                                     <h:outputText value="#{persona.depapellido}"/>
+                                                              </p:column>
+                                                           <p:column  filterBy="#{persona.depcedula}" headerText="Cédula"  filterMatchMode="contains">
+                                                                      <h:outputText  value="#{persona.depcedula}"/>
+                                                              </p:column>
+
+                                                             <p:column headerText="Estado">
+                                                                     <p:selectBooleanButton id="est" value="#{persona.aprobado}" 
+                                                                                                                    onLabel="Aprobado" offLabel="Negado" style="width:60px" 
+                                                                                                                    disabled="true"
+                                                                                                                    />
+
+                                                           </p:column>
+
+                                                   </p:dataTable>
                                                 <p:dataTable id="perAprobacion" value="#{myBean.listaPersonas}" var="persona" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                                              selection="#{myBean.selAprobados}" rowKey="#{persona.iddep}"
                                                              widgetVar="listaR" filteredValue="#{myBean.filtroPersonas}" emptyMessage="No hay registros..."
                                                              editable="true"
                                                 >
-                                                    
+                                                    <p:ajax event="rowSelect" listener="#{myBean.printevent}"  update=":dlg" oncomplete="PF('dlg1').show()"  />
                                                     <p:ajax event="rowEdit" listener="#{myBean.onRowEditPro}" update="growl perAprobacion" />
                                                     <p:ajax event="rowEditCancel" listener="#{myBean.onRowCancelPro}" update="growl" />
                                                     <p:ajax event="rowEditInit" listener="#{myBean.printevent}" />

@@ -733,27 +733,57 @@ public class mainBean implements Serializable {
     public void onRowEditPro(RowEditEvent event) {    
         selAprobados=(Mdpersonast) event.getObject();
         selAprobados.setAprobado(aprovacion);
+        
         selectIncentivo=mdincentivostFacade.buscaXpersona(selAprobados);
         selectIncentivo.setIdestado(aprovacion);
+        
         if(aprovacion){
             selectIncentivo.setIncvalormensual(mdcodigosFacade.find(1).getValor()*mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getNumrbu());
-            //newIncHist.setInchcedula(selAprobados.getDepcedula());
-            //newIncHist.setInchdeporte(selAprobados.getIddeporte().);  
+            /*newIncHist.setInchcedula(selAprobados.getDepcedula());
+            newIncHist.setInchdeporte(getnombreDeporte(selAprobados.getIddeporte()));  
+            newIncHist.setInchdisciplina(getnombreDciplina(selAprobados.getIddeporte()));
+            if(selAprobados.getIdsexo()==0)                
+                newIncHist.setInchgenero("H");
+            else
+                newIncHist.setInchgenero("F");
+            newIncHist.setInchconvocatoria(mdconvocatoriatFacade.find(selAprobados.getIdconv()).getCondescripcion());
+            newIncHist.setInchcatedad(mdcategoriaedadtFacade.find(selectIncentivo.getIdcatpro()).getCatedaddescripcion());
+            newIncHist.setInchnombre(selAprobados.getDepnombre());
+            newIncHist.setInchapellido(selAprobados.getDepapellido());
+            newIncHist.setInchprovincia(mddivisionpoliticaFacade.getProvSingle(selAprobados.getIdprorep()).getNombredivpol());
+            newIncHist.setInchprueba(selAprobados.getDepprueba());
+            newIncHist.setInchresultados(selAprobados.getDepresultados());
+            newIncHist.setInchproyeccion(selAprobados.getDepproyeccion());
+            newIncHist.setInchcatactual(mdcategoriaactualtFacade.find(selectIncentivo.getIdcatactual()).getCatdescripcion());
+            newIncHist.setInchnovedad(selAprobados.getDepnovedad());
+            newIncHist.setInchcatprop(mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getCatdescripcion());
+            newIncHist.setInchvmensual(getincentivosMenXpersona(selAprobados));
+            newIncHist.setInchnmes(selectIncentivo.getIdmes());
+            newIncHist.setInchtotal(newIncHist.getInchvmensual()*newIncHist.getInchnmes());
+            Calendar hoy = Calendar.getInstance();
+            int hoyMonth = hoy.get(Calendar.MONTH);
+            newIncHist.setInchfechaini(hoy.getTime());
+            newIncHist.setInchfechafin(fecha); // xxx
+            newIncHist.setPerid(0);
+            newIncHist.setHandi(aprovacion);
+            newIncHist.setClafundep(usuario);
+            newIncHist.setEstado(aprovacion);*/
+            
         }
         else{
             selectIncentivo.setIncvalormensual(new Float(0));
         }
-        
+        selectIncentivo.setIdcatactual(selectIncentivo.getIdcatpro());
         if(mdpersonastFacade.modificarDatos(selAprobados)){
             mdincentivostFacade.modificarDatos(selectIncentivo);
             FacesMessage msg = new FacesMessage("Usuario Actualizado", ((Mdpersonast) event.getObject()).getAprobado().toString());
                 FacesContext.getCurrentInstance().addMessage(null, msg);
                 //listaPersonas=mdpersonastFacade.findAll();
                 selAprobados=(Mdpersonast) event.getObject();
-                //onRowCancelPro(event);
+//                onRowCancelPro(event);
         }else{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "No se han realizado modificaciones.")); 
-            selAprobados=new Mdpersonast();
+            selAprobados=(Mdpersonast) event.getObject();
         }
     }
     public void aprobadoValue(boolean x){

@@ -54,6 +54,20 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdincentivoshistt.findByPerid", query = "SELECT m FROM Mdincentivoshistt m WHERE m.perid = :perid")})
 public class Mdincentivoshistt implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "inchvmensual")
+    private Double inchvmensual;
+    @Column(name = "inchtotal")
+    private Double inchtotal;
+
+    @Column(name = "handi")
+    private Boolean handi;
+    @Size(max = 2147483647)
+    @Column(name = "clafundep")
+    private String clafundep;
+    @Column(name = "estado")
+    private Boolean estado;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -105,13 +119,8 @@ public class Mdincentivoshistt implements Serializable {
     @Size(max = 50)
     @Column(name = "inchcatprop")
     private String inchcatprop;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "inchvmensual")
-    private Float inchvmensual;
     @Column(name = "inchnmes")
     private Integer inchnmes;
-    @Column(name = "inchtotal")
-    private Float inchtotal;
     @Column(name = "inchfechaini")
     @Temporal(TemporalType.DATE)
     private Date inchfechaini;
@@ -262,13 +271,6 @@ public class Mdincentivoshistt implements Serializable {
         this.inchcatprop = inchcatprop;
     }
 
-    public Float getInchvmensual() {
-        return inchvmensual;
-    }
-
-    public void setInchvmensual(Float inchvmensual) {
-        this.inchvmensual = inchvmensual;
-    }
 
     public Integer getInchnmes() {
         return inchnmes;
@@ -278,13 +280,6 @@ public class Mdincentivoshistt implements Serializable {
         this.inchnmes = inchnmes;
     }
 
-    public Float getInchtotal() {
-        return inchtotal;
-    }
-
-    public void setInchtotal(Float inchtotal) {
-        this.inchtotal = inchtotal;
-    }
 
     public Date getInchfechaini() {
         return inchfechaini;
@@ -333,6 +328,46 @@ public class Mdincentivoshistt implements Serializable {
     @Override
     public String toString() {
         return "entities.Mdincentivoshistt[ idhisinc=" + idhisinc + " ]";
+    }
+
+    public Boolean getHandi() {
+        return handi;
+    }
+
+    public void setHandi(Boolean handi) {
+        this.handi = handi;
+    }
+
+    public String getClafundep() {
+        return clafundep;
+    }
+
+    public void setClafundep(String clafundep) {
+        this.clafundep = clafundep;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    public Double getInchvmensual() {
+        return inchvmensual;
+    }
+
+    public void setInchvmensual(Double inchvmensual) {
+        this.inchvmensual = inchvmensual;
+    }
+
+    public Double getInchtotal() {
+        return inchtotal;
+    }
+
+    public void setInchtotal(Double inchtotal) {
+        this.inchtotal = inchtotal;
     }
     
 }
