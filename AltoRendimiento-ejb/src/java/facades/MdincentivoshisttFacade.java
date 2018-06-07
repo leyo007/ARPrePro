@@ -6,6 +6,7 @@
 package facades;
 
 import entities.Mdincentivoshistt;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +28,42 @@ public class MdincentivoshisttFacade extends AbstractFacade<Mdincentivoshistt> i
 
     public MdincentivoshisttFacade() {
         super(Mdincentivoshistt.class);
+    }
+
+    @Override
+    public boolean modificarDatos(Mdincentivoshistt x) {
+        try {
+            em.merge(x);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error al modificar Categoría Fucnional Deporte "+e.getMessage());
+            return false;
+            
+        }
+    }
+
+    @Override
+    public boolean guardarDatos(Mdincentivoshistt x) {
+        try {
+                em.persist(x);
+                return true;
+        } catch (Exception e) {
+            System.out.println("Error al crear new IncentivoHistorico "+e.getMessage());
+            return false;
+            
+        }
+    }
+
+    @Override
+    public List<Mdincentivoshistt> getListByCI(String x) {
+        try {
+            return  em.createQuery("SELECT h from Mdincentivoshistt h WHERE h.inchcedula =:x")
+                    .setParameter("x", x)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré los HistoIncen de: "+x+" Error: " + e.getMessage());
+            return null;
+        }
     }
     
 }

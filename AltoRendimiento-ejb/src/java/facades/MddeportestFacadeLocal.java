@@ -32,5 +32,7 @@ public interface MddeportestFacadeLocal {
     int count();
     
     public List<Mddisciplinat> getAllDiciplina(int x);
+    public List<Mddisciplinat> getAllDiciplinaByDesc(String x);
+    
     
 }

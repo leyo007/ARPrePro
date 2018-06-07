@@ -42,5 +42,19 @@ public class MddeportestFacade extends AbstractFacade<Mddeportest> implements Md
             return null;
         }
     }
+
+    @Override
+    public List<Mddisciplinat> getAllDiciplinaByDesc(String x) {
+        try {
+              return em.createQuery("SELECT i FROM Mddisciplinat i WHERE i.iddeporte.depdescripcion =:us")
+                    .setParameter("us", x)                   
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, filtro lista diciplinas por desc: " + e.getMessage());
+            return null;
+        }
+    }
+
+    
     
 }

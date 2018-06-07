@@ -29,5 +29,8 @@ public interface MdincentivoshisttFacadeLocal {
     List<Mdincentivoshistt> findRange(int[] range);
 
     int count();
+    public boolean modificarDatos(Mdincentivoshistt x);
+    public boolean guardarDatos(Mdincentivoshistt x);
+    public List<Mdincentivoshistt> getListByCI(String x);
     
 }
