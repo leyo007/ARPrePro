@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -31,7 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mdclafundep.findAll", query = "SELECT m FROM Mdclafundep m")
     , @NamedQuery(name = "Mdclafundep.findById", query = "SELECT m FROM Mdclafundep m WHERE m.id = :id")
     , @NamedQuery(name = "Mdclafundep.findByNombre", query = "SELECT m FROM Mdclafundep m WHERE m.nombre = :nombre")
-    , @NamedQuery(name = "Mdclafundep.findByEstado", query = "SELECT m FROM Mdclafundep m WHERE m.estado = :estado")})
+    , @NamedQuery(name = "Mdclafundep.findByEstado", query = "SELECT m FROM Mdclafundep m WHERE m.estado = :estado")
+    , @NamedQuery(name = "Mdclafundep.findByDeporte", query = "SELECT m FROM Mdclafundep m WHERE m.deporte = :deporte")})
 public class Mdclafundep implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,9 +44,9 @@ public class Mdclafundep implements Serializable {
     private String nombre;
     @Column(name = "estado")
     private Boolean estado;
-    @JoinColumn(name = "iddeporte", referencedColumnName = "iddeporte")
-    @ManyToOne(optional = false)
-    private Mddeportest iddeporte;
+    @Size(max = 2147483647)
+    @Column(name = "deporte")
+    private String deporte;
 
     public Mdclafundep() {
     }
@@ -80,12 +79,12 @@ public class Mdclafundep implements Serializable {
         this.estado = estado;
     }
 
-    public Mddeportest getIddeporte() {
-        return iddeporte;
+    public String getDeporte() {
+        return deporte;
     }
 
-    public void setIddeporte(Mddeportest iddeporte) {
-        this.iddeporte = iddeporte;
+    public void setDeporte(String deporte) {
+        this.deporte = deporte;
     }
 
     @Override

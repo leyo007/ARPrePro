@@ -49,6 +49,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Mdusuariot.findByUsufecnac", query = "SELECT m FROM Mdusuariot m WHERE m.usufecnac = :usufecnac")})
 public class Mdusuariot implements Serializable {
 
+    @Basic(optional = false)
+    @Column(name = "codinst")
+    private int codinst;
+
     @Size(max = 2147483647)
     @Column(name = "institucion")
     private String institucion;
@@ -258,6 +262,14 @@ public class Mdusuariot implements Serializable {
 
     public void setInstitucion(String institucion) {
         this.institucion = institucion;
+    }
+
+    public int getCodinst() {
+        return codinst;
+    }
+
+    public void setCodinst(int codinst) {
+        this.codinst = codinst;
     }
     
 }

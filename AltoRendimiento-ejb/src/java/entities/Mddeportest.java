@@ -33,11 +33,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Mddeportest.findAll", query = "SELECT m FROM Mddeportest m")
     , @NamedQuery(name = "Mddeportest.findByIddeporte", query = "SELECT m FROM Mddeportest m WHERE m.iddeporte = :iddeporte")
     , @NamedQuery(name = "Mddeportest.findByDepdescripcion", query = "SELECT m FROM Mddeportest m WHERE m.depdescripcion = :depdescripcion")
-    , @NamedQuery(name = "Mddeportest.findByDepestado", query = "SELECT m FROM Mddeportest m WHERE m.depestado = :depestado")})
+    , @NamedQuery(name = "Mddeportest.findByDepestado", query = "SELECT m FROM Mddeportest m WHERE m.depestado = :depestado")
+    , @NamedQuery(name = "Mddeportest.findByAd", query = "SELECT m FROM Mddeportest m WHERE m.ad = :ad")
+    , @NamedQuery(name = "Mddeportest.findBySector", query = "SELECT m FROM Mddeportest m WHERE m.sector = :sector")
+    , @NamedQuery(name = "Mddeportest.findByCfd", query = "SELECT m FROM Mddeportest m WHERE m.cfd = :cfd")})
 public class Mddeportest implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iddeporte")
-    private List<Mdclafundep> mdclafundepList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,6 +51,14 @@ public class Mddeportest implements Serializable {
     @Size(max = 255)
     @Column(name = "depestado")
     private String depestado;
+    @Size(max = 2147483647)
+    @Column(name = "ad")
+    private String ad;
+    @Column(name = "sector")
+    private Boolean sector;
+    @Basic(optional = false)
+    @Column(name = "cfd")
+    private int cfd;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "iddeporte")
     private List<Mddisciplinat> mddisciplinatList;
 
@@ -59,6 +67,11 @@ public class Mddeportest implements Serializable {
 
     public Mddeportest(Integer iddeporte) {
         this.iddeporte = iddeporte;
+    }
+
+    public Mddeportest(Integer iddeporte, int cfd) {
+        this.iddeporte = iddeporte;
+        this.cfd = cfd;
     }
 
     public Integer getIddeporte() {
@@ -83,6 +96,30 @@ public class Mddeportest implements Serializable {
 
     public void setDepestado(String depestado) {
         this.depestado = depestado;
+    }
+
+    public String getAd() {
+        return ad;
+    }
+
+    public void setAd(String ad) {
+        this.ad = ad;
+    }
+
+    public Boolean getSector() {
+        return sector;
+    }
+
+    public void setSector(Boolean sector) {
+        this.sector = sector;
+    }
+
+    public int getCfd() {
+        return cfd;
+    }
+
+    public void setCfd(int cfd) {
+        this.cfd = cfd;
     }
 
     @XmlTransient
@@ -117,15 +154,6 @@ public class Mddeportest implements Serializable {
     @Override
     public String toString() {
         return "entities.Mddeportest[ iddeporte=" + iddeporte + " ]";
-    }
-
-    @XmlTransient
-    public List<Mdclafundep> getMdclafundepList() {
-        return mdclafundepList;
-    }
-
-    public void setMdclafundepList(List<Mdclafundep> mdclafundepList) {
-        this.mdclafundepList = mdclafundepList;
     }
     
 }

@@ -27,10 +27,12 @@ import entities.Mddeportest;
 import entities.Mddisciplinat;
 import entities.Mddivisionpolitica;
 import entities.Mdevento;
+import entities.Mdfederacion;
 import entities.Mdincentivoshistt;
 import entities.Mdincentivost;
 import entities.Mdmenut;
 import entities.Mdmodulot;
+import entities.Mdnecesidades;
 import entities.Mdperfilmodulot;
 import entities.Mdperfilt;
 import entities.Mdpersonast;
@@ -46,11 +48,13 @@ import facades.MddeportestFacadeLocal;
 import facades.MddisciplinatFacadeLocal;
 import facades.MddivisionpoliticaFacadeLocal;
 import facades.MdeventoFacadeLocal;
+import facades.MdfederacionFacadeLocal;
 import facades.MdincentivoshisttFacadeLocal;
 import facades.MdincentivostFacadeLocal;
 import facades.MdmenutFacadeLocal;
 import facades.MdmestFacadeLocal;
 import facades.MdmodulotFacadeLocal;
+import facades.MdnecesidadesFacadeLocal;
 import facades.MdperfilmodulotFacadeLocal;
 import facades.MdperfiltFacadeLocal;
 import facades.MdpersonastFacadeLocal;
@@ -87,6 +91,12 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 //@ViewScoped
 public class mainBean implements Serializable {
+
+    @EJB
+    private MdfederacionFacadeLocal mdfederacionFacade;
+
+    @EJB
+    private MdnecesidadesFacadeLocal mdnecesidadesFacade;
 
     @EJB
     private MdeventoFacadeLocal mdeventoFacade;
@@ -168,7 +178,9 @@ public class mainBean implements Serializable {
 
 
     private Mdusuariot currentUser;
+    private List<Mdusuariot> listUsers;
     private Mdusuarioperfilt currentPerfil;
+    private List<Mdperfilt> listPerfiles;
     private Mdperfilmodulot currentModulo;
     private Mdmodulot modulo;
     private List<Mdmenut> menus;
@@ -232,7 +244,16 @@ public class mainBean implements Serializable {
     private Mdevento newEvent;
     private List<Mdevento> listaEventos;
     private List<Mdevento> filtroEventos;
+    
+    private Mdnecesidades selectedNecesidad;
+    private Mdnecesidades newNecesidad;
+    private List<Mdnecesidades> listaNecesidad;
+    private List<Mdnecesidades> filtroNecesidad;
     private int[] listaDel;
+    
+    private Mdfederacion selectFede;
+    private List <Mdfederacion> listFede;
+    
     
     public String accessLogin() throws IOException{
         String resultado="";
@@ -260,7 +281,7 @@ public class mainBean implements Serializable {
                     modulo = mdmodulotFacade.find(currentModulo.getIdmodulo().getIdmodulo());
                     System.out.println("5.- modulo: "+modulo.getModnombre());
                     
-                    
+                                       
                     
                     menus=mdmenutFacade.getAllBymodulo(modulo.getIdmodulo());
                     System.out.println("6.- menus: "+menus.get(0));
@@ -1453,7 +1474,7 @@ public class mainBean implements Serializable {
 
     public int[] getListaDel() {
         
-            listaDel=new int[20];
+            listaDel=new int[60];
             for (int i = 0; i < listaDel.length; i++) {
                 listaDel[i] = i+1;
              }
@@ -1463,6 +1484,77 @@ public class mainBean implements Serializable {
 
     public void setListaDel(int[] listaDel) {
         this.listaDel = listaDel;
+    }
+
+    public Mdnecesidades getSelectedNecesidad() {
+        return selectedNecesidad;
+    }
+
+    public void setSelectedNecesidad(Mdnecesidades selectedNecesidad) {
+        this.selectedNecesidad = selectedNecesidad;
+    }
+
+    public Mdnecesidades getNewNecesidad() {
+        return newNecesidad;
+    }
+
+    public void setNewNecesidad(Mdnecesidades newNecesidad) {
+        this.newNecesidad = newNecesidad;
+    }
+
+    public List<Mdnecesidades> getListaNecesidad() {
+        return listaNecesidad;
+    }
+
+    public void setListaNecesidad(List<Mdnecesidades> listaNecesidad) {
+        this.listaNecesidad = listaNecesidad;
+    }
+
+    public List<Mdnecesidades> getFiltroNecesidad() {
+     /*   if(filtroNecesidad==null)
+            filtroNecesidad=mdnecesidadesFacade.getListByCreator(currentUser.getIdusuario());*/
+        return filtroNecesidad;
+    }
+
+    public void setFiltroNecesidad(List<Mdnecesidades> filtroNecesidad) {
+        this.filtroNecesidad = filtroNecesidad;
+    }
+
+    public List<Mdusuariot> getListUsers() {
+        if(listUsers==null){
+            listUsers=mdusuariotFacade.findAll();
+            System.out.println("Get All Users");
+        }
+        
+        return listUsers;
+    }
+
+    public void setListUsers(List<Mdusuariot> listUsers) {
+        this.listUsers = listUsers;
+    }
+
+    public List<Mdperfilt> getListPerfiles() {
+        return listPerfiles;
+    }
+
+    public void setListPerfiles(List<Mdperfilt> listPerfiles) {
+        this.listPerfiles = listPerfiles;
+    }
+
+    public Mdfederacion getSelectFede() {
+        return selectFede;
+    }
+
+    public void setSelectFede(Mdfederacion selectFede) {
+        this.selectFede = selectFede;
+    }
+
+    public List <Mdfederacion> getListFede() {
+        return listFede;
+    }
+
+    public void setListFede(List <Mdfederacion> listFede) {
+        this.listFede = listFede;
     }
 
     

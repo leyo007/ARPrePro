@@ -40,6 +40,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdnecesidades.findByAprobada", query = "SELECT m FROM Mdnecesidades m WHERE m.aprobada = :aprobada")})
 public class Mdnecesidades implements Serializable {
 
+    @Size(max = 2147483647)
+    @Column(name = "nombres")
+    private String nombres;
+    @Size(max = 2147483647)
+    @Column(name = "apellidos")
+    private String apellidos;
+
+    @Column(name = "tipo")
+    private Boolean tipo;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,9 +65,6 @@ public class Mdnecesidades implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "disciplina")
     private String disciplina;
-    @Size(max = 2147483647)
-    @Column(name = "tipo")
-    private String tipo;
     @Size(max = 2147483647)
     @Column(name = "articulo")
     private String articulo;
@@ -118,13 +125,6 @@ public class Mdnecesidades implements Serializable {
         this.disciplina = disciplina;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
 
     public String getArticulo() {
         return articulo;
@@ -197,6 +197,30 @@ public class Mdnecesidades implements Serializable {
     @Override
     public String toString() {
         return "entities.Mdnecesidades[ id=" + id + " ]";
+    }
+
+    public Boolean getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Boolean tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
     
 }

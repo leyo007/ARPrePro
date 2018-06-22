@@ -61,17 +61,17 @@
                 </h:outputLink>
              <p:growl id="growl" sticky="false" showDetail="true" life="1000" autoUpdate="true"/>
                
-                    <h2>INCENTIVOS PROPUESTOS</h2>     
+                    <h2>USUARIOS FEDERADOS</h2>     
                     <div id="comments">
                         <ul>
                             <li>
                                 <article>
                                     <header>
-                                      <address><h2>LISTA DEPORTISTAS POSTULADOS</h2></address>
+                                      <address><h2>LISTA USUARIOS FEDERADOS</h2></address>
                                     </header>
                                     <div class="comcont">
                                         <div class="one_third first">
-                                                        <label for="url"><B> Aprobar o rechazar las propuestas</B></label>
+                                                        <label for="url"><B> Gestión de los usuarios</B></label>
                                          </div>
                                          <h:form>
                                             <p:commandButton  style="background: #4fd48a; color: white; float: right;" value="Regresar"
@@ -79,7 +79,7 @@
                                         </h:form>
                                         <p:commandButton id="gt" 
                                                 style=" background: #FBFBFB; color: black;" 
-                                                value="Nueva Categoría" 
+                                                value="Nuevo Usuario" 
                                                 onclick="PF('newCatPro').show()" 
                                                 icon="fa fa-fw fa-plus"
 
@@ -162,55 +162,35 @@
                                                     options="#{myBean.pdfOpt}"
                                                     />
                                                 </p:commandButton>
-                                                <p:dataTable id="all" var="persona" value="#{myBean.listaPersonas}" selectionMode="single" 
-                                                             selection="#{myBean.selAprobados}" rowKey="#{persona.iddep}"
+                                                <p:dataTable id="all" var="persona" value="#{myBean.listUsers}" selectionMode="single" 
+                                                             selection="#{myBean.currentUser}" rowKey="#{persona.idusuario}"
                                                              style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                                              >
                                                     <f:facet name="header">
-                                                        Atletas Postulados
+                                                        Usuarios Federados
                                                     </f:facet>
                                                     <p:ajax event="rowSelect" listener="#{myBean.onRowSelect}" update=":dlg" oncomplete="PF('dlg1').show()" />
                                                     <p:ajax event="rowUnselect" listener="#{myBean.onRowUnselect}" update=":dlg" />
-                                                    <p:column filterBy="#{persona.depcedula}" headerText="CI"  filterMatchMode="contains">
+                                                    <p:column filterBy="#{persona.institucion}" headerText="Institución"  filterMatchMode="contains">
                                                         
-                                                        <h:outputText value="#{persona.depcedula}" />
-                                                        
-                                                    </p:column>
-                                                    <p:column filterBy="#{persona.depapellido}" headerText="Apellidos"  filterMatchMode="contains">
-                                                        
-                                                        <h:outputText value="#{persona.depapellido}" />
+                                                        <h:outputText value="#{persona.institucion}" />
                                                         
                                                     </p:column>
-                                                    <p:column filterBy="#{persona.depnombre}" headerText="Nombres"  filterMatchMode="contains">
-                                                        <h:outputText value="#{persona.depnombre}" />
+                                                    <p:column filterBy="#{persona.usuapellidos}" headerText="Apellidos"  filterMatchMode="contains">
+                                                        
+                                                        <h:outputText value="#{persona.usuapellidos}" />
+                                                        
                                                     </p:column>
-                                                    <p:column filterBy="#{persona.depprueba}" headerText="Prueba"  filterMatchMode="contains">
-                                                        <h:outputText value="#{persona.depprueba}" />
+                                                    <p:column filterBy="#{persona.usunombres}" headerText="Nombres"  filterMatchMode="contains">
+                                                        <h:outputText value="#{persona.usunombres}" />
+                                                    </p:column>xxx
+                                                    <p:column filterBy="#{persona.usumail}" headerText="Mail"  filterMatchMode="contains">
+                                                        <h:outputText value="#{persona.usumail}" />
                                                     </p:column>
-                                                    <p:column filterBy="#{persona.depproyeccion}" headerText="Proyección"  filterMatchMode="contains">
-                                                        <h:outputText value="#{persona.depproyeccion}" />
+                                                    <p:column filterBy="#{persona.usucedula}" headerText="Cédula"  filterMatchMode="contains">
+                                                        <h:outputText value="#{persona.usucedula}" />
                                                     </p:column>
-                                                    <p:column filterBy="#{persona.depresultados}" headerText="Resultados"  filterMatchMode="contains">
-                                                        <h:outputText value="#{persona.depresultados}" />
-                                                    </p:column>
-                                                    <p:column filterBy="#{persona.idanosproy}" headerText="Años en el proyecto"  filterMatchMode="contains">
-                                                        <h:outputText value="#{persona.idanosproy}" />
-                                                    </p:column>
-                                                    <p:column filterBy="#{myBean.getnombreDeporte(persona.iddeporte)}" headerText="Deporte"  filterMatchMode="contains">
-                                                        <h:outputText value="#{myBean.getnombreDeporte(persona.iddeporte)}" />
-                                                    </p:column>
-                                                    <p:column filterBy="#{myBean.getnombreDciplina(persona.iddeporte)}" headerText="Diciplina"  filterMatchMode="contains">
-                                                        <h:outputText value="#{myBean.getnombreDciplina(persona.iddeporte)}" />
-                                                    </p:column>
-                                                    <p:column filterBy="#{myBean.getIncePropuesta(persona)}" headerText="Cat. Propuesta"  filterMatchMode="contains">
-                                                        <h:outputText value="#{myBean.getIncePropuesta(persona)}" />
-                                                    </p:column>
-                                                    <p:column filterBy="#{myBean.getincentivosMenXpersona(persona)}" headerText="Mensual"  filterMatchMode="contains">
-                                                        <h:outputText value="#{myBean.getincentivosMenXpersona(persona)}" />
-                                                    </p:column>
-                                                    <p:column filterBy="#{myBean.getincentivosMenXpersona(persona)}" headerText="Aprovación"  filterMatchMode="contains">
-                                                        <h:outputText id="apr" value="#{persona.aprobado ? 'Aprobado': 'Negado'}"/>
-                                                    </p:column>
+                                                    
                                                     
                                                 </p:dataTable>
                                                 <p:dataTable id="perAprobacion" value="#{myBean.listaPersonas}" var="persona" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 

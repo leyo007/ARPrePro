@@ -5,6 +5,7 @@
  */
 package facades;
 
+import entities.Mdperfilt;
 import entities.Mdusuariot;
 import java.util.List;
 import javax.ejb.Local;
@@ -30,4 +31,6 @@ public interface MdusuariotFacadeLocal {
 
     int count();
     public Mdusuariot findThisUser(String user, String pwd);
+    public List<Mdusuariot> getUserByType(Mdperfilt x);
+    
 }

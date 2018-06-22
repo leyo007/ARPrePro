@@ -52,20 +52,20 @@
                 </h:outputLink>
                 <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
                
-                    <h2>INCENTIVOS</h2>     
+                    <h2>NECESIDADES</h2>     
                     <div id="comments">
                         <ul>
                             <li>
                                 <article>
                                     <header>
-                                      <address><h2>Deportistas</h2></address>
+                                      <address><h2>INDIVIDUALES/GENERALES</h2></address>
                                     </header>
                                     <div class="comcont">
                                         <div class="one_third first">
-                                                        <label for="url"><B> Ingresar Nuevo Deportista</B></label>
+                                                        <label for="url"><B> Ingresar Nueva Necesidad</B></label>
                                          </div>
                                          <h:form>
-                                            <p:commandButton  style="background: #4fd48a; color: white;" value="Regresar"
+                                            <p:commandButton  style="background: #4fd48a; color: white; float: right;" value="Regresar"
                                                             action="#{myBean.givmeLink(1)}" icon="fa fa-fw fa-undo" />
                                         </h:form>
                                         <p:commandButton id="gt" 
@@ -88,33 +88,42 @@
                                                     options="#{myBean.pdfOpt}"
                                                     />
                                                 </p:commandButton>
-                                                <p:dataTable id="all" value="#{myBean.listaPersonas}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
-                                                             selectionMode="single" selection="#{myBean.selectPersona}" rowKey="#{item.iddep}"
-                                                             widgetVar="listaR" filteredValue="#{myBean.filtroPersonas}" emptyMessage="No hay registros..."
+                                                <p:dataTable id="all" value="#{myBean.filtroNecesidad}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
+                                                             selectionMode="single" selection="#{myBean.selectedNecesidad}" rowKey="#{item.id}"
+                                                             widgetVar="listaR" filteredValue="#{myBean.filtroNecesidad}" emptyMessage="No hay registros..."
                                                 >
                                                     
                                                     <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
-                                                    <p:column filterBy="#{item.depcedula}" headerText="Cédula"  filterMatchMode="contains">
-                                                        <h:outputText value="#{item.depcedula} " />
+                                                    <p:column filterBy="#{item.deporte}" headerText="Deporte"  filterMatchMode="contains">
+                                                        <h:outputText value="#{item.deporte} " />
                                                     </p:column>
-                                                    <p:column filterBy="#{item.depapellido}" headerText="Apellidos"  filterMatchMode="contains">
-                                                        <h:outputText value="#{item.depapellido}"/>
+                                                    <p:column filterBy="#{item.disciplina}" headerText="Disciplina"  filterMatchMode="contains">
+                                                        <h:outputText value="#{item.disciplina}"/>
                                                     </p:column>
-                                                    <p:column filterBy="#{item.depnombre}" headerText="Nombres"  filterMatchMode="contains">
-                                                        <h:outputText value="#{item.depnombre}"/>
+                                                    <p:column filterBy="#{item.tipo}" headerText="Tipo" footerText="equals" filterMatchMode="equals">
+                                                        <f:facet name="filter">
+                                                            <p:selectOneButton onchange="PF('listaR').filter()">
+                                                                <f:converter converterId="javax.faces.Boolean" />
+                                                                <f:selectItem itemLabel="T" itemValue="" />
+                                                                <f:selectItem itemLabel="Gral" itemValue="true" />
+                                                                <f:selectItem itemLabel="Ind" itemValue="false" />
+                                                            </p:selectOneButton>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.tipo ? 'General': 'Individual'}" />
                                                     </p:column>
-                                                    <p:column filterBy="#{myBean.getnombreDeporte(item.iddeporte)}" headerText="Deporte"  filterMatchMode="contains">
-                                                        <h:outputText value="#{myBean.getnombreDeporte(item.iddeporte)}"/>
+                                                    <p:column filterBy="#{item.nombres}" headerText="Nombres"  filterMatchMode="contains">
+                                                        <h:outputText value="#{item.nombres}"/>
                                                     </p:column>
-                                                    <p:column  filterBy="#{myBean.getIncePropuesta(item)}" headerText="Cat. Propuesta"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{myBean.getIncePropuesta(item)}"/>
+                                                    <p:column  filterBy="#{item.articulo}" headerText="Artículo"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{item.articulo}"/>
                                                     </p:column>
-                                                    <p:column rendered="false" sortBy="#{myBean.getincentivosMenXpersona(item)}" headerText="Delete values"  filterMatchMode="contains" >
-                                                        <h:outputText value="#{myBean.getincentivosMenXpersona(item)}"/>
+                                                    <p:column  filterBy="#{item.cantidad}" headerText="Cantidad"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{item.cantidad}"/>
                                                     </p:column>
-                                                    <p:column rendered="false" sortBy="#{myBean.getincentivosTotXpersona(item)}" headerText="Delete values"  filterMatchMode="contains"  >
-                                                        <h:outputText value="#{myBean.getincentivosTotXpersona(item)}"/>
+                                                    <p:column  filterBy="#{item.valor}" headerText="Apellidos"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{item.valor} USD"/>
                                                     </p:column>
+                                                    
                                                     <p:column headerText="Estado">
                                                         <p:commandButton id="gt" 
                                                             style=" background: #F0BE10; color: white;" 
