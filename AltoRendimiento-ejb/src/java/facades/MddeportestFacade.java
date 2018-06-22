@@ -55,6 +55,18 @@ public class MddeportestFacade extends AbstractFacade<Mddeportest> implements Md
         }
     }
 
+    @Override
+    public List<Mddeportest> getDepByFed(String x) {
+        try {
+              return em.createQuery("SELECT d FROM Mddeportest d WHERE d.depdescripcion =:us limit 1")
+                    .setParameter("us", x)                   
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, filtro deportes por federacion: " + e.getMessage());
+            return null;
+        }
+    }
+
     
     
 }

@@ -254,7 +254,7 @@ public class mainBean implements Serializable {
     private Mdfederacion selectFede;
     private List <Mdfederacion> listFede;
     
-    
+    Mdperfilt x = new Mdperfilt();
     public String accessLogin() throws IOException{
         String resultado="";
         
@@ -274,7 +274,7 @@ public class mainBean implements Serializable {
                     currentPerfil=mdusuarioperfiltFacade.findThisUser(currentUser);
                     System.out.println("1.- uPerfil Cod Usuario: "+currentPerfil.getIdusuario().getIdusuario());
                     System.out.println("2.- uPerfil P: "+currentPerfil.getIdperfil().getIdperfil());
-                    Mdperfilt x =mdperfiltFacade.find(currentPerfil.getIdperfil().getIdperfil());
+                    x =mdperfiltFacade.find(currentPerfil.getIdperfil().getIdperfil());
                     System.out.println("3.- perfil: "+x.toString());
                     currentModulo=mdperfilmodulotFacade.findModulo(x);
                     System.out.println("4.- pmodulo: "+currentModulo.getIdmodulo().getIdmodulo());
@@ -1142,6 +1142,12 @@ public class mainBean implements Serializable {
     }
 
     public List<Mddeportest> getListDeporte() {
+        System.out.println(x.getIdperfil());
+        if(x.getIdperfil()==(Integer)3){
+            selectFede=mdfederacionFacade.find(currentUser.getCodinst());
+            listDeporte=mddeportestFacade.getDepByFed(selectFede.getNomdep());
+        }
+        
         System.out.println("DEPORTES - XXXXXXXXXXXXXXXXX");
         if(listDeporte==null){
             System.out.println("LISTA DEPORTES");

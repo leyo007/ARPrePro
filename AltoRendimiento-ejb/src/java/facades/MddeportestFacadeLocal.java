@@ -33,6 +33,7 @@ public interface MddeportestFacadeLocal {
     
     public List<Mddisciplinat> getAllDiciplina(int x);
     public List<Mddisciplinat> getAllDiciplinaByDesc(String x);
+    public List<Mddeportest> getDepByFed(String x);
     
     
 }
