@@ -56,9 +56,9 @@ public class MddeportestFacade extends AbstractFacade<Mddeportest> implements Md
     }
 
     @Override
-    public List<Mddeportest> getDepByFed(String x) {
+    public List<Mddeportest> getDepByFed(int x) {
         try {
-              return em.createQuery("SELECT d FROM Mddeportest d WHERE d.depdescripcion =:us limit 1")
+              return em.createQuery("SELECT d FROM Mddeportest d WHERE d.fedcod =:us")
                     .setParameter("us", x)                   
                     .getResultList();
         } catch (Exception e) {

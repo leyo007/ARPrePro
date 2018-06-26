@@ -44,6 +44,7 @@ public class MdeventoFacade extends AbstractFacade<Mdevento> implements Mdevento
 
     @Override
     public List<Mdevento> getListByCreator(int x) {
+        System.out.println("Buscar eventos by creador");
         try {
             return  em.createQuery("SELECT e from Mdevento e WHERE e.creador =:x")
                     .setParameter("x", x)

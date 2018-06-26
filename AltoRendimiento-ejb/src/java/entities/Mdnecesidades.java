@@ -40,6 +40,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdnecesidades.findByAprobada", query = "SELECT m FROM Mdnecesidades m WHERE m.aprobada = :aprobada")})
 public class Mdnecesidades implements Serializable {
 
+    @Column(name = "padre")
+    private Integer padre;
+    @Column(name = "iddep")
+    private Integer iddep;
+
     @Size(max = 2147483647)
     @Column(name = "nombres")
     private String nombres;
@@ -221,6 +226,22 @@ public class Mdnecesidades implements Serializable {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+
+    public Integer getPadre() {
+        return padre;
+    }
+
+    public void setPadre(Integer padre) {
+        this.padre = padre;
+    }
+
+    public Integer getIddep() {
+        return iddep;
+    }
+
+    public void setIddep(Integer iddep) {
+        this.iddep = iddep;
     }
     
 }

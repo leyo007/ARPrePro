@@ -33,5 +33,6 @@ public interface MdnecesidadesFacadeLocal {
     public boolean modificarDatos(Mdnecesidades x);
     public boolean guardarDatos(Mdnecesidades x);
     public List<Mdnecesidades> getListByCreator(int x);
+    public List<Mdnecesidades> getListByGral(int x);
     
 }

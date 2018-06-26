@@ -1,0 +1,243 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+     <ui:define name="content">
+         
+         
+        
+         <style>
+            .menuSelect .ui-selectonemenu-label { 
+                //background: pink;
+               
+                box-sizing: content-box!important;
+            }
+            .panel .ui-selectonemenu-list { 
+                 //width: 100px;
+                //background: green;
+            }
+            
+            .ui-selectonemenu .ui-selectonemenu-trigger {
+                  // background-color: red;
+                width: auto!important;
+            }
+            .ui-state-highlight, .ui-widget-content .ui-state-highlight{
+                background-image: linear-gradient(to bottom, #f2dede, #254786);
+                    background-color: #555;
+            }
+            #modalNewHE{
+                position:fixed!important;
+            }
+         </style>
+          <p:dialog id="modalNewHE" header="Añadir Necesidad Individual" widgetVar="newIndiv" modal="true" style="left:0px;">
+              <p:growl id="growlA" sticky="true" showDetail="true" life="3000" />
+                <h:outputText value="Llene todos los campos." />
+                
+                
+                <h:form>
+                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                        <h:outputText value="Atleta"/>
+                        <p:selectOneMenu id="persona" required="false" requiredMessage="Selecione Deportista" value="#{myBean.newNecesidad.nombres}" >
+                            <f:selectItem itemLabel="Atleta"/>
+                            <f:selectItem itemLabel="Todos" itemValue="Todos"/>
+                            <f:selectItems value="#{myBean.listaPersonas}" var="per" itemLabel="#{per.depapellido} #{per.depnombre}" itemValue="#{per.depapellido} #{per.depnombre}" />
+                        </p:selectOneMenu>
+                             <p:message for="persona" />
+                        <h:outputText value="Nombres"/>
+                        <p:inputText style="" value="#{myBean.newNecesidad.articulo}" id="henombres" placeholder="Artículos"/>
+                             <p:message for="henombres" />
+                        <h:outputText value="Valor"/>
+                        <p:inputNumber value="#{myBean.newNecesidad.valor}" id="henacion" required="true" requiredMessage="Añada valor" placeholder="Valor" symbol=" USD" symbolPosition="s" 
+                                        decimalSeparator="," thousandSeparator=".">  
+                            <p:ajax update="tot" event="change"/>  
+                         </p:inputNumber> 
+                         <p:message for="henacion" />
+                         <h:outputText value="CANTIDAD" />
+                        <p:selectOneMenu disabled="false" required="true" requiredMessage="Falta la cantidad"
+                                         id="cant" value="#{myBean.newNecesidad.cantidad}" >
+                            <f:selectItems value="#{myBean.listaDel}"/>
+                            <p:ajax update="tot"  event="change"/> 
+                        </p:selectOneMenu>
+                          <p:message for="cant" />
+                          <h:outputText id="tot" value="#{myBean.newNecesidad.cantidad*myBean.newNecesidad.valor}" />
+                        <h:outputText value="TOTAL" />
+                          <p:message for="tot" />
+                        
+                        
+                        
+                        
+                        
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton action="#{myBean.registrarIndividual()}" value="Guardar" 
+                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                 update="@(form) newinc"
+                                 oncomplete="if (#{not facesContext.validationFailed})PF('newIndiv').hide()"
+                                 
+                                 >
+                    </p:commandButton>
+                </h:form>
+                
+            </p:dialog> 
+         <div id="contenido" class="wrapper row3">
+            <main class="clear"> 
+                
+               
+                <div class="btmspace-80 center">
+                  <h3 class="nospace">Bienvenidos</h3>
+                  <h:outputText value="Usuario con acceso"/>
+                </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+                <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                </h:outputLink>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+               
+                    <h2>NECESIDADES INDIVIDUALES</h2>     
+                    <div id="comments">
+                        <ul>
+                            <li>
+                                <article>
+                                    <header>
+                                      <address><h2>Individuales</h2></address>
+                                    </header>
+                                    <div class="comcont">
+                                        <div class="one_third first">
+                                                        <label for="url"><B>Agregar Necesidades Individuales</B></label>
+                                        </div>
+                                        <h:form>
+                                            <p:commandButton  style="background: #4fd48a; color: white;" value="Regresar"
+                                                            action="#{myBean.givmeLink(9)}" icon="fa fa-fw fa-undo" />
+                                        </h:form>
+                                                  
+                                    </div>
+                                    <div class="comcont">
+                                        <h:form id="newinc" class="container" style="margin-left: 0%; margin-right: 0%; margin-bottom: 0px;">
+                                            <p:growl id="growl" sticky="false" showDetail="true" autoUpdate="true" life="1500"/>
+                                            <p:messages id="messages" closable="true">
+                                                <p:effect type="puff" event="load" delay="300" />
+                                            </p:messages>
+                                            
+                                            <p:panel header="DATOS DE LA NECESIDAD GENERAL" id="panel-datos" widgetVar="regWidget" style="padding-left: 0%; padding-right: 0%; background-color: rgba(255,255,255,0.5);">
+
+                                                 <h:panelGrid columns="4"  border="0" style="width: 100%;">
+                                                    <h:outputText class="one_third" value="CREADOR DE LA NECESIDAD"/>
+                                                                                                      
+                                                    <h:outputText  value="#{myBean.currentUser.usuapellidos} " id="evento"/>
+                                                    
+                                                    
+                                               
+                                                    <h:outputText value="DEPORTE" />
+                                                    <p:selectOneMenu id="dep" required="true" requiredMessage="Deporte obligatorio" value="#{myBean.selectedNecesidad.iddep}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Deportes"/>
+                                                        <f:selectItems value="#{myBean.listDeporte}" var="de" itemLabel="#{de.depdescripcion}" itemValue="#{de.iddeporte}"  />
+                                                        <p:ajax update="disc" listener="#{myBean.getDisXDep(myBean.selectedNecesidad.iddep)}" event="change"/>
+                                                    </p:selectOneMenu>
+                                                     
+                                                     
+                                                    <h:outputText value="DISCIPLINA" />
+                                                    <p:selectOneMenu id="disc" required="true" requiredMessage="Disiciplina obligatoria" value="#{myBean.selectedNecesidad.disciplina}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Disciplinas"/>
+                                                        <f:selectItems value="#{myBean.listDisciplina}" var="di" itemLabel="#{di.disdescripcion}" itemValue="#{di.disdescripcion}" />
+                                                    </p:selectOneMenu>
+                                                   
+                                                    
+                                                   <h:outputText value="ARTÍCULO" />
+                                                   <p:inputText style="" value="#{myBean.selectedNecesidad.articulo}" id="articulo" required="true" requiredMessage="Nombre Artículo" placeholder="Especifique el artículo, su cantidad y valor a continuación"/>
+                                                    
+                                                    
+                                                    <h:outputText value="CANTIDAD" />
+                                                    <p:selectOneMenu disabled="false" required="true" requiredMessage="Falta nº de artículos"
+                                                                     id="cant" value="#{myBean.selectedNecesidad.cantidad}" widgetVar="selectSex" styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItems value="#{myBean.listaDel}"/>
+                                                    </p:selectOneMenu>
+                                                     
+                                                    
+                                                     <h:outputText value="Valor" />
+                                                     <p:inputNumber value="#{myBean.selectedNecesidad.valor}" id="valor" required="true" requiredMessage="Añada valor" placeholder="Valor" symbol=" USD" symbolPosition="s" 
+                                                                    decimalSeparator="," thousandSeparator=".">  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>                                                     
+                                                    
+
+                                                
+                                                </h:panelGrid>
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <p:row>
+                                                            <p:column style="font-weight: bold; text-align: center;">ENTRENADORES QUE HAN ESTADO A CARGO DEL ATLETA DURANTE SU PERMANENCIA EN EL PROYECTO</p:column>  
+                                                    </p:row>  
+                                                    <p:row>
+                                                        <p:column>
+                                                                <p:commandButton rendered="true" id="nuevoHE" value="Añadir Necesidad Individual" 
+                                                                        style="color: #2196f3;"
+                                                                        onclick="PF('newIndiv').show()" 
+                                                                        icon="fa fa-fw fa-plus" 
+                                                                ></p:commandButton>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>                                                           
+                                                <p:dataTable var="he" value="#{myBean.listaNecesidad}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                        <p:column headerText="Nº">
+                                                            <h:outputText value="#{index+1}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nombres">
+                                                            <h:outputText value="#{he.nombres}" />
+                                                        </p:column>
+                                                        <p:column headerText="Apellidos">
+                                                            <h:outputText value="#{he.apellidos}" />
+                                                        </p:column>
+                                                        <p:column headerText="Artículo">
+                                                            <h:outputText value="#{he.articulo}" />
+                                                        </p:column>
+                                                        <p:column headerText="Cantidad">
+                                                            <h:outputText value="#{he.cantidad}" />
+                                                        </p:column>
+                                                        
+                                                    </p:dataTable>  
+                                               
+                                                <p:separator />
+                                                <p:commandButton id="gt" 
+                                                style=" background: #FBFBFB; color: black;" 
+                                                value="Guardado temporal" 
+                                                action="#{myBean.registraPersona()}"
+                                                icon="fa fa-fw fa-save"
+
+                                                update="newinc"
+                                                ></p:commandButton>       
+                                            </p:panel>
+                </h:form>     
+                                    </div>
+                                </article>
+                            </li>
+                            <li>
+                              <article>
+                                    <div class="comcont">
+                                       <div class="scrollable">
+                                          <div id="datos"></div>
+                                       </div>
+                                    </div>
+                              </article>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                 
+                
+                  <!-- InstanceEndEditable -->
+                <div class="clear"></div>
+            </main>
+        </div>
+         
+         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                     <p:dialog id="dgl" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                         <h3>Procesando...</h3>
+                                         <img  src="images/bar.gif"/>
+                                     </p:dialog>
+         
+                    
+     </ui:define>
+</ui:composition>

@@ -41,7 +41,7 @@
              
          </style>
          <div id="contenido" class="wrapper row3">
-            <main class="hoc container clear"> 
+            <main class="clear"> 
                 <div class="btmspace-80 center">
                   <h3 class="nospace">Bienvenidos</h3>
                   <h:outputText value="Usuario con acceso"/>
@@ -58,7 +58,7 @@
                             <li>
                                 <article>
                                     <header>
-                                      <address><h2>INDIVIDUALES/GENERALES</h2></address>
+                                      <address><h2>GENERALES</h2></address>
                                     </header>
                                     <div class="comcont">
                                         <div class="one_third first">
@@ -71,7 +71,7 @@
                                         <p:commandButton id="gt" 
                                                 style=" background: #FBFBFB; color: black;" 
                                                 value="Nuevo" 
-                                                action="#{myBean.newinc()}" 
+                                                action="#{myBean.newnecesities()}" 
                                                 icon="fa fa-fw fa-plus-circle"
 
                                                 
@@ -100,7 +100,7 @@
                                                     <p:column filterBy="#{item.disciplina}" headerText="Disciplina"  filterMatchMode="contains">
                                                         <h:outputText value="#{item.disciplina}"/>
                                                     </p:column>
-                                                    <p:column filterBy="#{item.tipo}" headerText="Tipo" footerText="equals" filterMatchMode="equals">
+                                                    <p:column filterBy="#{item.tipo}"  rendered="true" headerText="Tipo"  filterMatchMode="equals">
                                                         <f:facet name="filter">
                                                             <p:selectOneButton onchange="PF('listaR').filter()">
                                                                 <f:converter converterId="javax.faces.Boolean" />
@@ -117,28 +117,31 @@
                                                     <p:column  filterBy="#{item.articulo}" headerText="Artículo"  filterMatchMode="contains">
                                                         <h:outputText  value="#{item.articulo}"/>
                                                     </p:column>
-                                                    <p:column  filterBy="#{item.cantidad}" headerText="Cantidad"  filterMatchMode="contains">
+                                                    <p:column  filterBy="#{item.cantidad}" headerText="Cantidad" footerText="Totales" filterMatchMode="contains">
                                                         <h:outputText  value="#{item.cantidad}"/>
                                                     </p:column>
-                                                    <p:column  filterBy="#{item.valor}" headerText="Apellidos"  filterMatchMode="contains">
+                                                    
+                                                    <p:column  filterBy="#{item.valor}" headerText="Valor"  footerText="#{myBean.totalEvento(myBean.filtroNecesidad)}" filterMatchMode="contains">
                                                         <h:outputText  value="#{item.valor} USD"/>
                                                     </p:column>
-                                                    
-                                                    <p:column headerText="Estado">
+                                                    <p:column  filterBy="#{item.total}" headerText="Total"  footerText="#{myBean.totalEventos(myBean.filtroNecesidad)}" filterMatchMode="contains">
+                                                        <h:outputText  value="#{item.total} USD"/>
+                                                    </p:column>
+                                                    <p:column headerText="Modificar">
                                                         <p:commandButton id="gt" 
                                                             style=" background: #F0BE10; color: white;" 
                                                             value="Editar" 
-                                                            action="#{myBean.editDeport(item)}"
+                                                            action="#{myBean.modificarNecesidadGral(item)}"
                                                             icon="fa fa-fw fa-edit"
 
                                                 
                                                         ></p:commandButton>  
                                                     </p:column>
-                                                    <p:column headerText="Repostular">
+                                                    <p:column headerText="Individuales">
                                                         <p:commandButton id="rp" 
                                                             style=" background: #10A9F0; color: white;" 
-                                                            value="Repostular" 
-                                                            action="#{myBean.reposDeport(item)}"
+                                                            value="Añadir" 
+                                                            action="#{myBean.individual(item)}"
                                                             icon="fa fa-fw fa-edit"
 
                                                 

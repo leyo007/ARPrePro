@@ -79,14 +79,14 @@
                                                 <h:panelGrid columns="2"  border="0" style="width: 100%;">
                                                     <h:outputText class="one_third" value="NOMBRE DEL EVENTO"/>
                                                     <h:outputText class="" value=""/>                                                    
-                                                    <p:inputText styleClass="" value="#{myBean.newEvent.evento}" id="evento" required="true" requiredMessage="Nombre obligatorio" readonly="false" placeholder="Nombre Evento"/>
+                                                    <p:inputText styleClass="" value="#{myBean.selectedEvent.evento}" id="evento" required="true" requiredMessage="Nombre obligatorio" readonly="false" placeholder="Nombre Evento"/>
                                                     <p:message for="evento" display="text"/><h:outputText value=""/>
                                                     
                                                  </h:panelGrid>
                                                 <h:panelGrid columns="2"  border="0" style="width: 100%;">   
                                                     <h:outputText value="TIPOLOGÍA"/>
                                                     <p:selectOneMenu disabled="false"
-                                                                     id="tipomacro" value="#{myBean.newEvent.tipomacro}" widgetVar="selectTipoMacro" styleClass="menuSelect" panelStyleClass="panel"
+                                                                     id="tipomacro" value="#{myBean.selectedEvent.tipomacro}" widgetVar="selectTipoMacro" styleClass="menuSelect" panelStyleClass="panel"
                                                         requiredMessage="Falta LA TIPOLOGÍA." required="true">
                                                         <f:selectItem itemLabel="Seleccione"/>
                                                         <f:selectItem itemLabel="PREPARACIÓN" itemValue="PREPARACIÓN" />
@@ -102,7 +102,7 @@
                                                     
                                                     <h:outputText value="A.D."/>
                                                     <p:selectOneMenu disabled="false"
-                                                        id="ad" value="#{myBean.newEvent.ad}" widgetVar="selectAD" styleClass="menuSelect" panelStyleClass="panel"
+                                                        id="ad" value="#{myBean.selectedEvent.ad}" widgetVar="selectAD" styleClass="menuSelect" panelStyleClass="panel"
                                                         requiredMessage="Falta el campo A.D." required="true">
                                                         <f:selectItem itemLabel="Seleccione"/>
                                                         <f:selectItem itemLabel="ACP" itemValue="ACP" />
@@ -116,16 +116,16 @@
                                                     <p:message for="ad" display="text"/>
                                                     
                                                     <h:outputText value="DEPORTE" />
-                                                    <p:selectOneMenu id="dep" required="true" requiredMessage="Deporte obligatorio" value="#{myBean.newEvent.deporte}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                    <p:selectOneMenu id="dep" required="true" requiredMessage="Deporte obligatorio" value="#{myBean.selectedEvent.deporte}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Deportes"/>
                                                         <f:selectItems value="#{myBean.listDeporte}" var="de" itemLabel="#{de.depdescripcion}" itemValue="#{de.depdescripcion}"  />
-                                                        <p:ajax update="disc" listener="#{myBean.getDisXDepDesc(myBean.newEvent.deporte)}" event="change"/>
+                                                        <p:ajax update="disc" listener="#{myBean.getDisXDepDesc(myBean.selectedEvent.deporte)}" event="change"/>
                                                     </p:selectOneMenu>
                                                      <h:outputText value=""/>
                                                      <p:message for="dep" display="text"/>
                                                      
                                                     <h:outputText value="DISCIPLINA" />
-                                                    <p:selectOneMenu id="disc" required="true" requiredMessage="Disiciplina obligatoria" value="#{myBean.newEvent.disciplina}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                    <p:selectOneMenu id="disc" required="true" requiredMessage="Disiciplina obligatoria" value="#{myBean.selectedEvent.disciplina}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Disciplinas"/>
                                                         <f:selectItems value="#{myBean.listDisciplina}" var="di" itemLabel="#{di.disdescripcion}" itemValue="#{di.disdescripcion}" />
                                                     </p:selectOneMenu>
@@ -133,13 +133,13 @@
                                                      <p:message for="disc" display="text"/>
                                                  <p:separator /> <p:separator />     
                                                     <h:outputText value="SEDE" />
-                                                    <p:inputText style="" value="#{myBean.newEvent.sede}" id="sede" required="true" requiredMessage="Añada la Sede" placeholder="CIUDAD - PAÍS"/>
+                                                    <p:inputText style="" value="#{myBean.selectedEvent.sede}" id="sede" required="true" requiredMessage="Añada la Sede" placeholder="CIUDAD - PAÍS"/>
                                                     <h:outputText value="" />
                                                     <p:message for="sede" display="text"/>
                                                     
                                                     <h:outputText value="TIPO"/>
                                                     <p:selectOneMenu disabled="false"
-                                                                     id="tipo" value="#{myBean.newEvent.tipo}" widgetVar="selectTipo" styleClass="menuSelect" panelStyleClass="panel"
+                                                                     id="tipo" value="#{myBean.selectedEvent.tipo}" widgetVar="selectTipo" styleClass="menuSelect" panelStyleClass="panel"
                                                         requiredMessage="Falta el tipo" required="true">
                                                         <f:selectItem itemLabel="Seleccione"/>
                                                         <f:selectItem itemLabel="NACIONAL" itemValue="NACIONAL" />
@@ -150,7 +150,7 @@
                                                     <p:message for="tipo" display="text"/>
                                                      
                                                     <h:outputText value="FECHA INICIO" />
-                                                    <p:calendar value="#{myBean.newEvent.fechai}"  disabled="false" id="fechai" converterMessage="Fecha erronea"
+                                                    <p:calendar value="#{myBean.selectedEvent.fechai}"  disabled="false" id="fechai" converterMessage="Fecha erronea"
                                                                 pattern="dd/MM/yyyy" 
                                                                 navigator="true"
                                                                 required="true"
@@ -164,7 +164,7 @@
                                                     <p:message for="fechai" display="text"/>
                                                     
                                                     <h:outputText value="FECHA FIN" />
-                                                    <p:calendar value="#{myBean.newEvent.fechaf}"  disabled="false" id="fechaf" converterMessage="Fecha erronea"
+                                                    <p:calendar value="#{myBean.selectedEvent.fechaf}"  disabled="false" id="fechaf" converterMessage="Fecha erronea"
                                                                 pattern="dd/MM/yyyy" 
                                                                 navigator="true"
                                                                 required="true"
@@ -188,7 +188,7 @@
                                                     
                                                     <h:outputText value="No. ENT. OFIC." />
                                                     
-                                                    <p:selectOneMenu id="nument" required="true" requiredMessage="Falta el campo Nº Entrenadores" value="#{myBean.newEvent.nument}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                    <p:selectOneMenu id="nument" required="true" requiredMessage="Falta el campo Nº Entrenadores" value="#{myBean.selectedEvent.nument}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Número Entrenadores"/>
                                                         <f:selectItems value="#{myBean.listaDel}"/>
                                                         <p:ajax update="numpax" event="change"/>
@@ -198,7 +198,7 @@
                                                     
                                                     <h:outputText value="No. ATL." />
                                                     
-                                                    <p:selectOneMenu id="numatl" required="true" requiredMessage="Falta el campo Nº Atletas" value="#{myBean.newEvent.numatl}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                    <p:selectOneMenu id="numatl" required="true" requiredMessage="Falta el campo Nº Atletas" value="#{myBean.selectedEvent.numatl}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Número Atletas"/>
                                                         <f:selectItems value="#{myBean.listaDel}"/>
                                                         <p:ajax update="numpax" event="change"/>
@@ -208,7 +208,7 @@
                                                      
                                                     <h:outputText value="No. Días" />
                                                     
-                                                    <p:selectOneMenu id="numdias" required="true" requiredMessage="Falta el campo Nº Días" value="#{myBean.newEvent.numdias}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                    <p:selectOneMenu id="numdias" required="true" requiredMessage="Falta el campo Nº Días" value="#{myBean.selectedEvent.numdias}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Número Días"/>
                                                         <f:selectItems value="#{myBean.listaDel}"/>
                                                     </p:selectOneMenu> 
@@ -218,14 +218,14 @@
                                                     <h:outputText value="No. PAX." />
                                                     
                                                     
-                                                    <h:outputText id="numpax" value="#{myBean.newEvent.numatl+myBean.newEvent.nument}" />
+                                                    <h:outputText id="numpax" value="#{myBean.selectedEvent.numatl+myBean.selectedEvent.nument}" />
                                                     <h:outputText value="" />
                                                     <p:message for="numpax" display="text"/>
                                                  
                                                  <p:separator /> <p:separator />
                                                  
                                                     <h:outputText value="ALOJAMIENTO(VALOR/PAXDIA)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.valoja}" id="valoja" required="true" requiredMessage="Añada ALOJAMIENTO" placeholder="Valor Alojamiento" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.valoja}" id="valoja" required="true" requiredMessage="Añada ALOJAMIENTO" placeholder="Valor Alojamiento" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -233,7 +233,7 @@
                                                     <p:message for="valoja" display="text"/>
                                                     
                                                     <h:outputText value="ALIMENTACIÓN(VALOR/PAXDIA)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.valimen}" id="valimen" required="true" requiredMessage="Añada ALIMENTACIÓN" placeholder="Valor ALIMENTACIÓN" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.valimen}" id="valimen" required="true" requiredMessage="Añada ALIMENTACIÓN" placeholder="Valor ALIMENTACIÓN" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -241,7 +241,7 @@
                                                     <p:message for="valimen" display="text"/>
                                                     
                                                     <h:outputText value="HIDRATACIÓN(VALOR/ATLXDIA)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vhidra}" id="vhidra" required="true" requiredMessage="Añada HIDRATACIÓN" placeholder="Valor HIDRATACIÓN" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vhidra}" id="vhidra" required="true" requiredMessage="Añada HIDRATACIÓN" placeholder="Valor HIDRATACIÓN" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -249,7 +249,7 @@
                                                     <p:message for="vhidra" display="text"/>
                                                     
                                                     <h:outputText value="TRANSPORTE AEREO(VALOR/PAXDIA)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vtransaereo}" id="vtransaereo" required="true" requiredMessage="Añada TRANSPORTE AEREO" placeholder="Valor TRANSPORTE AEREO" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vtransaereo}" id="vtransaereo" required="true" requiredMessage="Añada TRANSPORTE AEREO" placeholder="Valor TRANSPORTE AEREO" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -257,7 +257,7 @@
                                                     <p:message for="vtransaereo" display="text"/>
                                                     
                                                     <h:outputText value="EXSESOS EQUIPAJE(VALOR/EVENTO)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vexcequi}" id="vexcequi" required="true" requiredMessage="Añada EXSESOS EQUIPAJE" placeholder="Valor EXSESOS EQUIPAJE" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vexcequi}" id="vexcequi" required="true" requiredMessage="Añada EXSESOS EQUIPAJE" placeholder="Valor EXSESOS EQUIPAJE" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -265,7 +265,7 @@
                                                     <p:message for="vexcequi" display="text"/>
                                                     
                                                     <h:outputText value="TASAS AEROPUERTO(VALOR/PAX)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vtaxaereo}" id="vtaxaereo" required="true" requiredMessage="Añada TASAS AEROPUERTO" placeholder="Valor TASAS AEROPUERTO" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vtaxaereo}" id="vtaxaereo" required="true" requiredMessage="Añada TASAS AEROPUERTO" placeholder="Valor TASAS AEROPUERTO" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -273,7 +273,7 @@
                                                     <p:message for="vtaxaereo" display="text"/>
                                                     
                                                     <h:outputText value="SEGURO DE VIAJE(VALOR/PAX)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vsegviaje}" id="vsegviaje" required="true" requiredMessage="Añada SEGURO DE VIAJE" placeholder="Valor SEGURO DE VIAJE" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vsegviaje}" id="vsegviaje" required="true" requiredMessage="Añada SEGURO DE VIAJE" placeholder="Valor SEGURO DE VIAJE" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -281,7 +281,7 @@
                                                     <p:message for="vsegviaje" display="text"/>
                                                     
                                                     <h:outputText value="TRANSPORTE TERRESTRE(VALOR/DIA)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vtransterr}" id="vtransterr" required="true" requiredMessage="Añada TRANSPORTE TERRESTRE" placeholder="Valor TRANSPORTE TERRESTRE" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vtransterr}" id="vtransterr" required="true" requiredMessage="Añada TRANSPORTE TERRESTRE" placeholder="Valor TRANSPORTE TERRESTRE" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -289,7 +289,7 @@
                                                     <p:message for="vtransterr" display="text"/>
                                                     
                                                     <h:outputText value="BONO DEPORTIVO INTERNACIONAL (PAXDIA)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vbonodep}" id="vbonodep" required="true" requiredMessage="Añada BONO DEPORTIVO INTERNACIONAL" placeholder="Valor BONO DEPORTIVO INTERNACIONAL" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vbonodep}" id="vbonodep" required="true" requiredMessage="Añada BONO DEPORTIVO INTERNACIONAL" placeholder="Valor BONO DEPORTIVO INTERNACIONAL" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -297,7 +297,7 @@
                                                     <p:message for="vbonodep" display="text"/>
                                                     
                                                     <h:outputText value="INSCRIPCIÓN(VALOR/PAX)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vinsc}" id="vinsc" required="true" requiredMessage="Añada INSCRIPCIÓN" placeholder="Valor INSCRIPCIÓN" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vinsc}" id="vinsc" required="true" requiredMessage="Añada INSCRIPCIÓN" placeholder="Valor INSCRIPCIÓN" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -305,7 +305,7 @@
                                                     <p:message for="vinsc" display="text"/>
                                                     
                                                     <h:outputText value="VISA(VALOR/PAX)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vvisa}" id="vvisa" required="true" requiredMessage="Añada VISA" placeholder="Valor VISA" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vvisa}" id="vvisa" required="true" requiredMessage="Añada VISA" placeholder="Valor VISA" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -313,7 +313,7 @@
                                                     <p:message for="vvisa" display="text"/>
                                                     
                                                     <h:outputText value="FONDO EMERGENCIA(VALOR/EVENTO)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vfondoem}" id="vfondoem" required="true" requiredMessage="Añada FONDO EMERGENCIA" placeholder="Valor FONDO EMERGENCIA" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vfondoem}" id="vfondoem" required="true" requiredMessage="Añada FONDO EMERGENCIA" placeholder="Valor FONDO EMERGENCIA" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -321,7 +321,7 @@
                                                     <p:message for="vfondoem" display="text"/>
                                                     
                                                     <h:outputText value="ESPECIFICOS DEPORTE(VALOR/PAXDIA)" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vespdep}" id="vespdep" required="true" requiredMessage="Añada ESPECIFICOS DEPORTE" placeholder="Valor ESPECIFICOS DEPORTE" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber value="#{myBean.selectedEvent.vespdep}" id="vespdep" required="true" requiredMessage="Añada ESPECIFICOS DEPORTE" placeholder="Valor ESPECIFICOS DEPORTE" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
@@ -330,7 +330,7 @@
                                                     
                                                     <!--h:outputText value="SECTOR"/>
                                                     <p:selectOneMenu disabled="false"
-                                                                     id="sector" value="{myBean.newEvent.sector}" widgetVar="selectSector" styleClass="menuSelect" panelStyleClass="panel"
+                                                                     id="sector" value="{myBean.selectedEvent.sector}" widgetVar="selectSector" styleClass="menuSelect" panelStyleClass="panel"
                                                         requiredMessage="Falta el tipo" required="true">
                                                         <f:selectItem itemLabel="Seleccione"/>
                                                         <f:selectItem itemLabel="CONVENCIONAL" itemValue="CONVENCIONAL" />
@@ -347,12 +347,14 @@
                                                 <p:separator />
                                                 <p:commandButton id="gt" 
                                                 style=" background: #FBFBFB; color: black;" 
-                                                value="Guardado temporal" 
-                                                action="#{myBean.registraEvento()}"
+                                                value="Modificar temporal" 
+                                                action="#{myBean.modificarEvento()}"
                                                 icon="fa fa-fw fa-save"
 
                                                 update="newinc"
-                                                ></p:commandButton>       
+                                                ></p:commandButton>    
+                                                <p:commandButton  style="background: #4fd48a; color: white; float: right;" value="Regresar"
+                                                            action="#{myBean.givmeLink(8)}" icon="fa fa-fw fa-undo" />
                                             </p:panel>
                 </h:form>     
                                     </div>

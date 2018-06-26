@@ -38,6 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Mddeportest.findBySector", query = "SELECT m FROM Mddeportest m WHERE m.sector = :sector")
     , @NamedQuery(name = "Mddeportest.findByCfd", query = "SELECT m FROM Mddeportest m WHERE m.cfd = :cfd")})
 public class Mddeportest implements Serializable {
+    @Basic(optional = false)
+    @Column(name = "fedcod")
+    private int fedcod;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -154,6 +157,14 @@ public class Mddeportest implements Serializable {
     @Override
     public String toString() {
         return "entities.Mddeportest[ iddeporte=" + iddeporte + " ]";
+    }
+
+    public int getFedcod() {
+        return fedcod;
+    }
+
+    public void setFedcod(int fedcod) {
+        this.fedcod = fedcod;
     }
     
 }

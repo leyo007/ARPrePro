@@ -44,17 +44,17 @@
                 </h:outputLink>
                 <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
                
-                    <h2>NUEVA NECESIDAD GENERAL</h2>     
+                    <h2>EDITOR NECESIDAD GENERAL</h2>     
                     <div id="comments">
                         <ul>
                             <li>
                                 <article>
                                     <header>
-                                      <address><h2>Necesidades</h2></address>
+                                      <address><h2>Necesidad General</h2></address>
                                     </header>
                                     <div class="comcont">
                                         <div class="one_third first">
-                                                        <label for="url"><B> Ingresar Nueva Necesidad General</B></label>
+                                                        <label for="url"><B> Modificar Necesidad</B></label>
                                         </div>
                                         <h:form>
                                             <p:commandButton  style="background: #4fd48a; color: white;" value="Regresar"
@@ -105,7 +105,6 @@
                                                     <p:selectOneMenu disabled="false" required="true" requiredMessage="Falta nº de artículos"
                                                                      id="cant" value="#{myBean.newNecesidad.cantidad}" widgetVar="selectSex" styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItems value="#{myBean.listaDel}"/>
-                                                        <p:ajax update="tot" event="change"/>  
                                                     </p:selectOneMenu>
                                                      <h:outputText value=""/>
                                                     <p:message for="cant" display="text"/>
@@ -113,17 +112,10 @@
                                                      <h:outputText value="Valor" />
                                                      <p:inputNumber value="#{myBean.newNecesidad.valor}" id="valor" required="true" requiredMessage="Añada valor" placeholder="Valor" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
-                                                         <p:ajax update="tot" event="change"/>  
+                                                         <p:ajax update="" />  
                                                      </p:inputNumber>                                                     
                                                      <h:outputText value=""/>
                                                      <p:message for="valor" display="text"/>
-                                                     
-                                                     <h:outputText value="Total" />
-                                                     <h:outputText value="#{myBean.newNecesidad.valor*myBean.newNecesidad.cantidad}" id="tot" 
-                                                                    />  
-                                                                                                          
-                                                     <h:outputText value=""/>
-                                                     <p:message for="tot" display="text"/>
 
                                                 <p:separator /> <p:separator />
                                                     
@@ -148,7 +140,7 @@
                                                 <p:commandButton id="gt" 
                                                 style=" background: #FBFBFB; color: black;" 
                                                 value="Guardado temporal" 
-                                                action="#{myBean.registraNecesidadGral()}"
+                                                action="#{myBean.modificarNecesidadGral()}"
                                                 icon="fa fa-fw fa-save"
 
                                                 update="newinc"

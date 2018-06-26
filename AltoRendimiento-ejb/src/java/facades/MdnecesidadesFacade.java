@@ -66,5 +66,17 @@ public class MdnecesidadesFacade extends AbstractFacade<Mdnecesidades> implement
         }
 
     }
+
+    @Override
+    public List<Mdnecesidades> getListByGral(int x) {
+        try {
+            return  em.createQuery("SELECT n from Mdnecesidades n WHERE n.padre =:x")
+                    .setParameter("x", x)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré necesidades individuales de: "+x+" Error: " + e.getMessage());
+            return null;
+        }
+    }
     
 }

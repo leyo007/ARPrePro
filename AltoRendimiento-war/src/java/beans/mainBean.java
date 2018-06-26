@@ -288,6 +288,9 @@ public class mainBean implements Serializable {
                     for(Mdmenut t: menus){
                         System.out.println("7.- Nombres: "+t.getMennombre());
                     }
+                    selectFede=mdfederacionFacade.find(currentUser.getCodinst());
+                    
+                    System.out.println("8.- FIN");
                     System.out.println("8.- FIN");
                     
                     
@@ -359,6 +362,13 @@ public class mainBean implements Serializable {
         
         return "editor_persona";
     }
+    public String editEvent(Mdevento x){
+        System.out.println("Go to edit Event");
+        selectedEvent=x;
+        
+        
+        return "evento_edit";
+    }
     public String reposDeport(Mdpersonast x){
         selectPersona=x;
         System.out.println("-------------------");
@@ -408,12 +418,21 @@ public class mainBean implements Serializable {
                              break;
                     case 8:  link = "eventos";
                              break;
+                    case 9:  link = "necesidades";
+                             break;
 
                     default: link = "";
                              break;
                 }
          return link;
             
+    }
+    public String newnecesities(){
+        newNecesidad=new Mdnecesidades();
+        System.out.println("try new necesities");
+        //xxx
+        return "necesidades_nuevo";
+    
     }
     
     public String newinc(){ 
@@ -432,6 +451,13 @@ public class mainBean implements Serializable {
     }
     public String newEvento(){ 
         newEvent=new Mdevento();
+        
+        newEvent.setAd(selectFede.getAd());
+        if(selectFede.getSector())
+            newEvent.setSector("CONVENCIONAL");
+        else
+            newEvent.setSector("DISCAPACIDAD");
+   
         return "evento_nuevo";
     }
     public void prueba(String x){
@@ -494,6 +520,81 @@ public class mainBean implements Serializable {
         
         return resultado;
     } 
+    public String modificarEvento(){
+        String resultado="";
+        selectedEvent.setCreador(currentUser.getIdusuario());
+        if(mdeventoFacade.modificarDatos(selectedEvent))
+            resultado="eventos";
+        
+        return resultado;
+    } 
+    public String registraNecesidadGral(){
+        String resultado="";
+        newNecesidad.setCreador(currentUser.getIdusuario());
+        newNecesidad.setDeporte(getnombreDeporte(newNecesidad.getIddep()));
+        newNecesidad.setTipo(true);
+        newNecesidad.setTotal(newNecesidad.getValor()*newNecesidad.getCantidad());
+         if(selectFede.getSector())
+            newNecesidad.setSector("CONVENCIONAL");
+        else
+            newNecesidad.setSector("DISCAPACIDAD");
+       
+        if(mdnecesidadesFacade.guardarDatos(newNecesidad)){
+            filtroNecesidad=mdnecesidadesFacade.getListByCreator(currentUser.getIdusuario());
+            resultado="necesidades";
+        }
+        
+        return resultado;
+    } 
+    public String modificarNecesidadGral(){
+        mdnecesidadesFacade.modificarDatos(newNecesidad);
+        
+        
+        return "necesidades";
+    } 
+    public String modificarNecesidadGral(Mdnecesidades x){
+        newNecesidad=x;
+        
+        
+        return "necesidades_geditor";
+    } 
+    public String individual(Mdnecesidades x){
+        selectedNecesidad=x;
+        
+        newNecesidad=new Mdnecesidades();
+        listaNecesidad=mdnecesidadesFacade.getListByGral(selectedNecesidad.getId());
+        
+        return "necesidades_individual";
+    } 
+     public void registrarIndividual(){
+        System.out.println("Registro Necesidad Individual");
+        newNecesidad.setCreador(currentUser.getIdusuario());
+        newNecesidad.setDeporte(getnombreDeporte(selectedNecesidad.getIddep()));
+        newNecesidad.setTipo(false);
+        newNecesidad.setTotal(newNecesidad.getValor()*newNecesidad.getCantidad());
+         if(selectFede.getSector())
+            newNecesidad.setSector("CONVENCIONAL");
+        else
+            newNecesidad.setSector("DISCAPACIDAD");
+        newNecesidad.setPadre(selectedNecesidad.getId());
+        mdnecesidadesFacade.guardarDatos(newNecesidad);    
+        listaNecesidad=mdnecesidadesFacade.getListByGral(selectedNecesidad.getId());
+        
+    }
+     public double totalEventos(List<Mdnecesidades> x){
+         double y=0.0;
+         for (Mdnecesidades n : x) {
+             y+=n.getValor();
+         }
+        return y;
+     }
+     public double totalEvento(List<Mdnecesidades> x){
+         double y=0.0;
+         for (Mdnecesidades n : x) {
+             y+=n.getTotal();
+         }
+        return y;
+     }
      
     public String registraPersona(){
         String resultado="";
@@ -749,18 +850,18 @@ public class mainBean implements Serializable {
     }
     
     public void getDisXDep(int x){
-        System.out.println("Seleccionar deporte: "+x);
+        System.out.println("Seleccionar deporte 1: "+x);
             Mddeportest dep=new Mddeportest();
             dep=mddeportestFacade.find(x);
             listDisciplina=mddisciplinatFacade.findByDeporte(dep);
-            listaClafundep=mdclafundepFacade.findByDeporte(dep);
+            listaClafundep=mdclafundepFacade.findAll();
             for(Mddisciplinat y: listDisciplina ){
                 System.out.println("Diciplinas: "+y.getDisdescripcion());
         
             }     
     }
     public void getDisXDepDesc(String x){
-        System.out.println("Seleccionar deporte: "+x);
+        System.out.println("Seleccionar deporte 2: "+x);
            listDisciplina=mddeportestFacade.getAllDiciplinaByDesc(x);
     }
     public String getCatPro(int x){
@@ -1143,9 +1244,14 @@ public class mainBean implements Serializable {
 
     public List<Mddeportest> getListDeporte() {
         System.out.println(x.getIdperfil());
+        System.out.println(currentUser.getCodinst());
         if(x.getIdperfil()==(Integer)3){
-            selectFede=mdfederacionFacade.find(currentUser.getCodinst());
-            listDeporte=mddeportestFacade.getDepByFed(selectFede.getNomdep());
+          
+            System.out.println("Federacion selecionada: " +selectFede.getNombre()+" "+selectFede.getId());
+            listDeporte=mddeportestFacade.getDepByFed(selectFede.getId());
+            if(!selectFede.getSector())
+                selectPersona.setHandi(true);
+            
         }
         
         System.out.println("DEPORTES - XXXXXXXXXXXXXXXXX");
@@ -1427,8 +1533,9 @@ public class mainBean implements Serializable {
     }
 
     public List<Mdclafundep> getListaClafundep() {
-        if(listaClafundep==null)
+        if(listaClafundep==null){
             listaClafundep=mdclafundepFacade.findAll();
+        }
         return listaClafundep;
     }
 
@@ -1469,8 +1576,11 @@ public class mainBean implements Serializable {
     }
 
     public List<Mdevento> getFiltroEventos() {
-        if(filtroEventos==null)
+        System.out.println("GET EVENTOS BY CREADOR");
+        if(filtroEventos==null){
+            System.out.println("null....");
             filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
+        }
         return filtroEventos;
     }
 
@@ -1517,8 +1627,8 @@ public class mainBean implements Serializable {
     }
 
     public List<Mdnecesidades> getFiltroNecesidad() {
-     /*   if(filtroNecesidad==null)
-            filtroNecesidad=mdnecesidadesFacade.getListByCreator(currentUser.getIdusuario());*/
+        if(filtroNecesidad==null)
+            filtroNecesidad=mdnecesidadesFacade.getListByCreator(currentUser.getIdusuario());
         return filtroNecesidad;
     }
 
