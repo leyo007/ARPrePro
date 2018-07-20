@@ -60,5 +60,29 @@ public class MdusuariotFacade extends AbstractFacade<Mdusuariot> implements Mdus
             return null;
         }
     }
+
+    @Override
+    public boolean guardarDatos(Mdusuariot x) {
+        try {
+                em.persist(x);
+                return true;
+        } catch (Exception e) {
+            System.out.println("Error al crear new User "+e.getMessage());
+            return false;
+            
+        }
+    }
+
+    @Override
+    public boolean modificarDatos(Mdusuariot x) {
+        try {
+            em.merge(x);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error al modificar user "+e.getMessage());
+            return false;
+            
+        }
+    }
     
 }

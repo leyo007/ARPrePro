@@ -33,4 +33,7 @@ public interface MdusuariotFacadeLocal {
     public Mdusuariot findThisUser(String user, String pwd);
     public List<Mdusuariot> getUserByType(Mdperfilt x);
     
+    public boolean guardarDatos(Mdusuariot x);
+    public boolean modificarDatos(Mdusuariot x);
+    
 }

@@ -99,101 +99,14 @@
                                                     options="#{myBean.pdfOpt}"
                                                     />
                                                 </p:commandButton>
-                                                <p:dataTable id="all" value="#{myBean.filtroEventos}" var="evento" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
+                                                <p:dataTable id="all" value="#{myBean.filtroEventos}" var="evento" style='font-size: 9px!important;    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                                              selectionMode="single" selection="#{myBean.selectedEvent}" rowKey="#{evento.id}"
                                                              widgetVar="listaR" filteredValue="#{myBean.filtroEventos}" emptyMessage="No hay registros..."
-                                                             scrollable="true" scrollWidth="2200" tableStyle="width:100"
+                                                             scrollable="true"
                                                 >
                                                     
-                                                    <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
-                                                    <p:column style="width: 100px!important;" filterBy="#{evento.evento}" headerText="Nombre del Evento"  filterMatchMode="contains">
-                                                        <h:outputText value="#{evento.evento} " />
-                                                    </p:column>
-                                                    <p:column filterBy="#{evento.sede}" headerText="Sede Evento: Ciudad_Pais"  filterMatchMode="contains">
-                                                        <h:outputText value="#{evento.sede}"/>
-                                                    </p:column>
-                                                    <p:column filterBy="#{evento.deporte}" headerText="Deporte"  filterMatchMode="contains">
-                                                        <h:outputText value="#{evento.deporte}"/>
-                                                    </p:column>
-                                                    <p:column filterBy="#{evento.disciplina}" headerText="Disciplina"  filterMatchMode="contains">
-                                                        <h:outputText value="#{evento.disciplina}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.tipo}" headerText="Tipo(NAC/INT)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.tipo}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.fechai}" headerText="Fecha_Inicial"  filterMatchMode="contains">
-                                                        <p:calendar  value="#{evento.fechai}" pattern="dd/MM/yyyy" readonly="true" showOn="none" />
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.fechaf}" headerText="Fecha_Final"  filterMatchMode="contains">
-                                                        <p:calendar  value="#{evento.fechaf}" pattern="dd/MM/yyyy" readonly="true" showOn="none" />
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.nument}" headerText="No. Ent. Ofic."  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.nument}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.numatl}" headerText="No. ATL."  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.numatl}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.numdias}" headerText="No. DIAS"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.numdias}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.numpax}" headerText="No. PAX"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.numpax}"/>
-                                                    </p:column>
-                                                    <p:column width="50" filterBy="#{evento.valoja}" headerText="Alojamiento (VALOR/PAXDIA)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.valoja}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.valimen}" headerText="Alimentación (VALOR/PAXDIA)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.valimen}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vhidra}" headerText="Hidratación (VALOR/ATLXDIA)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vhidra}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vtransaereo}" headerText="Transporte Aereo (VALOR/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vtransaereo}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vtaxaereo}" headerText="Tasas Aeropuerto - TARJETAS(VALOR/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vtaxaereo}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vsegviaje}" headerText="Seguro de Viaje (VALOR/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vsegviaje}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vtransterr}" headerText="Transaporte Terrestre (VALOR/DIA)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vtransterr}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vbonodep}" headerText="Bono Deportivo Inter PAXDIA"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vbonodep}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vinsc}" headerText="Inscripción  (VALOR/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vinsc}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vvisa}" headerText="Visa (VALOR/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vvisa}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vfondoem}" headerText="Fondo Emergencia (VALOR EVENTO)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vfondoem}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.vespdep}" headerText="Especificos Deporte (VALOR EVENTO)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vespdep}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.total}" headerText="Valor Total (SOLO_APROBADOS)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.total}"/>
-                                                    </p:column>
-                                                    <p:column  filterBy="#{evento.sector}" headerText="Sector"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.sector}"/>
-                                                    </p:column>
-                                                    <p:column filterBy="#{evento.aprobado}" headerText="Estado_Evento (Aprobado/Negado)" footerText="equals" filterMatchMode="equals">
-                                                        <f:facet name="filter">
-                                                            <p:selectOneButton onchange="PF('listaR').filter()">
-                                                                <f:converter converterId="javax.faces.Boolean" />
-                                                                <f:selectItem itemLabel="T" itemValue="" />
-                                                                <f:selectItem itemLabel="A" itemValue="true" />
-                                                                <f:selectItem itemLabel="N" itemValue="false" />
-                                                            </p:selectOneButton>
-                                                        </f:facet>
-                                                        <h:outputText value="#{evento.aprobado ? 'Aprobado': 'Negado'}" />
-                                                    </p:column>
-                                                    
-                                                    <p:column headerText="Editar_Evento">
+                                                    <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()" and scrollable="true" scrollWidth="2200" tableStyle="width:100"  /-->
+                                                    <p:column width="100" headerText="Editar Evento">
                                                         <p:commandButton id="gt" 
                                                             style=" background: #F0BE10; color: white;" 
                                                             value="Editar" 
@@ -203,6 +116,94 @@
                                                 
                                                         ></p:commandButton>  
                                                     </p:column>
+                                                    <p:column width="120" filterBy="#{evento.evento}" headerText="Nombre del Evento"  filterMatchMode="contains">
+                                                        <h:outputText value="#{evento.evento} " />
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.sede}" headerText="Sede Evento: Ciudad_Pais"  filterMatchMode="contains">
+                                                        <h:outputText value="#{evento.sede}"/>
+                                                    </p:column>
+                                                    <p:column width="80" filterBy="#{evento.deporte}" headerText="Deporte"  filterMatchMode="contains">
+                                                        <h:outputText value="#{evento.deporte}"/>
+                                                    </p:column>
+                                                    <p:column width="80" filterBy="#{evento.disciplina}" headerText="Disciplina"  filterMatchMode="contains">
+                                                        <h:outputText value="#{evento.disciplina}"/>
+                                                    </p:column>
+                                                    <p:column  width="60" filterBy="#{evento.tipo}" headerText="Tipo"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.tipo}"/>
+                                                    </p:column>
+                                                    <p:column width="110" filterBy="#{evento.fechai}" headerText="Fecha Inicial"  filterMatchMode="contains">
+                                                        <p:calendar  value="#{evento.fechai}" pattern="dd/MM/yyyy" readonly="true" showOn="none" />
+                                                    </p:column>
+                                                    <p:column   width="110" filterBy="#{evento.fechaf}" headerText="Fecha Final"  filterMatchMode="contains">
+                                                        <p:calendar  value="#{evento.fechaf}" pattern="dd/MM/yyyy" readonly="true" showOn="none" />
+                                                    </p:column>
+                                                    <p:column  width="50" filterBy="#{evento.nument}" headerText="No. Ent. Ofic."  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.nument}"/>
+                                                    </p:column>
+                                                    <p:column width="50" filterBy="#{evento.numatl}" headerText="No. ATL."  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.numatl}"/>
+                                                    </p:column>
+                                                    <p:column width="50" filterBy="#{evento.numdias}" headerText="No. DIAS"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.numdias}"/>
+                                                    </p:column>
+                                                    <p:column width="50" filterBy="#{evento.numpax}" headerText="No. PAX"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.numpax}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.valoja}" headerText="Alojamiento (V/PAXDIA)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.valoja}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.valimen}" headerText="Alimentación (V/PAXDIA)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.valimen}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.vhidra}" headerText="Hidratación (V/ATLXDIA)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vhidra}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.vtransaereo}" headerText="Transporte Aereo (/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vtransaereo}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.vtaxaereo}" headerText="Tasas Aeropuerto - TARJETAS(V/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vtaxaereo}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vsegviaje}" headerText="Seguro de Viaje (V/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vsegviaje}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vtransterr}" headerText="Transaporte Terrestre (V/DIA)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vtransterr}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vbonodep}" headerText="Bono Deportivo Inter PAXDIA"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vbonodep}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vinsc}" headerText="Inscripción  (V/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vinsc}"/>
+                                                    </p:column>
+                                                    <p:column width="80" filterBy="#{evento.vvisa}" headerText="Visa (V/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vvisa}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vfondoem}" headerText="Fondo Emergencia (V EVENTO)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vfondoem}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vespdep}" headerText="Especificos Deporte (V EVENTO)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vespdep}"/>
+                                                    </p:column>
+                                                    <p:column  width="80" filterBy="#{evento.total}" headerText="Valor Total"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.total}"/>
+                                                    </p:column>
+                                                    <p:column width="80" filterBy="#{evento.sector}" headerText="Sector"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.sector}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.aprobado}" headerText="Estado Evento" footerText="equals" filterMatchMode="equals">
+                                                        <f:facet name="filter">
+                                                            <p:selectOneButton onchange="PF('listaR').filter()" style="font-size: 8px;">
+                                                                <f:converter converterId="javax.faces.Boolean" />
+                                                                <f:selectItem itemLabel="T" itemValue="" />
+                                                                <f:selectItem itemLabel="A" itemValue="true" />
+                                                                <f:selectItem itemLabel="N" itemValue="false" />
+                                                            </p:selectOneButton>
+                                                        </f:facet>
+                                                        <h:outputText value="#{evento.aprobado ? 'Aprobado': 'Negado'}" />
+                                                    </p:column>
+                                                    
+                                                    
                                                     
                                                 </p:dataTable>
                                             </h:form>

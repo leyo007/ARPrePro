@@ -178,6 +178,8 @@ public class mainBean implements Serializable {
 
 
     private Mdusuariot currentUser;
+    private Mdusuariot selectedUser;
+    private Mdusuariot newUser;
     private List<Mdusuariot> listUsers;
     private Mdusuarioperfilt currentPerfil;
     private List<Mdperfilt> listPerfiles;
@@ -742,8 +744,8 @@ public class mainBean implements Serializable {
      //UploadImages  
     private UploadedFile archivo;
     //private String ubicacionEnDisco="C:\\Users\\TOSHIBA\\AppData\\Roaming\\NetBeans\\8.0\\config\\GF_4.0\\domain1\\docroot\\imagenes\\";
-    private String ubicacionEnDisco="C:\\glassfish4\\glassfish\\domains\\domain1\\docroot\\imagenes\\";
-    //private String ubicacionEnDisco="/Applications/NetBeans/glassfish-4.0/glassfish/domains/domain1/docroot/img/";
+    //private String ubicacionEnDisco="C:\\glassfish4\\glassfish\\domains\\domain1\\docroot\\imagenes\\";
+    private String ubicacionEnDisco="/opt/glassfish/4.0/glassfish/domains/domain1/docroot/img/";
     
     public void fileUploadListener(FileUploadEvent event){
         archivo=event.getFile();
@@ -902,11 +904,8 @@ public class mainBean implements Serializable {
         listaincHistXCI=mdincentivoshisttFacade.getListByCI(selAprobados.getDepcedula());
         FacesMessage msg = new FacesMessage("Cèdula seleccionada: ", selAprobados.getDepcedula());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        
     
-    }
-    public void onRowUnselect(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage("Cèdula deseleccionada: ", ((Mdpersonast) event.getObject()).getDepcedula());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     public void onRowEditPro(RowEditEvent event) {    
         selAprobados=(Mdpersonast) event.getObject();
@@ -936,6 +935,53 @@ public class mainBean implements Serializable {
             selAprobados=(Mdpersonast) event.getObject();
         }
     }
+    public void onRowUnselect(UnselectEvent event) {
+        FacesMessage msg = new FacesMessage("Cèdula deseleccionada: ", ((Mdpersonast) event.getObject()).getDepcedula());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    //editor de perfiles:
+    public void onRowSelectPerfil(SelectEvent event){
+        selectedUser=(Mdusuariot) event.getObject();
+        FacesMessage msg = new FacesMessage("Perfil seleccionado", "Modificar");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    
+    }
+    public void onRowUnselectPerfil(UnselectEvent event) {
+        FacesMessage msg = new FacesMessage("Suelta perfil: ", "this perfil");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     public void modificaperfil(){
+        if(mdusuariotFacade.modificarDatos(selectedUser)){
+            System.out.println("Usuario modificado...");
+             FacesMessage msg = new FacesMessage("usuario modificado", selectedUser.getUsunombre());
+                FacesContext.getCurrentInstance().addMessage(null, msg); 
+                listUsers=mdusuariotFacade.findAll();
+                
+         }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Usuario no modificado"));
+               
+        }
+    
+    }
+     public void resetUser(){
+         selectPersona= new Mdpersonast();
+     }
+     public void nuevousuario(){
+         newUser.setInstitucion(mdfederacionFacade.buscarXid(newUser.getCodinst()).getNombre());
+         
+        if(mdusuariotFacade.guardarDatos(newUser)){
+            System.out.println("Usuario modificado...");
+             FacesMessage msg = new FacesMessage("usuario modificado", newUser.getUsunombre());
+                FacesContext.getCurrentInstance().addMessage(null, msg); 
+                listUsers=mdusuariotFacade.findAll();
+                
+         }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Usuario no modificado"));
+               
+        }
+    
+    }
+    
     public void onRowAcceptPos(Mdpersonast event) {    
         System.out.println(event.getAprobado()+" Estado actual aprobacion");
         System.out.println("EVENT:");
@@ -1666,11 +1712,31 @@ public class mainBean implements Serializable {
     }
 
     public List <Mdfederacion> getListFede() {
+        if(listFede==null)
+            listFede=mdfederacionFacade.findAll();
         return listFede;
     }
 
     public void setListFede(List <Mdfederacion> listFede) {
         this.listFede = listFede;
+    }
+
+    public Mdusuariot getSelectedUser() {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(Mdusuariot selectedUser) {
+        this.selectedUser = selectedUser;
+    }
+
+    public Mdusuariot getNewUser() {
+        if(newUser==null)
+            newUser=new Mdusuariot();
+        return newUser;
+    }
+
+    public void setNewUser(Mdusuariot newUser) {
+        this.newUser = newUser;
     }
 
     

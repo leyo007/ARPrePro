@@ -28,5 +28,18 @@ public class MdfederacionFacade extends AbstractFacade<Mdfederacion> implements 
     public MdfederacionFacade() {
         super(Mdfederacion.class);
     }
+
+    @Override
+    public Mdfederacion buscarXid(int x) {
+        try{
+            return (Mdfederacion) em.createQuery("SELECT dp FROM Mdfederacion dp WHERE dp.id  =:x")
+                    .setParameter("x", x)
+                    .getSingleResult();
+        }catch(Exception e){
+            
+            System.out.println("Error al buscar dp info socio ec de "+x+" error"+e.getMessage());
+            return new Mdfederacion();
+        }
+    }
     
 }

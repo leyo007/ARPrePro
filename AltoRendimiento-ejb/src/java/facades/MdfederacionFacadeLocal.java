@@ -30,4 +30,6 @@ public interface MdfederacionFacadeLocal {
 
     int count();
     
+    public Mdfederacion buscarXid(int x);
+    
 }

@@ -43,8 +43,83 @@
                 
                 padding: 0px!important;
             }
+            #changePerfil, #newUser{
+                position: fixed!important;
+            }
          </style>
-         
+          <p:dialog id="changePerfil" header="Añadir Categoría Propuesta" widgetVar="newU" modal="true" >
+                                        <p:growl id="growlB" sticky="false" showDetail="true" life="1000" autoUpdate="true" />
+                                           <h:outputText value="Llene todos los campos." />
+
+
+                                           <h:form>
+                                               <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                                                   <h:outputText value="Usuario"/>
+                                                   <p:inputText style="" value="#{myBean.selectedUser.usunombre}" id="pnombre"  placeholder="Categoría"/>
+                                                        <p:message for="pnombre" />
+                                                   <h:outputText value="Nombres"/>
+                                                   <p:inputText style="" value="#{myBean.selectedUser.usuapellidos} #{myBean.selectedUser.usunombres}" id="papellido" placeholder="formato 0.0"/>
+                                                        <p:message for="papellido" />
+                                                   <h:outputText value="Institución"/>
+                                                   <h:outputText id="inst" value="#{myBean.selectedUser.institucion}"  />
+                                                        
+                                                        <p:message for="inst" />
+                                                   
+                                               </h:panelGrid>
+                                               <p:separator/>
+                                               <p:commandButton action="#{myBean.modificaperfil()}" value="Guardar" 
+                                                            icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                                            update="@(form) form-lista"
+                                                            oncomplete="if (#{not facesContext.validationFailed})PF('changePerfil').hide()"
+
+                                                            >
+                                               </p:commandButton>
+                                           </h:form>
+
+                                       </p:dialog>
+          <p:dialog id="newUser" header="Añadir Usuario" widgetVar="newUser" modal="true" >
+                                        <p:growl id="growlA" sticky="false" showDetail="true" life="1000" autoUpdate="true" />
+                                           <h:outputText value="Llene todos los campos." />
+
+
+                                           <h:form>
+                                               <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                                                   <h:outputText value="Cédula"/>
+                                                   <p:inputText style="" value="#{myBean.newUser.usucedula}" id="nci"  placeholder="CI"/>
+                                                        <p:message for="nci" />
+                                                   <h:outputText value="Usuario"/>
+                                                   <p:inputText style="" value="#{myBean.newUser.usunombre}" id="nuser"  placeholder="Escoja usuario"/>
+                                                        <p:message for="nuser" />
+                                                   <h:outputText value="Contraseña"/>
+                                                   <p:inputText style="" value="#{myBean.newUser.usuclave}" id="npwd"  placeholder="Escriba contraseña"/>
+                                                        <p:message for="npwd" />
+                                                   <h:outputText value="Nombres"/>
+                                                   <p:inputText style="" value="#{myBean.newUser.usunombres}" id="nnombre" placeholder="Nombres"/>
+                                                        <p:message for="nnombre" />
+                                                   <h:outputText value="Apellidos"/>
+                                                   <p:inputText style="" value="#{myBean.newUser.usuapellidos}" id="napellido" placeholder="Apellidos"/>
+                                                        <p:message for="napellido" />
+                                                   <h:outputText value="Institución"/>
+                                                   <p:selectOneMenu id="inst"  value="#{myBean.newUser.codinst}" >
+                                                        <f:selectItem itemLabel="Federación"/>
+                                                        <f:selectItems value="#{myBean.listFede}" var="pv" itemLabel="#{pv.nombre}" itemValue="#{pv.id}" />
+                                                    </p:selectOneMenu>
+                                                        <p:message for="inst" />
+                                                   
+                                               </h:panelGrid>
+                                               <p:separator/>
+                                               <p:commandButton action="#{myBean.nuevousuario()}" value="Guardar" 
+                                                            icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                                            update="@(form) form-lista"
+                                                            oncomplete="if (#{not facesContext.validationFailed})PF('newUser').hide()"
+
+                                                            >
+                                               </p:commandButton>
+                                           </h:form>
+
+                                       </p:dialog>
          
          
          
@@ -80,79 +155,16 @@
                                         <p:commandButton id="gt" 
                                                 style=" background: #FBFBFB; color: black;" 
                                                 value="Nuevo Usuario" 
-                                                onclick="PF('newCatPro').show()" 
+                                                onclick="PF('newUser').show()" 
                                                 icon="fa fa-fw fa-plus"
-
+                                                
                                                 
                                                 ></p:commandButton>  
                                                   
                                     </div>
                                     <div class="comcont">
-                                        <p:dialog header="Aprobación de #{myBean.selAprobados.depapellido} " widgetVar="dlg1" id="dlg" modal="true" height="auto" width="auto">
-                                                <h:form id="mensaje">
-                                                        <p:growl id="messages" showDetail="true"  autoUpdate="true"/>
-                                                        <h:panelGrid columns="2" width="500">
-                                                            <h:outputText value="Aprobación de #{myBean.selAprobados.depapellido} "/>
-                                                        </h:panelGrid>
-                                                        <p:separator></p:separator>
-                                                        <h:panelGrid columns="1"  border="0" style="width: 100%;" >
-                                                            <h:outputLabel style="width: 500px;" value="Indicaciones para elaborar el proceso de aprobación de postulación y su impacto dentro del sistema a nivel de proceso y financiero." />
-                                                        <h:outputLabel  value="Actualmente la postulación del atleta se encuentra: "/>
-                                                        <p:selectBooleanButton id="currentAprob" value="#{myBean.selAprobados.aprobado}" 
-                                                                    onLabel="Aprobado" offLabel="Negado" style="" 
-                                                                    disabled="false"
-                                                                    >       
-                                                        </p:selectBooleanButton>
-                                                        </h:panelGrid>
-                                                        <p:dataTable id="dtHist" var="histinc" value="#{myBean.listaincHistXCI}" selectionMode="single" 
-                                                                     selection="#{myBean.selIncHist}" rowKey="#{histinc.idhisinc}"
-                                                             style='width:500px; word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
-                                                             emptyMessage="No hay históricos del atleta seleccionado"
-                                                             
-                                                             >
-                                                            <f:facet name="header">
-                                                                Incentivos anteriores
-                                                            </f:facet>
-
-                                                            <p:column filterBy="#{histinc.estado}" headerText="Estado"  filterMatchMode="contains">
-                                                                <h:outputText value="#{histinc.estado}" />
-                                                            </p:column>
-                                                        </p:dataTable>
-                                                        <p:commandButton action="#{myBean.onRowAcceptPos(myBean.selAprobados)}" value="Aceptar" 
-                                                                                         icon="fa fa-fw fa-check-circle" styleClass="w3-btn botones" 
-                                                                                         onclick="PF('dlg1').hide()"
-                                                                                         style="color: #2196f3;"
-                                                                                         update="form-lista:all"
-                                                                                         disabled="#{myBean.selAprobados.aprobado}"
-                                                                                         >
-                                                            
-                                                        </p:commandButton>
-                                                        
-                                                        <p:commandButton action="#{myBean.onRowCancelPos(myBean.selAprobados)}" value="Cancelar" icon="fa fa-times-circle"
-                                                                                           style="color: #C8232C;"
-                                                                                           styleClass="w3-btn botones"
-                                                                                           onclick="PF('dlg1').hide()"
-                                                                                           >
-                                                        </p:commandButton>
-                                                        
-                                                        <p:commandButton id="rp" 
-                                                                         styleClass="w3-btn botones"
-                                                            style=" background: #10A9F0; color: white;" 
-                                                            value="Repostular" 
-                                                            action="#{myBean.reposDeport(myBean.selAprobados)}"
-                                                            icon="fa fa-fw fa-edit"
-
-
-                                                        ></p:commandButton>  
-                                                       
-                                                        <p:commandButton  value="Ver Postulaciones" icon="fa fa-list-ul"
-                                                                                           style="color: #2196f3;"
-                                                                                           styleClass="w3-btn botones"
-                                                                                           onclick="PF('dlg1').hide()"
-                                                                                           >
-                                                        </p:commandButton>
-                                                </h:form>
-                                        </p:dialog> 
+                                        
+                                        
                                         <h:panelGrid id="panel-principal" style="margin-bottom: 100px;">
                                             <h:form id="form-lista">
                                                
@@ -169,8 +181,8 @@
                                                     <f:facet name="header">
                                                         Usuarios Federados
                                                     </f:facet>
-                                                    <p:ajax event="rowSelect" listener="#{myBean.onRowSelect}" update=":dlg" oncomplete="PF('dlg1').show()" />
-                                                    <p:ajax event="rowUnselect" listener="#{myBean.onRowUnselect}" update=":dlg" />
+                                                    <p:ajax event="rowSelect" listener="#{myBean.onRowSelectPerfil}" update=":changePerfil" oncomplete="PF('newU').show()" />
+                                                    <p:ajax event="rowUnselect" listener="#{myBean.onRowUnselectPerfil}" update=":changePerfil" />
                                                     <p:column filterBy="#{persona.institucion}" headerText="Institución"  filterMatchMode="contains">
                                                         
                                                         <h:outputText value="#{persona.institucion}" />
