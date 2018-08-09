@@ -8,7 +8,7 @@
      <ui:define name="content">
          
          
-        
+         
          <style>
             .menuSelect .ui-selectonemenu-label { 
                 //background: pink;
@@ -34,7 +34,7 @@
                 border-color: #eed3d7;
             }
              
-         </style>
+         </style>        
          <div id="contenido" class="wrapper row3">
             <main class="hoc container clear"> 
                 
@@ -54,17 +54,17 @@
                 </h:outputLink>
                 <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
                
-                    <h2>EDITAR HONORARIO</h2>     
+                    <h2>EDITOR HONORARIO</h2>     
                     <div id="comments">
                         <ul>
                             <li>
                                 <article>
                                     <header>
-                                      <address><h2>Colaboradores</h2></address>
+                                      <address><h2>Coordinación Técnica</h2></address>
                                     </header>
                                     <div class="comcont">
                                         <div class="one_third first">
-                                                        <label for="url"><B> Ingresar Nuevo Honorario</B></label>
+                                                        <label for="url"><B> Modificar Honorario</B></label>
                                         </div>
                                         <h:form>
                                             <p:commandButton  style="background: #4fd48a; color: white; float: right;" value="Regresar"
@@ -78,22 +78,26 @@
                                             <p:messages id="messages" closable="true">
                                                 <p:effect type="puff" event="load" delay="300" />
                                             </p:messages>
-                                            
+                                            <p:outputPanel deferred="true">
+                                                <h3></h3>
+                                                <p>Hasta $1.500,00</p>
+                                            </p:outputPanel>
                                             <p:panel header="DATOS DE LA PERSONA" id="panel-datos" widgetVar="regWidget" style="padding-left: 0%; padding-right: 0%; background-color: rgba(255,255,255,0.5);">
 
                                                 <h:panelGrid columns="2"  border="0" style="width: 100%;">
                                                     <h:outputText class="one_third" value="CEDULA/PASAPORTE"/>
                                                     <h:outputText class="one_third" value=""/>                                                    
-                                                    <h:outputText styleClass="one_third" value="#{myBean.selecetedHono.ci}" id="cedula" >
-                                                        
+                                                    <h:outputText styleClass="one_third" value="#{myBean.selecetedHono.ci}" id="cedula">
+                                                       
                                                     </h:outputText>
                                                     
                                                     
                                                     <p:message for="cedula" display="text"/><h:outputText value=""/>
                                                  </h:panelGrid>
-                                                <h:panelGrid columns="2"  border="0" style="width: 100%;">   
+                                                <h:panelGrid columns="2"  border="0" style="width: 100%;">                                                       
                                                     <h:outputText value="NOMBRES"/>
-                                                    <h:outputText style="" value="#{myBean.selecetedHono.nombres}" id="apellidosynombres">
+                                                    <h:outputText style="" value="#{myBean.selecetedHono.nombres}" id="apellidosynombres" >
+                                                       
                                                     </h:outputText>
                                                     <h:outputText value=""/>
                                                     <p:message for="apellidosynombres" display="text"/>
@@ -102,16 +106,19 @@
                                                     <p:calendar value="#{myBean.selecetedHono.dob}"  disabled="false" id="fechanac" converterMessage="Fecha erronea"
                                                                 pattern="dd/MM/yyyy" 
                                                                 navigator="true"
+                                                                required="true"
                                                                 readonly="true"
                                                                 showOn="none"
                                                                 locale="es"
+                                                                
                                                                 >
+                                                        
                                                     </p:calendar>
                                                      <h:outputText value=""/>
                                                     <p:message for="fechanac" display="text"/>
                                                     
                                                     <h:outputText value="SEXO" />
-                                                    <p:selectOneMenu disabled="true" 
+                                                    <p:selectOneMenu disabled="true"
                                                         id="sexo" value="#{myBean.selecetedHono.sexo}" widgetVar="selectSex" styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Seleccione"/>
                                                         <f:selectItem itemLabel="HOMBRE" itemValue="0" />
@@ -135,21 +142,32 @@
                                                     </p:selectOneMenu>
                                                     <h:outputText value=""/>
                                                     <p:message for="conv" display="text"/>
+                                                    
                                                      <h:outputText value="CARGO/FUNCIÓN" />
                                                      <p:column>                                                          
-                                                         <p:selectOneMenu id="cargo" value="#{myBean.selecetedHono.cargo}" required="true" requiredMessage="Falta la Etnia!" >
+                                                         <p:selectOneMenu id="cargo" value="#{myBean.selecetedHono.cargo}" required="true" requiredMessage="Falta el cargo!" styleClass="menuSelect" panelStyleClass="panel">
                                                                     <f:selectItem itemLabel="Seleccione una" />
                                                                     <f:selectItem  itemLabel="Entrenador" itemValue="Entrenador" />
-                                                                    <f:selectItem  itemLabel="Médico" itemValue="Médico" />
-                                                                    <f:selectItem   itemLabel="Coordinador Técnico Metodológico" itemValue="Coordinador Técnico Metodológico" />
-                                                                    <f:selectItem   itemLabel="Biomecánico" itemValue="Biomecánico" />
-                                                                    <f:selectItem   itemLabel="Fisioterapista" itemValue="Fisioterapista" />
                                                                     <f:selectItem   itemLabel="Asistente Técnico" itemValue="Asistente Técnico" />
-                                                                    
+                                                                    <f:selectItem   itemLabel="Preparador Físico" itemValue="Preparador Físico" />
+                                                                    <p:ajax update="nivel" event="change"/>
                                                                 </p:selectOneMenu>
                                                         </p:column>                                                       
                                                      <h:outputText value=""/>
                                                      <p:message for="cargo" display="text"/>
+                                                    
+                                                    <h:outputText value="NIVEL" />
+                                                     <p:column>                                                          
+                                                        <p:selectOneMenu id="nivel" value="#{myBean.selecetedHono.valor}" required="true" requiredMessage="Falta el nivel!" styleClass="menuSelect" panelStyleClass="panel">
+                                                            <f:selectItem itemLabel="Nivel" />
+                                                            <f:selectItems value="#{myBean.listaniveles}" var="lvl" itemLabel="Nivel #{lvl}" itemValue="#{lvl}" />
+                                                            <p:ajax update="valor total meses" event="change" listener="#{myBean.getTotalH(myBean.selecetedHono.meses, myBean.selecetedHono.valor)}"/>
+                                                        </p:selectOneMenu>
+                                                     </p:column>                                                       
+                                                     <h:outputText value=""/>
+                                                     <p:message for="nivel" display="text"/>
+                                                     
+                                                     
 
                                                 <p:separator /> <p:separator />
                                                 
@@ -186,7 +204,7 @@
                                                     <h:outputText value="VALOR ACORDADO" />
                                                     <p:inputNumber value="#{myBean.selecetedHono.valor}" id="valor" required="true" requiredMessage="Añada el valor" placeholder="Valor mensual" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
-                                                        <p:ajax update="total meses" event="change" listener="#{myBean.getTotalH(myBean.selecetedHono.meses, myBean.selecetedHono.valor)}"/>  
+                                                        <p:ajax update="total meses nivel" event="change" listener="#{myBean.getTotalH(myBean.selecetedHono.meses, myBean.selecetedHono.valor)}"/>  
                                                      </p:inputNumber>  
                                                     <h:outputText value="" />
                                                     <p:message for="valor" display="text"/>
@@ -195,7 +213,7 @@
                                                     <p:selectOneMenu disabled="false" required="true" requiredMessage="Falta nº de meses"
                                                                      id="meses" value="#{myBean.selecetedHono.meses}" styleClass="menuSelect" panelStyleClass="panel">
                                                                     <f:selectItems value="#{myBean.listaMes}"/>
-                                                                    <p:ajax update="total valor" event="change" listener="#{myBean.getTotalH(myBean.selecetedHono.meses, myBean.selecetedHono.valor)}"/>  
+                                                                    <p:ajax update="total valor nivel" event="change" listener="#{myBean.getTotalH(myBean.selecetedHono.meses, myBean.selecetedHono.valor)}"/>  
                                                     </p:selectOneMenu>
                                                      <h:outputText value=""/>
                                                     <p:message for="meses" display="text"/>
@@ -205,7 +223,7 @@
                                                     <h:outputText value="TOTAL" />
                                                     <p:inputNumber value="#{myBean.selecetedHono.total}" id="total"  placeholder="Valor Total" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
-                                                                    <p:ajax update="meses valor" event="change" listener="#{myBean.getTotalH(myBean.selecetedHono.meses, myBean.selecetedHono.valor)}"/>  
+                                                                    <p:ajax update="meses valor nivel" event="change" listener="#{myBean.getTotalH(myBean.selecetedHono.meses, myBean.selecetedHono.valor)}"/>  
                                                      </p:inputNumber>  
                                                     <h:outputText value="" />
                                                     <p:message for="total" display="text"/>

@@ -269,6 +269,7 @@ public class mainBean implements Serializable {
     private List <Mdfederacion> listFede;
     
     private boolean imcoe;
+    private boolean editHono;
     
     
     Renderizador r=new Renderizador();
@@ -620,9 +621,25 @@ public class mainBean implements Serializable {
         return "necesidades_geditor";
     } 
     public String modificarHonorario(Mdhonorarios x){
+        String y="";
         System.out.println("selecetedHono");
         selecetedHono=x;
-        return "honorario_edit";
+        
+        if(currentModulo.getIdmodulo().getIdmodulo()==5 && selectFede.getSector()){
+            y="honorario_fede_edit";
+        }
+        if(currentModulo.getIdmodulo().getIdmodulo()==2){
+            editHono=true;
+            y="honorario_admin_edit";
+        }
+        if(currentModulo.getIdmodulo().getIdmodulo()==6 && selectFede.getSector()){
+            y="honorario_coe_edit"; //xxx
+        }
+        if(currentModulo.getIdmodulo().getIdmodulo()==6 && !selectFede.getSector()){
+            y="honorario_cpe_edit"; //xxx
+        }
+        
+        return y;
     } 
     public String individual(Mdnecesidades x){
         selectedNecesidad=x;
@@ -1203,11 +1220,38 @@ public class mainBean implements Serializable {
         
         return x;
     }
+    public String modificaHonorario(Mdhonorarios y){
+        String x="";
+        System.out.println("Dentro editar H");
+        y.setModificador(currentUser.getIdusuario());
+        
+        
+        if(mdhonorariosFacade.modificarDatos(y)){
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"El registro ha sido modificado","Cargando Lista..."));
+            x="honorarios_list";
+            listaHono=mdhonorariosFacade.getListByCreator(currentUser.getIdusuario());
+            
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha modificado el registro","Controle los datos"));
+        }
+        
+        
+        
+        return x;
+    }
     public double getTotalH(double x, double y){
+        Mdhonorarios z=new Mdhonorarios();
         System.out.println("valores: "+x+" "+y);
-        nuevoHono.setTotal(x*y);
-        System.out.println("nuevoHono.getTotal() "+nuevoHono.getTotal());
-        return nuevoHono.getTotal();
+        if(nuevoHono!=null){
+            nuevoHono.setTotal(x*y);
+            z=nuevoHono;
+        }
+        if(selecetedHono!=null){
+            selecetedHono.setTotal(x*y);
+            z=selecetedHono;
+        }
+        System.out.println("x.getTotal() "+z.getTotal());
+        return z.getTotal();
     }
     
     
@@ -1968,30 +2012,56 @@ public class mainBean implements Serializable {
     }
 
     public double[] getListaniveles() {
-        if(nuevoHono.getCargo()!=null){
-            if(nuevoHono.getCargo().equals("Entrenador")){
-                listaniveles=new double[5];
-                    listaniveles[0] = 1500.0;
-                    listaniveles[1] = 2000.0;
-                    listaniveles[2] = 2500.0;
-                    listaniveles[3] = 3000.0;
-                    listaniveles[4] = 4000.0;
-                    nuevoHono.setTipo(1);
+        if(editHono){
+                if(nuevoHono.getCargo()!=null){
+                    if(nuevoHono.getCargo().equals("Entrenador")){
+                        listaniveles=new double[5];
+                            listaniveles[0] = 1500.0;
+                            listaniveles[1] = 2000.0;
+                            listaniveles[2] = 2500.0;
+                            listaniveles[3] = 3000.0;
+                            listaniveles[4] = 4000.0;
+                            nuevoHono.setTipo(1);
 
-            }if(nuevoHono.getCargo().equals("Asistente Técnico")||nuevoHono.getCargo().equals("Preparador Físico")){
-                listaniveles=new double[4];
-                    listaniveles[0] = 1500.0;
-                    listaniveles[1] = 1000.0;
-                    listaniveles[2] = 800.0;
-                    listaniveles[3] = 600.0;
-                    nuevoHono.setTipo(1);
-            }
-        }else{ 
-            listaniveles=new double[1];
-             nuevoHono.setTipo(3);
-        }
-        System.out.println("nuevoHono.getTipo(); "+nuevoHono.getTipo());
+                    }if(nuevoHono.getCargo().equals("Asistente Técnico")||nuevoHono.getCargo().equals("Preparador Físico")){
+                        listaniveles=new double[4];
+                            listaniveles[0] = 1500.0;
+                            listaniveles[1] = 1000.0;
+                            listaniveles[2] = 800.0;
+                            listaniveles[3] = 600.0;
+                            nuevoHono.setTipo(1);
+                    }
+                }else{ 
+                    listaniveles=new double[1];
+                     nuevoHono.setTipo(3);
+                }
+                System.out.println("nuevoHono.getTipo(); "+nuevoHono.getTipo());
+        }else{
         
+                if(selecetedHono.getCargo()!=null){
+                    if(selecetedHono.getCargo().equals("Entrenador")){
+                        listaniveles=new double[5];
+                            listaniveles[0] = 1500.0;
+                            listaniveles[1] = 2000.0;
+                            listaniveles[2] = 2500.0;
+                            listaniveles[3] = 3000.0;
+                            listaniveles[4] = 4000.0;
+                            selecetedHono.setTipo(1);
+
+                    }if(selecetedHono.getCargo().equals("Asistente Técnico")||selecetedHono.getCargo().equals("Preparador Físico")){
+                        listaniveles=new double[4];
+                            listaniveles[0] = 1500.0;
+                            listaniveles[1] = 1000.0;
+                            listaniveles[2] = 800.0;
+                            listaniveles[3] = 600.0;
+                            selecetedHono.setTipo(1);
+                    }
+                }else{ 
+                    listaniveles=new double[1];
+                     selecetedHono.setTipo(3);
+                }
+                System.out.println("selecetedHono.getTipo(); "+selecetedHono.getTipo());
+        }
         return listaniveles;
     }
 
@@ -2021,6 +2091,14 @@ public class mainBean implements Serializable {
 
     public void setListaLvl(String[] listaLvl) {
         this.listaLvl = listaLvl;
+    }
+
+    public boolean isEditHono() {
+        return editHono;
+    }
+
+    public void setEditHono(boolean editHono) {
+        this.editHono = editHono;
     }
 
     
