@@ -1,0 +1,194 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+     <ui:define name="content">
+         
+  
+        
+         <style>
+            .menuSelect .ui-selectonemenu-label { 
+                //background: pink;
+               
+                box-sizing: content-box!important;
+            }
+            .panel .ui-selectonemenu-list { 
+                 //width: 100px;
+                //background: green;
+            }
+            
+            .ui-selectonemenu .ui-selectonemenu-trigger {
+                  // background-color: red;
+                width: auto!important;
+            }
+            .ui-state-highlight, .ui-widget-content .ui-state-highlight{
+                background-image: linear-gradient(to bottom, #ffffff, #d6d6d6);
+                background-color: #fff;
+                color: #337ab7;
+            }
+            
+            th{
+                color: #FFFFFF!important;background-color: #373737!important;
+                background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#555), to(#373737))!important;
+            }
+            h2{
+                font-family: Georgia, Times, "Times New Roman", serif; 
+                font-size: 22px;
+            }
+             
+         </style>
+         <div id="contenido" class="wrapper row3">
+            <main class="clear"> 
+                <div class="btmspace-80 center">
+                  <h3 class="nospace">Bienvenidos</h3>
+                  <h:outputText value="Usuario con acceso"/>
+                </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+                <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                </h:outputLink>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+               
+                    <h2>NECESIDADES</h2>     
+                    <div id="comments">
+                        <ul>
+                            <li>
+                                <article>
+                                    <header>
+                                      <address><h2>GENERALES</h2></address>
+                                    </header>
+                                    <div class="comcont">
+                                        <div class="one_third first">
+                                                        <!--label for="url"><B> Ingresar Nueva Necesidad</B></label-->
+                                         </div>
+                                         <h:form>
+                                            <p:commandButton  style="background: #4fd48a; color: white; float: right;" value="Regresar"
+                                                            action="#{myBean.givmeLink(1)}" icon="fa fa-fw fa-undo" />
+                                        </h:form>
+                                        <p:commandButton id="gt" 
+                                                style=" background: #FBFBFB; color: black;" 
+                                                value="Nuevo" 
+                                                rendered="false"
+                                                action="#{myBean.newnecesities()}" 
+                                                icon="fa fa-fw fa-plus-circle"
+
+                                                
+                                                ></p:commandButton>  
+                                                  
+                                    </div>
+                                    <div class="comcont">
+                                        <h:panelGrid id="panel-principal" style="margin-bottom: 100px;">
+                                            <h:form id="form-lista">
+                                               
+                                                <p:commandButton id="btn-generar" value="Generar Documento" icon="fa fa-fw fa-file" ajax="false">
+                                                    <p:dataExporter type="pdf" target=":form-lista:all" fileName="#{myBean.currentUser.usuapellidos}declaracion" 
+                                                    preProcessor="#{myBean.preProcessPDF}"
+                                                    options="#{myBean.pdfOpt}"
+                                                    />
+                                                </p:commandButton>
+                                                <p:dataTable id="all" value="#{myBean.filtroNecesidad}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
+                                                             selectionMode="single" selection="#{myBean.selectedNecesidad}" rowKey="#{item.id}"
+                                                             widgetVar="listaR" filteredValue="#{myBean.filtroNecesidad}" emptyMessage="No hay registros..."
+                                                >
+                                                    
+                                                    <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
+                                                    <p:column filterBy="#{item.deporte}" headerText="Deporte"  filterMatchMode="contains">
+                                                        <h:outputText value="#{item.deporte} " />
+                                                    </p:column>
+                                                    <p:column filterBy="#{item.disciplina}" headerText="Disciplina"  filterMatchMode="contains">
+                                                        <h:outputText value="#{item.disciplina}"/>
+                                                    </p:column>
+                                                    <p:column filterBy="#{item.tipo}"  rendered="true" headerText="Tipo"  filterMatchMode="equals">
+                                                        <f:facet name="filter">
+                                                            <p:selectOneButton onchange="PF('listaR').filter()">
+                                                                <f:converter converterId="javax.faces.Boolean" />
+                                                                <f:selectItem itemLabel="T" itemValue="" />
+                                                                <f:selectItem itemLabel="Gral" itemValue="true" />
+                                                                <f:selectItem itemLabel="Ind" itemValue="false" />
+                                                            </p:selectOneButton>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.tipo ? 'General': 'Individual'}" />
+                                                    </p:column>
+                                                    <p:column filterBy="#{item.nombres}" headerText="Nombres"  filterMatchMode="contains">
+                                                        <h:outputText value="#{item.nombres}"/>
+                                                    </p:column>
+                                                    <p:column  filterBy="#{item.articulo}" headerText="Artículo"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{item.articulo}"/>
+                                                    </p:column>
+                                                    <p:column  filterBy="#{item.cantidad}" headerText="Cantidad" footerText="Totales" filterMatchMode="contains">
+                                                        <h:outputText  value="#{item.cantidad}"/>
+                                                    </p:column>
+                                                    
+                                                    <p:column  filterBy="#{item.valor}" headerText="Valor"  footerText="#{myBean.totalEvento(myBean.filtroNecesidad)}" filterMatchMode="contains">
+                                                        <h:outputText  value="#{item.valor} USD"/>
+                                                    </p:column>
+                                                    <p:column  filterBy="#{item.total}" headerText="Total"  footerText="#{myBean.totalEventos(myBean.filtroNecesidad)}" filterMatchMode="contains">
+                                                        <h:outputText  value="#{item.total} USD"/>
+                                                    </p:column>
+                                                    <p:column headerText="Modificar" rendered="false" exportable="false">
+                                                        <p:commandButton id="gt" 
+                                                            style=" background: #F0BE10; color: white;" 
+                                                            value="Editar" 
+                                                            action="#{myBean.modificarNecesidadGral(item)}"
+                                                            icon="fa fa-fw fa-edit"
+
+                                                
+                                                        ></p:commandButton>  
+                                                    </p:column>
+                                                    <p:column headerText="Individuales" rendered="false" exportable="false">
+                                                        <p:commandButton id="rp" 
+                                                            style=" background: #10A9F0; color: white;" 
+                                                            value="Añadir" 
+                                                            action="#{myBean.individual(item)}"
+                                                            icon="fa fa-fw fa-edit"
+
+                                                
+                                                        ></p:commandButton>  
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </h:form>
+                                        </h:panelGrid>          
+                                    </div>
+                                </article>
+                            </li>
+                            <li>
+                              <article>
+                                    <div class="comcont">
+                                       <div class="scrollable">
+                                          <div id="datos"></div>
+                                       </div>
+                                    </div>
+                              </article>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                 
+                <script type="text/javascript">
+                    function handleLoginRequest(xhr, status, args) {
+                        if(args.validationFailed || !args.loggedIn) {
+                            PF('dlg').jq.effect("shake", {times:5}, 100);
+                            //location.reload(); 
+                            //window.location.replace(window.location.href);
+                        }
+                        else {
+                            PF('dlg').hide();
+                            $('#loginLink').fadeOut();
+                        }
+                    }
+                </script>
+                  <!-- InstanceEndEditable -->
+                <div class="clear"></div>
+            </main>
+        </div>
+         
+         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                     <p:dialog id="dgl" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                         <h3>Procesando...</h3>
+                                         <img  src="images/bar.gif"/>
+                                     </p:dialog>
+     </ui:define>
+</ui:composition>

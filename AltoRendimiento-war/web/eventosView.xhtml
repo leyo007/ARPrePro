@@ -1,0 +1,269 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+     <ui:define name="content">
+         #{myBean.noLogged()}
+        <h:form>
+                <p:growl id="messages" showDetail="true" sticky="true" />
+                <p:idleMonitor timeout="#{renderizador.tiempoMonitor}" >
+                    <p:ajax event="idle" onstart="PF('idleDialog').show()"      update="messages" />
+                </p:idleMonitor>
+
+
+                <p:confirmDialog 
+                    message="La sesión ha caducado,"
+                    header="Alto Rendimiento" severity="alert" widgetVar="idleDialog" closable="false" >
+                            <p:commandLink value="Inicio" update="msg"
+                                oncomplete="idleDialog.hide()"
+                                action="#{myBean.logout()}"  ajax="false"/>
+
+                </p:confirmDialog>
+        </h:form>   
+  
+        
+         <style>
+            .menuSelect .ui-selectonemenu-label { 
+                //background: pink;
+               
+                box-sizing: content-box!important;
+            }
+            .panel .ui-selectonemenu-list { 
+                 //width: 100px;
+                //background: green;
+            }
+            
+            .ui-selectonemenu .ui-selectonemenu-trigger {
+                  // background-color: red;
+                width: auto!important;
+            }
+            .ui-state-highlight, .ui-widget-content .ui-state-highlight{
+                background-image: linear-gradient(to bottom, #ffffff, #d6d6d6);
+                background-color: #fff;
+                color: #337ab7;
+            }
+            
+            th{
+                color: #FFFFFF!important;background-color: #373737!important;
+                background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#555), to(#373737))!important;
+            }
+            h2{
+                font-family: Georgia, Times, "Times New Roman", serif; 
+                font-size: 22px;
+            }
+            
+            #comments input{
+                
+                padding-bottom: 0px!important;
+            }
+            #comments div{
+                
+                margin-bottom:  0px!important;
+            }
+            
+            
+
+         </style>
+         <div id="contenido" class="wrapper row3">
+            <main class="clear"> 
+                <div class="btmspace-80 center">
+                  <h3 class="nospace">Bienvenidos</h3>
+                  <h:outputText value="Usuario con acceso"/>
+                </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+                <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                </h:outputLink>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+               
+                    <h2>EVENTOS</h2>     
+                    <div id="comments">
+                        <ul>
+                            <li>
+                                <article>
+                                    <header>
+                                        <address><h2>EVENTOS GENERADOS POR #{myBean.currentUser.usuapellidos}</h2></address>
+                                    </header>
+                                    <div class="comcont">
+                                        <div class="one_third first">
+                                                        <label for="url"><B> Generar Nuevo Evento</B></label>
+                                         </div>
+                                         <h:form>
+                                            <p:commandButton  style="background: #4fd48a; color: white; float: right;" value="Regresar"
+                                                            action="#{myBean.givmeLink(1)}" icon="fa fa-fw fa-undo" />
+                                        </h:form>
+                                        <p:commandButton id="gt" 
+                                                style=" background: #FBFBFB; color: black;" 
+                                                value="Nuevo Evento" 
+                                                action="#{myBean.newEvento()}" 
+                                                icon="fa fa-fw fa-plus-circle"
+
+                                                
+                                                ></p:commandButton>  
+                                                  
+                                    </div>
+                                    <div class="comcont">
+                                        <h:panelGrid id="panel-principal" style="margin-bottom: 100px;" columns="1">
+                                            <h:form id="form-lista">
+                                               
+                                                <p:commandButton id="btn-generar" value="Generar Documento" icon="fa fa-fw fa-file" ajax="false">
+                                                    <p:dataExporter type="pdf" target=":form-lista:all" fileName="#{myBean.uActual.ci}declaracion" 
+                                                    preProcessor="#{myBean.preProcessPDF}"
+                                                    options="#{myBean.pdfOpt}"
+                                                    />
+                                                </p:commandButton>
+                                                <p:dataTable id="all" value="#{myBean.filtroEventos}" var="evento" style='font-size: 9px!important;    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
+                                                             selectionMode="single" selection="#{myBean.selectedEvent}" rowKey="#{evento.id}"
+                                                             widgetVar="listaR" filteredValue="#{myBean.filtroEventos}" emptyMessage="No hay registros..."
+                                                             scrollable="true"
+                                                >
+                                                    
+                                                    <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()" and scrollable="true" scrollWidth="2200" tableStyle="width:100"  /-->
+                                                    <p:column width="100" headerText="Editar Evento">
+                                                        <p:commandButton id="gt" 
+                                                            style=" background: #F0BE10; color: white;" 
+                                                            value="Editar" 
+                                                            action="#{myBean.editEvent(evento)}"
+                                                            rendered="#{evento.creador eq myBean.currentUser.idusuario}"
+                                                            icon="fa fa-fw fa-edit"
+
+                                                
+                                                        ></p:commandButton>  
+                                                    </p:column>
+                                                    <p:column width="120" filterBy="#{evento.evento}" headerText="Nombre del Evento"  filterMatchMode="contains">
+                                                        <h:outputText value="#{evento.evento} " />
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.sede}" headerText="Sede Evento: Ciudad_Pais"  filterMatchMode="contains">
+                                                        <h:outputText value="#{evento.sede}"/>
+                                                    </p:column>
+                                                    <p:column width="80" filterBy="#{evento.deporte}" headerText="Deporte"  filterMatchMode="contains">
+                                                        <h:outputText value="#{evento.deporte}"/>
+                                                    </p:column>
+                                                    <p:column width="80" filterBy="#{evento.disciplina}" headerText="Disciplina"  filterMatchMode="contains">
+                                                        <h:outputText value="#{evento.disciplina}"/>
+                                                    </p:column>
+                                                    <p:column  width="60" filterBy="#{evento.tipo}" headerText="Tipo"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.tipo}"/>
+                                                    </p:column>
+                                                    <p:column width="110" filterBy="#{evento.fechai}" headerText="Fecha Inicial"  filterMatchMode="contains">
+                                                        <p:calendar  value="#{evento.fechai}" pattern="dd/MM/yyyy" readonly="true" showOn="none" />
+                                                        
+                                                    </p:column>
+                                                    <p:column   width="110" filterBy="#{evento.fechaf}" headerText="Fecha Final"  filterMatchMode="contains">
+                                                        <p:calendar  value="#{evento.fechaf}" pattern="dd/MM/yyyy" readonly="true" showOn="none" />
+                                                    </p:column>
+                                                    <p:column  width="50" filterBy="#{evento.nument}" headerText="No. Ent. Ofic."  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.nument}"/>
+                                                    </p:column>
+                                                    <p:column width="50" filterBy="#{evento.numatl}" headerText="No. ATL."  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.numatl}"/>
+                                                    </p:column>
+                                                    <p:column width="50" filterBy="#{evento.numdias}" headerText="No. DIAS"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.numdias}"/>
+                                                    </p:column>
+                                                    <p:column width="50" filterBy="#{evento.numpax}" headerText="No. PAX"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.numpax}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.valoja}" headerText="Alojamiento (V/PAXDIA)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.valoja}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.valimen}" headerText="Alimentación (V/PAXDIA)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.valimen}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.vhidra}" headerText="Hidratación (V/ATLXDIA)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vhidra}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.vtransaereo}" headerText="Transporte Aereo (/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vtransaereo}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.vtaxaereo}" headerText="Tasas Aeropuerto - TARJETAS(V/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vtaxaereo}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vsegviaje}" headerText="Seguro de Viaje (V/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vsegviaje}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vtransterr}" headerText="Transaporte Terrestre (V/DIA)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vtransterr}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vbonodep}" headerText="Bono Deportivo Inter PAXDIA"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vbonodep}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vinsc}" headerText="Inscripción  (V/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vinsc}"/>
+                                                    </p:column>
+                                                    <p:column width="80" filterBy="#{evento.vvisa}" headerText="Visa (V/PAX)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vvisa}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vfondoem}" headerText="Fondo Emergencia (V EVENTO)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vfondoem}"/>
+                                                    </p:column>
+                                                    <p:column width="90" filterBy="#{evento.vespdep}" headerText="Especificos Deporte (V EVENTO)"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.vespdep}"/>
+                                                    </p:column>
+                                                    <p:column  width="80" filterBy="#{evento.total}" headerText="Valor Total"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.total}"/>
+                                                    </p:column>
+                                                    <p:column width="80" filterBy="#{evento.sector}" headerText="Sector"  filterMatchMode="contains">
+                                                        <h:outputText  value="#{evento.sector}"/>
+                                                    </p:column>
+                                                    <p:column width="100" filterBy="#{evento.aprobado}" headerText="Estado Evento" footerText="equals" filterMatchMode="equals">
+                                                        <f:facet name="filter">
+                                                            <p:selectOneButton onchange="PF('listaR').filter()" style="font-size: 8px;">
+                                                                <f:converter converterId="javax.faces.Boolean" />
+                                                                <f:selectItem itemLabel="T" itemValue="" />
+                                                                <f:selectItem itemLabel="A" itemValue="true" />
+                                                                <f:selectItem itemLabel="N" itemValue="false" />
+                                                            </p:selectOneButton>
+                                                        </f:facet>
+                                                        <h:outputText value="#{evento.aprobado ? 'Aprobado': 'Negado'}" />
+                                                    </p:column>
+                                                    
+                                                    
+                                                    
+                                                </p:dataTable>
+                                            </h:form>
+                                        </h:panelGrid>          
+                                    </div>
+                                </article>
+                            </li>
+                            <li>
+                              <article>
+                                    <div class="comcont">
+                                       <div class="scrollable">
+                                          <div id="datos"></div>
+                                       </div>
+                                    </div>
+                              </article>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                 
+                <script type="text/javascript">
+                    function handleLoginRequest(xhr, status, args) {
+                        if(args.validationFailed || !args.loggedIn) {
+                            PF('dlg').jq.effect("shake", {times:5}, 100);
+                            //location.reload(); 
+                            //window.location.replace(window.location.href);
+                        }
+                        else {
+                            PF('dlg').hide();
+                            $('#loginLink').fadeOut();
+                        }
+                    }
+                </script>
+                  <!-- InstanceEndEditable -->
+                <div class="clear"></div>
+            </main>
+        </div>
+         
+         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                     <p:dialog id="dgl" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                         <h3>Procesando...</h3>
+                                         <img  src="images/bar.gif"/>
+                                     </p:dialog>
+     </ui:define>
+</ui:composition>

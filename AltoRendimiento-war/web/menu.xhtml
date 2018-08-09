@@ -20,6 +20,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dosis"/>
 </h:head>
 <h:body id="top">
+    #{myBean.noLogged()}
+    
+    
+    
     <style>
         .one_third {
             width: 29.288344%!important;
@@ -108,10 +112,10 @@
               <ul class="nospace group services">
                   <p:repeat id="repeat" value="#{myBean.menus}" var="menu">
                     <li class="one_third">
-                        <article class="bgded overlay" style="background-image:url(images/#{menu.mendescripcion}.jpg;">
+                        <article class="bgded overlay" style="background-image:url(images/#{menu.idmenu}.jpg;">
                                          <div class="txtwrap"><i class="fa fa-money" style="font-size:48px"></i>
                                                <h6 class="heading">#{menu.mennombre}</h6>
-                                               <p>Lacus eget nullam in ornare magna nam vitae volutpat justo tincidunt</p>
+                                               <p>#{menu.mendescripcion}</p>
                                          </div>
                             <footer>
                                 <p:commandButton id="links" style="padding: 7px; width: 100%;" value="Abrir" action="#{myBean.redir(menu.menlink)}"/>

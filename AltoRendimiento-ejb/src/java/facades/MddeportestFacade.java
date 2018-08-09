@@ -67,6 +67,18 @@ public class MddeportestFacade extends AbstractFacade<Mddeportest> implements Md
         }
     }
 
+    @Override
+    public List<Mddeportest> getDepByCat(boolean x) {
+        try {
+              return em.createQuery("SELECT d FROM Mddeportest d WHERE d.sector=:x")   
+                      .setParameter("x", x)  
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, filtro deportes por Sector Categoría: " + e.getMessage());
+            return null;
+        }
+    }
+
     
     
 }

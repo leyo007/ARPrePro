@@ -28,6 +28,7 @@ import entities.Mddisciplinat;
 import entities.Mddivisionpolitica;
 import entities.Mdevento;
 import entities.Mdfederacion;
+import entities.Mdhonorarios;
 import entities.Mdincentivoshistt;
 import entities.Mdincentivost;
 import entities.Mdmenut;
@@ -49,6 +50,7 @@ import facades.MddisciplinatFacadeLocal;
 import facades.MddivisionpoliticaFacadeLocal;
 import facades.MdeventoFacadeLocal;
 import facades.MdfederacionFacadeLocal;
+import facades.MdhonorariosFacadeLocal;
 import facades.MdincentivoshisttFacadeLocal;
 import facades.MdincentivostFacadeLocal;
 import facades.MdmenutFacadeLocal;
@@ -91,6 +93,9 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 //@ViewScoped
 public class mainBean implements Serializable {
+
+    @EJB
+    private MdhonorariosFacadeLocal mdhonorariosFacade;
 
     @EJB
     private MdfederacionFacadeLocal mdfederacionFacade;
@@ -176,7 +181,11 @@ public class mainBean implements Serializable {
     @EJB
     private MdcategoriaactualtFacadeLocal mdcategoriaactualtFacade;
 
-
+    private Mdhonorarios currentHono;
+    private Mdhonorarios selecetedHono;
+    private Mdhonorarios nuevoHono;
+    private List<Mdhonorarios> listaHono;
+    private List<Mdhonorarios> filtroHono;
     private Mdusuariot currentUser;
     private Mdusuariot selectedUser;
     private Mdusuariot newUser;
@@ -252,9 +261,23 @@ public class mainBean implements Serializable {
     private List<Mdnecesidades> listaNecesidad;
     private List<Mdnecesidades> filtroNecesidad;
     private int[] listaDel;
+    private int[] listaMes;
+    private double[] listaniveles;
+    private String[] listaLvl;
     
     private Mdfederacion selectFede;
     private List <Mdfederacion> listFede;
+    
+    private boolean imcoe;
+    
+    
+    Renderizador r=new Renderizador();
+    public void  noLogged() throws IOException{
+        if(currentUser==null){
+           r.irAInicio();
+           
+        }
+    }
     
     Mdperfilt x = new Mdperfilt();
     public String accessLogin() throws IOException{
@@ -287,13 +310,17 @@ public class mainBean implements Serializable {
                     
                     menus=mdmenutFacade.getAllBymodulo(modulo.getIdmodulo());
                     System.out.println("6.- menus: "+menus.get(0));
+                    
+                    //menus.forEach((t) -> {
                     for(Mdmenut t: menus){
                         System.out.println("7.- Nombres: "+t.getMennombre());
-                    }
+                    };
+                    //});
                     selectFede=mdfederacionFacade.find(currentUser.getCodinst());
                     
-                    System.out.println("8.- FIN");
-                    System.out.println("8.- FIN");
+                    System.out.println("8.- selectFede: "+selectFede);
+                    System.out.println("9.- selectFede: "+selectFede.getSector());
+                    System.out.println("10.- FIN");
                     
                     
                     resultado="menu";
@@ -339,7 +366,7 @@ public class mainBean implements Serializable {
         RequestContext.getCurrentInstance().execute("window.scrollTo(0,0);");
         HttpSession session = SessionBean.getSession();
         session.invalidate();
-        
+        r.irAInicio();
         return"login";
     
     }
@@ -418,9 +445,15 @@ public class mainBean implements Serializable {
                              break;
                     case 7:  link = "reportes";
                              break;
-                    case 8:  link = "eventos";
+                    case 8:  if(currentModulo.getIdmodulo().getIdmodulo()==6)
+                                link = "eventosView";
+                             else 
+                                   link = "eventos";
                              break;
                     case 9:  link = "necesidades";
+                             break;
+                    case 10:  link = "honorarios_list";
+                            imcoe=false;
                              break;
 
                     default: link = "";
@@ -455,6 +488,9 @@ public class mainBean implements Serializable {
         newEvent=new Mdevento();
         
         newEvent.setAd(selectFede.getAd());
+        if(selectFede.getTipo().equals("NACIONALES"))
+            newEvent.setTipomacro("CPS");
+        
         if(selectFede.getSector())
             newEvent.setSector("CONVENCIONAL");
         else
@@ -462,32 +498,37 @@ public class mainBean implements Serializable {
    
         return "evento_nuevo";
     }
-    public void prueba(String x){
-        
+    public void prueba(String x){      
         System.out.println("X: "+x);
         System.out.println("Persona: "+selectPersona.getDepnombre());
         System.out.println("Cédula: "+selectPersona.getDepcedula());
         System.out.println("DOB: "+selectPersona.getDepdob());
-    
-    
     }
-    public void fechas(String x){
-        
+    public void fechas(String x){       
         System.out.println("DATES::::: "+x);
         System.out.println("Persona: "+selectPersona.getDepnombre());
-        System.out.println("Cédula: "+selectPersona.getDepcedula());
-        
-    
-    
+        System.out.println("Cédula: "+selectPersona.getDepcedula());  
     }
-    public void sexo(int x){
-        
+    public void sexo(int x){       
         System.out.println("SEXO::::: "+x);
         System.out.println("Persona: "+selectPersona.getDepnombre());
-        System.out.println("Cédula: "+selectPersona.getDepcedula());
-        
-    
-    
+        System.out.println("Cédula: "+selectPersona.getDepcedula()); 
+    }
+    public void pruebaH(String x){      
+        System.out.println("X: "+x);
+        System.out.println("Persona: "+nuevoHono.getNombres());
+        System.out.println("Cédula: "+nuevoHono.getCi());
+        System.out.println("DOB: "+nuevoHono.getDob());
+    }
+    public void fechasH(String x){       
+        System.out.println("DATES::::: "+x);
+        System.out.println("Persona: "+nuevoHono.getNombres());
+        System.out.println("Cédula: "+nuevoHono.getCi());  
+    }
+    public void sexoH(int x){       
+        System.out.println("SEXO::::: "+x);
+        System.out.println("Persona: "+nuevoHono.getNombres());
+        System.out.println("Cédula: "+nuevoHono.getCi()); 
     }
     public boolean selOtros(String x){
     if(x.equals("Otros"))
@@ -517,8 +558,19 @@ public class mainBean implements Serializable {
     public String registraEvento(){
         String resultado="";
         newEvent.setCreador(currentUser.getIdusuario());
-        if(mdeventoFacade.guardarDatos(newEvent))
-            resultado="eventos";
+        if(mdeventoFacade.guardarDatos(newEvent)){
+            
+                if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
+                    filtroEventos=mdeventoFacade.findAll();
+                    resultado="eventosView";
+                }
+                else{
+                    filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
+                    resultado="eventos";
+                }
+            
+            
+        }
         
         return resultado;
     } 
@@ -526,7 +578,14 @@ public class mainBean implements Serializable {
         String resultado="";
         selectedEvent.setCreador(currentUser.getIdusuario());
         if(mdeventoFacade.modificarDatos(selectedEvent))
-            resultado="eventos";
+            if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
+                    filtroEventos=mdeventoFacade.findAll();
+                    resultado="eventosView";
+                }
+                else{
+                    filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
+                    resultado="eventos";
+                }
         
         return resultado;
     } 
@@ -559,6 +618,11 @@ public class mainBean implements Serializable {
         
         
         return "necesidades_geditor";
+    } 
+    public String modificarHonorario(Mdhonorarios x){
+        System.out.println("selecetedHono");
+        selecetedHono=x;
+        return "honorario_edit";
     } 
     public String individual(Mdnecesidades x){
         selectedNecesidad=x;
@@ -1090,6 +1154,64 @@ public class mainBean implements Serializable {
     
     }
     
+    
+    public String newhonorario(){
+        String honor="";
+        nuevoHono=new Mdhonorarios();
+        System.out.println("try new honorario");
+        if(currentModulo.getIdmodulo().getIdmodulo()==5 && selectFede.getSector()){
+            System.out.println("honorario_fede");
+            honor="honorario_fede";
+        }
+        if(currentModulo.getIdmodulo().getIdmodulo()==2){
+            System.out.println("honorario_admin");
+            nuevoHono.setTipo(2);
+            System.out.println("nuevoHono.getTipo(): "+nuevoHono.getTipo());
+            honor="honorario_admin";
+        }
+        if(currentModulo.getIdmodulo().getIdmodulo()==6 && selectFede.getSector()){
+             System.out.println("honorario_coe");
+             imcoe=true;
+            honor="honorario_coe"; //xxx
+        }
+        if(currentModulo.getIdmodulo().getIdmodulo()==6 && !selectFede.getSector()){
+             System.out.println("honorario_cpe");
+            honor="honorario_cpe"; //xxx
+        }
+        
+        
+        //xxx
+        return honor;
+    
+    }
+    public String registraHonorario(Mdhonorarios y){
+        String x="";
+        System.out.println("Dentro honorario");
+        y.setCreador(currentUser.getIdusuario());
+        
+        
+        if(mdhonorariosFacade.guardarDatos(y)){
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"El registro ha sido efectuado","Cargando Lista..."));
+            x="honorarios_list";
+            listaHono=mdhonorariosFacade.getListByCreator(currentUser.getIdusuario());
+            nuevoHono=null;
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha efectuado el registro","Controle los datos"));
+        }
+        
+        imcoe=false;
+        
+        return x;
+    }
+    public double getTotalH(double x, double y){
+        System.out.println("valores: "+x+" "+y);
+        nuevoHono.setTotal(x*y);
+        System.out.println("nuevoHono.getTotal() "+nuevoHono.getTotal());
+        return nuevoHono.getTotal();
+    }
+    
+    
+    
     public String getInstitucion(int x){
        return mdusuariotFacade.find(x).getInstitucion();
     
@@ -1289,8 +1411,8 @@ public class mainBean implements Serializable {
     }
 
     public List<Mddeportest> getListDeporte() {
-        System.out.println(x.getIdperfil());
-        System.out.println(currentUser.getCodinst());
+        System.out.println("Perfil: "+x.getIdperfil());
+        System.out.println("para buscar, usa: "+currentUser.getCodinst());
         if(x.getIdperfil()==(Integer)3){
           
             System.out.println("Federacion selecionada: " +selectFede.getNombre()+" "+selectFede.getId());
@@ -1299,7 +1421,17 @@ public class mainBean implements Serializable {
                 selectPersona.setHandi(true);
             
         }
-        
+        if(x.getIdperfil()==(Integer)4){
+            System.out.println("Es comite...");
+            if(nuevoHono!=null){
+                nuevoHono.setTipo(3);
+                System.out.println("nuevoHono.getTipo(): "+nuevoHono.getTipo());
+            }
+            if(imcoe)
+                listDeporte=mddeportestFacade.getDepByCat(true);
+            else
+                listDeporte=mddeportestFacade.getDepByCat(false);
+        }
         System.out.println("DEPORTES - XXXXXXXXXXXXXXXXX");
         if(listDeporte==null){
             System.out.println("LISTA DEPORTES");
@@ -1624,9 +1756,25 @@ public class mainBean implements Serializable {
     public List<Mdevento> getFiltroEventos() {
         System.out.println("GET EVENTOS BY CREADOR");
         if(filtroEventos==null){
-            System.out.println("null....");
-            filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
-        }
+            if(currentUser==null){
+                filtroEventos=mdeventoFacade.findAll();
+            }
+            else{
+                if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
+                    filtroEventos=mdeventoFacade.findAll();
+                }
+                else{
+                    filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
+                }
+            }
+        }else{
+                if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
+                    filtroEventos=mdeventoFacade.findAll();
+                }
+                else{
+                    filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
+                }
+            }
         return filtroEventos;
     }
 
@@ -1673,8 +1821,16 @@ public class mainBean implements Serializable {
     }
 
     public List<Mdnecesidades> getFiltroNecesidad() {
-        if(filtroNecesidad==null)
-            filtroNecesidad=mdnecesidadesFacade.getListByCreator(currentUser.getIdusuario());
+       
+        
+            if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
+               
+                filtroNecesidad=mdnecesidadesFacade.findAll();
+            }else{
+               
+                filtroNecesidad=mdnecesidadesFacade.getListByCreator(currentUser.getIdusuario());
+            }
+        
         return filtroNecesidad;
     }
 
@@ -1737,6 +1893,134 @@ public class mainBean implements Serializable {
 
     public void setNewUser(Mdusuariot newUser) {
         this.newUser = newUser;
+    }
+
+    public Mdhonorarios getCurrentHono() {
+        return currentHono;
+    }
+
+    public void setCurrentHono(Mdhonorarios currentHono) {
+        this.currentHono = currentHono;
+    }
+
+    public Mdhonorarios getNuevoHono() {
+            if(currentModulo.getIdmodulo().getIdmodulo()==2){
+                System.out.println("Nuevo Hono para admin");
+                //nuevoHono = new Mdhonorarios();
+                nuevoHono.setTipo(2);
+            }if(currentModulo.getIdmodulo().getIdmodulo()==5 && selectFede.getSector()){
+                System.out.println("Nuevo Hono para fede");
+               // nuevoHono = new Mdhonorarios();
+                nuevoHono.setTipo(1);
+            }
+        return nuevoHono;
+    }
+
+    public void setNuevoHono(Mdhonorarios nuevoHono) {
+        this.nuevoHono = nuevoHono;
+    }
+
+    public List<Mdhonorarios> getListaHono() {
+        //if(listaHono==null){
+            listaHono=mdhonorariosFacade.getListByCreator(currentUser.getIdusuario());
+        //}
+        return listaHono;
+    }
+
+    public void setListaHono(List<Mdhonorarios> listaHono) {
+        this.listaHono = listaHono;
+    }
+
+    public List<Mdhonorarios> getFiltroHono() {
+        return filtroHono;
+    }
+
+    public void setFiltroHono(List<Mdhonorarios> filtroHono) {
+        this.filtroHono = filtroHono;
+    }
+
+    public Mdhonorarios getSelecetedHono() {
+        return selecetedHono;
+    }
+
+    public void setSelecetedHono(Mdhonorarios selecetedHono) {
+        this.selecetedHono = selecetedHono;
+    }
+
+    public int[] getListaMes() {
+        listaMes=new int[12];
+            for (int i = 0; i < listaMes.length; i++) {
+                listaMes[i] = i+1;
+             }
+        return listaMes;
+    }
+
+    public void setListaMes(int[] listaMes) {
+        this.listaMes = listaMes;
+    }
+
+    public boolean isImcoe() {
+        return imcoe;
+    }
+
+    public void setImcoe(boolean imcoe) {
+        this.imcoe = imcoe;
+    }
+
+    public double[] getListaniveles() {
+        if(nuevoHono.getCargo()!=null){
+            if(nuevoHono.getCargo().equals("Entrenador")){
+                listaniveles=new double[5];
+                    listaniveles[0] = 1500.0;
+                    listaniveles[1] = 2000.0;
+                    listaniveles[2] = 2500.0;
+                    listaniveles[3] = 3000.0;
+                    listaniveles[4] = 4000.0;
+                    nuevoHono.setTipo(1);
+
+            }if(nuevoHono.getCargo().equals("Asistente Técnico")||nuevoHono.getCargo().equals("Preparador Físico")){
+                listaniveles=new double[4];
+                    listaniveles[0] = 1500.0;
+                    listaniveles[1] = 1000.0;
+                    listaniveles[2] = 800.0;
+                    listaniveles[3] = 600.0;
+                    nuevoHono.setTipo(1);
+            }
+        }else{ 
+            listaniveles=new double[1];
+             nuevoHono.setTipo(3);
+        }
+        System.out.println("nuevoHono.getTipo(); "+nuevoHono.getTipo());
+        
+        return listaniveles;
+    }
+
+    public void setListaniveles(double[] listaniveles) {
+        this.listaniveles = listaniveles;
+    }
+
+    public String[] getListaLvl() {
+         if(nuevoHono.getCargo()!=null){
+            if(nuevoHono.getCargo().equals("Entrenador")){
+                listaLvl[0] = "1";
+                listaLvl[1] = "2";
+                listaLvl[2] = "3";
+                listaLvl[3] = "4";
+                listaLvl[4] = "5";
+            }
+            else{
+                listaLvl[0] = "1";
+                listaLvl[1] = "2";
+                listaLvl[2] = "3";
+                listaLvl[3] = "4";
+                
+            }
+         }else listaLvl=new String[1];
+        return listaLvl;
+    }
+
+    public void setListaLvl(String[] listaLvl) {
+        this.listaLvl = listaLvl;
     }
 
     
