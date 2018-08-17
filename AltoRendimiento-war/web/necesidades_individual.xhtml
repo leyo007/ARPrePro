@@ -83,10 +83,20 @@
                 </h:form>
                 
             </p:dialog> 
-         <div id="contenido" class="wrapper row3">
+         <div class="wrapper row3">
             <main class="clear"> 
                 
                
+                
+				<nav id="mainavNO" class="fl_right">
+                    <ul class="clear">
+                      <li class="active">
+                          <h:form>
+                                            <p:commandButton  style="background: #4caf50; color: white;" value="Salir" action="#{myBean.logout()}" icon="fa fa-fw fa-external-link" />
+                                        </h:form>
+                      </li>
+                    </ul>
+                </nav>
                 <div class="btmspace-80 center">
                   <h3 class="nospace">Bienvenidos</h3>
                   <h:outputText value="Usuario con acceso"/>
@@ -110,7 +120,7 @@
                                                         <label for="url"><B>Agregar Necesidades Individuales</B></label>
                                         </div>
                                         <h:form>
-                                            <p:commandButton  style="background: #4fd48a; color: white;" value="Regresar"
+                                            <p:commandButton  style="background: #FF9800; color: white;" value="Regresar"
                                                             action="#{myBean.givmeLink(9)}" icon="fa fa-fw fa-undo" />
                                         </h:form>
                                                   

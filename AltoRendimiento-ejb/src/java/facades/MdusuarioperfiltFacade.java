@@ -41,5 +41,29 @@ public class MdusuarioperfiltFacade extends AbstractFacade<Mdusuarioperfilt> imp
             return new Mdusuarioperfilt();
         }
     }
+
+    @Override
+    public boolean guardarDatos(Mdusuarioperfilt x) {
+        try {
+                em.persist(x);
+                return true;
+        } catch (Exception e) {
+            System.out.println("Error al crear new Userperfil "+e.getMessage());
+            return false;
+            
+        }
+    }
+
+    @Override
+    public boolean modificarDatos(Mdusuarioperfilt x) {
+         try {
+            em.merge(x);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error al modificar userPerfil "+e.getMessage());
+            return false;
+            
+        }
+    }
     
 }

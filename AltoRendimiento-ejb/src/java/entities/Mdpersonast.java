@@ -7,9 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,14 +15,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -54,27 +50,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Mdpersonast.findByIdcreador", query = "SELECT m FROM Mdpersonast m WHERE m.idcreador = :idcreador")
     , @NamedQuery(name = "Mdpersonast.findByIdetnia", query = "SELECT m FROM Mdpersonast m WHERE m.idetnia = :idetnia")
     , @NamedQuery(name = "Mdpersonast.findByIdpais", query = "SELECT m FROM Mdpersonast m WHERE m.idpais = :idpais")
-    , @NamedQuery(name = "Mdpersonast.findByIdciudad", query = "SELECT m FROM Mdpersonast m WHERE m.idciudad = :idciudad")})
+    , @NamedQuery(name = "Mdpersonast.findByIdciudad", query = "SELECT m FROM Mdpersonast m WHERE m.idciudad = :idciudad")
+    , @NamedQuery(name = "Mdpersonast.findByIdanosproy", query = "SELECT m FROM Mdpersonast m WHERE m.idanosproy = :idanosproy")
+    , @NamedQuery(name = "Mdpersonast.findByAprobado", query = "SELECT m FROM Mdpersonast m WHERE m.aprobado = :aprobado")
+    , @NamedQuery(name = "Mdpersonast.findByHandi", query = "SELECT m FROM Mdpersonast m WHERE m.handi = :handi")
+    , @NamedQuery(name = "Mdpersonast.findByClafundep", query = "SELECT m FROM Mdpersonast m WHERE m.clafundep = :clafundep")
+    , @NamedQuery(name = "Mdpersonast.findByFederacion", query = "SELECT m FROM Mdpersonast m WHERE m.federacion = :federacion")})
 public class Mdpersonast implements Serializable {
-
-    @Size(max = 2147483647)
-    @Column(name = "clafundep")
-    private String clafundep;
-
-    @Column(name = "handi")
-    private Boolean handi;
-
-    @Column(name = "aprobado")
-    private Boolean aprobado;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private List<Mdcvdp> mdcvdpList;
-
-    @Column(name = "idanosproy")
-    private Integer idanosproy;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
-    private List<Mdcvfa> mdcvfaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -143,6 +125,17 @@ public class Mdpersonast implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "idciudad")
     private String idciudad;
+    @Column(name = "idanosproy")
+    private Integer idanosproy;
+    @Column(name = "aprobado")
+    private Boolean aprobado;
+    @Column(name = "handi")
+    private Boolean handi;
+    @Size(max = 2147483647)
+    @Column(name = "clafundep")
+    private String clafundep;
+    @Column(name = "federacion")
+    private Integer federacion;
 
     public Mdpersonast() {
     }
@@ -321,55 +314,12 @@ public class Mdpersonast implements Serializable {
         this.idciudad = idciudad;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (iddep != null ? iddep.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Mdpersonast)) {
-            return false;
-        }
-        Mdpersonast other = (Mdpersonast) object;
-        if ((this.iddep == null && other.iddep != null) || (this.iddep != null && !this.iddep.equals(other.iddep))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entities.Mdpersonast[ iddep=" + iddep + " ]";
-    }
-
-    @XmlTransient
-    public List<Mdcvfa> getMdcvfaList() {
-        return mdcvfaList;
-    }
-
-    public void setMdcvfaList(List<Mdcvfa> mdcvfaList) {
-        this.mdcvfaList = mdcvfaList;
-    }
-
     public Integer getIdanosproy() {
         return idanosproy;
     }
 
     public void setIdanosproy(Integer idanosproy) {
         this.idanosproy = idanosproy;
-    }
-
-    @XmlTransient
-    public List<Mdcvdp> getMdcvdpList() {
-        return mdcvdpList;
-    }
-
-    public void setMdcvdpList(List<Mdcvdp> mdcvdpList) {
-        this.mdcvdpList = mdcvdpList;
     }
 
     public Boolean getAprobado() {
@@ -394,6 +344,39 @@ public class Mdpersonast implements Serializable {
 
     public void setClafundep(String clafundep) {
         this.clafundep = clafundep;
+    }
+
+    public Integer getFederacion() {
+        return federacion;
+    }
+
+    public void setFederacion(Integer federacion) {
+        this.federacion = federacion;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (iddep != null ? iddep.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Mdpersonast)) {
+            return false;
+        }
+        Mdpersonast other = (Mdpersonast) object;
+        if ((this.iddep == null && other.iddep != null) || (this.iddep != null && !this.iddep.equals(other.iddep))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entities.Mdpersonast[ iddep=" + iddep + " ]";
     }
     
 }

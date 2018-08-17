@@ -46,16 +46,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Mdusuariot.findByUsuapellidos", query = "SELECT m FROM Mdusuariot m WHERE m.usuapellidos = :usuapellidos")
     , @NamedQuery(name = "Mdusuariot.findByUsuedad", query = "SELECT m FROM Mdusuariot m WHERE m.usuedad = :usuedad")
     , @NamedQuery(name = "Mdusuariot.findByUsusexo", query = "SELECT m FROM Mdusuariot m WHERE m.ususexo = :ususexo")
-    , @NamedQuery(name = "Mdusuariot.findByUsufecnac", query = "SELECT m FROM Mdusuariot m WHERE m.usufecnac = :usufecnac")})
+    , @NamedQuery(name = "Mdusuariot.findByUsufecnac", query = "SELECT m FROM Mdusuariot m WHERE m.usufecnac = :usufecnac")
+    , @NamedQuery(name = "Mdusuariot.findByInstitucion", query = "SELECT m FROM Mdusuariot m WHERE m.institucion = :institucion")
+    , @NamedQuery(name = "Mdusuariot.findByCodinst", query = "SELECT m FROM Mdusuariot m WHERE m.codinst = :codinst")})
 public class Mdusuariot implements Serializable {
-
-    @Basic(optional = false)
-    @Column(name = "codinst")
-    private int codinst;
-
-    @Size(max = 2147483647)
-    @Column(name = "institucion")
-    private String institucion;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -97,16 +91,25 @@ public class Mdusuariot implements Serializable {
     @Column(name = "usufecnac")
     @Temporal(TemporalType.DATE)
     private Date usufecnac;
+    @Size(max = 2147483647)
+    @Column(name = "institucion")
+    private String institucion;
+    @Basic(optional = false)
+    @Column(name = "codinst")
+    private int codinst;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
     private List<Mdusuarioperfilt> mdusuarioperfiltList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Mdrolusuariot> mdrolusuariotList;
 
     public Mdusuariot() {
     }
 
     public Mdusuariot(Integer idusuario) {
         this.idusuario = idusuario;
+    }
+
+    public Mdusuariot(Integer idusuario, int codinst) {
+        this.idusuario = idusuario;
+        this.codinst = codinst;
     }
 
     public Integer getIdusuario() {
@@ -213,6 +216,22 @@ public class Mdusuariot implements Serializable {
         this.usufecnac = usufecnac;
     }
 
+    public String getInstitucion() {
+        return institucion;
+    }
+
+    public void setInstitucion(String institucion) {
+        this.institucion = institucion;
+    }
+
+    public int getCodinst() {
+        return codinst;
+    }
+
+    public void setCodinst(int codinst) {
+        this.codinst = codinst;
+    }
+
     @XmlTransient
     public List<Mdusuarioperfilt> getMdusuarioperfiltList() {
         return mdusuarioperfiltList;
@@ -220,15 +239,6 @@ public class Mdusuariot implements Serializable {
 
     public void setMdusuarioperfiltList(List<Mdusuarioperfilt> mdusuarioperfiltList) {
         this.mdusuarioperfiltList = mdusuarioperfiltList;
-    }
-
-    @XmlTransient
-    public List<Mdrolusuariot> getMdrolusuariotList() {
-        return mdrolusuariotList;
-    }
-
-    public void setMdrolusuariotList(List<Mdrolusuariot> mdrolusuariotList) {
-        this.mdrolusuariotList = mdrolusuariotList;
     }
 
     @Override
@@ -254,22 +264,6 @@ public class Mdusuariot implements Serializable {
     @Override
     public String toString() {
         return "entities.Mdusuariot[ idusuario=" + idusuario + " ]";
-    }
-
-    public String getInstitucion() {
-        return institucion;
-    }
-
-    public void setInstitucion(String institucion) {
-        this.institucion = institucion;
-    }
-
-    public int getCodinst() {
-        return codinst;
-    }
-
-    public void setCodinst(int codinst) {
-        this.codinst = codinst;
     }
     
 }

@@ -6,8 +6,18 @@
      xmlns:p="http://primefaces.org/ui"
 >
      <ui:define name="content">
-         <div id="contenido" class="wrapper row3">
+         <div class="wrapper row3">
             <main class="hoc container clear"> 
+                
+				<nav id="mainavNO" class="fl_right">
+                    <ul class="clear">
+                      <li class="active">
+                          <h:form>
+                                            <p:commandButton  style="background: #4caf50; color: white;" value="Salir" action="#{myBean.logout()}" icon="fa fa-fw fa-external-link" />
+                                        </h:form>
+                      </li>
+                    </ul>
+                </nav>
                 <div class="btmspace-80 center">
                   <h3 class="nospace">Bienvenidos</h3>
                   <h:outputText value="#{myBean.currentUser.usuNombres}"/>

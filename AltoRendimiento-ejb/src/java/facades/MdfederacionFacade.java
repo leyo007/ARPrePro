@@ -37,7 +37,7 @@ public class MdfederacionFacade extends AbstractFacade<Mdfederacion> implements 
                     .getSingleResult();
         }catch(Exception e){
             
-            System.out.println("Error al buscar dp info socio ec de "+x+" error"+e.getMessage());
+            System.out.println("Error al buscar federación con id de "+x+" error"+e.getMessage());
             return new Mdfederacion();
         }
     }

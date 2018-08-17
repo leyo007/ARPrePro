@@ -33,5 +33,6 @@ public interface MdpersonastFacadeLocal {
     public boolean guardarDatos(Mdpersonast x);
     public boolean modificarDatos(Mdpersonast x);
     public boolean findById(String x);
+    public List<Mdpersonast> findByCodFed(int x);
     
 }

@@ -191,6 +191,7 @@ public class mainBean implements Serializable {
     private Mdusuariot newUser;
     private List<Mdusuariot> listUsers;
     private Mdusuarioperfilt currentPerfil;
+    private Mdusuarioperfilt newuPerfil;
     private List<Mdperfilt> listPerfiles;
     private Mdperfilmodulot currentModulo;
     private Mdmodulot modulo;
@@ -255,6 +256,7 @@ public class mainBean implements Serializable {
     private Mdevento newEvent;
     private List<Mdevento> listaEventos;
     private List<Mdevento> filtroEventos;
+    private List<Mdevento> filtroTEventos;
     
     private Mdnecesidades selectedNecesidad;
     private Mdnecesidades newNecesidad;
@@ -275,12 +277,14 @@ public class mainBean implements Serializable {
     Renderizador r=new Renderizador();
     public void  noLogged() throws IOException{
         if(currentUser==null){
+     
            r.irAInicio();
            
         }
     }
     
     Mdperfilt x = new Mdperfilt();
+    Mdperfilt y = new Mdperfilt();
     public String accessLogin() throws IOException{
         String resultado="";
         
@@ -463,11 +467,20 @@ public class mainBean implements Serializable {
          return link;
             
     }
-    public String newnecesities(){
+    public String newnecesitiesGral(){
         newNecesidad=new Mdnecesidades();
+        newNecesidad.setTipo(true);
         System.out.println("try new necesities");
         //xxx
-        return "necesidades_nuevo";
+        return "necesidades_nuevo_gral";
+    
+    }
+    public String newnecesitiesInd(){
+        newNecesidad=new Mdnecesidades();
+        newNecesidad.setTipo(false);
+        System.out.println("try new necesities");
+        //xxx
+        return "necesidades_nuevo_ind";
     
     }
     
@@ -626,6 +639,7 @@ public class mainBean implements Serializable {
         selecetedHono=x;
         
         if(currentModulo.getIdmodulo().getIdmodulo()==5 && selectFede.getSector()){
+            editHono=true;
             y="honorario_fede_edit";
         }
         if(currentModulo.getIdmodulo().getIdmodulo()==2){
@@ -633,9 +647,11 @@ public class mainBean implements Serializable {
             y="honorario_admin_edit";
         }
         if(currentModulo.getIdmodulo().getIdmodulo()==6 && selectFede.getSector()){
+            editHono=true;
             y="honorario_coe_edit"; //xxx
         }
         if(currentModulo.getIdmodulo().getIdmodulo()==6 && !selectFede.getSector()){
+            editHono=true;
             y="honorario_cpe_edit"; //xxx
         }
         
@@ -1022,6 +1038,7 @@ public class mainBean implements Serializable {
     }
     //editor de perfiles:
     public void onRowSelectPerfil(SelectEvent event){
+        System.out.println("selectedUserselectedUserselectedUser");
         selectedUser=(Mdusuariot) event.getObject();
         FacesMessage msg = new FacesMessage("Perfil seleccionado", "Modificar");
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -1047,17 +1064,41 @@ public class mainBean implements Serializable {
      public void resetUser(){
          selectPersona= new Mdpersonast();
      }
-     public void nuevousuario(){
-         newUser.setInstitucion(mdfederacionFacade.buscarXid(newUser.getCodinst()).getNombre());
-         
+    public void nuevousuario(){
+        System.out.println("try create newUser: ");
+        System.out.println("newUser.getCodinst(): "+newUser.getCodinst());
+        newuPerfil=new Mdusuarioperfilt();
+        newUser.setInstitucion(mdfederacionFacade.buscarXid(newUser.getCodinst()).getNombre());
+        switch(newUser.getCodinst()){
+            
+            case 49:              
+                newuPerfil.setIdperfil(mdperfiltFacade.find(4));
+                break;//coe
+            case 52: 
+                newuPerfil.setIdperfil(mdperfiltFacade.find(4));
+                break;//cpe
+            default: 
+                newuPerfil.setIdperfil(mdperfiltFacade.find(3));
+                break;
+            
+        
+        }
+       
+        newUser.setInstitucion(mdfederacionFacade.buscarXid(newUser.getCodinst()).getNombre());
+        newUser.setIdacticode(1);
         if(mdusuariotFacade.guardarDatos(newUser)){
-            System.out.println("Usuario modificado...");
-             FacesMessage msg = new FacesMessage("usuario modificado", newUser.getUsunombre());
+            System.out.println("newUser: "+newUser.getIdusuario());
+            newuPerfil.setIdusuario(newUser);
+            if(mdusuarioperfiltFacade.guardarDatos(newuPerfil)){
+                RequestContext.getCurrentInstance().execute("PF('newUser').hide();");
+                FacesMessage msg = new FacesMessage("Usuario generado", newUser.getUsunombre());
                 FacesContext.getCurrentInstance().addMessage(null, msg); 
                 listUsers=mdusuariotFacade.findAll();
+                //pruebas
+            }
                 
          }else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Usuario no modificado"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Usuario no generado"));
                
         }
     
@@ -1205,7 +1246,13 @@ public class mainBean implements Serializable {
         String x="";
         System.out.println("Dentro honorario");
         y.setCreador(currentUser.getIdusuario());
-        
+        for (double listanivele : listaniveles) {
+            if(y.getValor()>0.0)
+                if(y.getValor()==listanivele)
+                    y.setNivel(listanivele);
+        }
+        if(y.getNivel()==null)
+            y.setNivel(0.0);
         
         if(mdhonorariosFacade.guardarDatos(y)){
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"El registro ha sido efectuado","Cargando Lista..."));
@@ -1224,7 +1271,13 @@ public class mainBean implements Serializable {
         String x="";
         System.out.println("Dentro editar H");
         y.setModificador(currentUser.getIdusuario());
-        
+         for (double listanivele : listaniveles) {
+            if(y.getValor()>0.0)
+                if(y.getValor()==listanivele)
+                    y.setNivel(listanivele);
+        }
+         if(y.getNivel()==null)
+            y.setNivel(0.0);
         
         if(mdhonorariosFacade.modificarDatos(y)){
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"El registro ha sido modificado","Cargando Lista..."));
@@ -1336,7 +1389,8 @@ public class mainBean implements Serializable {
             
             if(currentPerfil.getIdperfil().getIdperfil()==3){
                  System.out.println("buscando personas de federación: "+currentPerfil.getIdperfil().getPernombre() );
-                listaPersonas=mdpersonastFacade.findByPerfil(currentUser.getIdusuario());
+                //listaPersonas=mdpersonastFacade.findByPerfil(currentUser.getIdusuario());
+                listaPersonas=mdpersonastFacade.findByCodFed(currentUser.getCodinst());
             }
             else{
                 //System.out.println("buscando todas las personas ");
@@ -1922,6 +1976,8 @@ public class mainBean implements Serializable {
     }
 
     public Mdusuariot getSelectedUser() {
+        if(selectedUser==null)
+            selectedUser=new Mdusuariot();
         return selectedUser;
     }
 
@@ -1965,9 +2021,20 @@ public class mainBean implements Serializable {
     }
 
     public List<Mdhonorarios> getListaHono() {
-        //if(listaHono==null){
+        if(currentModulo.getIdmodulo().getIdmodulo()==5 && selectFede.getSector()){
             listaHono=mdhonorariosFacade.getListByCreator(currentUser.getIdusuario());
-        //}
+        }
+        if(currentModulo.getIdmodulo().getIdmodulo()==2){
+            listaHono=mdhonorariosFacade.findAll();
+        }
+        if(currentModulo.getIdmodulo().getIdmodulo()==6 && selectFede.getSector()){
+            listaHono=mdhonorariosFacade.getListByCreator(currentUser.getIdusuario());
+        }
+        if(currentModulo.getIdmodulo().getIdmodulo()==6 && !selectFede.getSector()){
+            listaHono=mdhonorariosFacade.getListByCreator(currentUser.getIdusuario());
+        }
+            
+       
         return listaHono;
     }
 
@@ -2012,7 +2079,7 @@ public class mainBean implements Serializable {
     }
 
     public double[] getListaniveles() {
-        if(editHono){
+        if(!editHono){
                 if(nuevoHono.getCargo()!=null){
                     if(nuevoHono.getCargo().equals("Entrenador")){
                         listaniveles=new double[5];
@@ -2099,6 +2166,22 @@ public class mainBean implements Serializable {
 
     public void setEditHono(boolean editHono) {
         this.editHono = editHono;
+    }
+
+    public List<Mdevento> getFiltroTEventos() {
+        return filtroTEventos;
+    }
+
+    public void setFiltroTEventos(List<Mdevento> filtroTEventos) {
+        this.filtroTEventos = filtroTEventos;
+    }
+
+    public Mdusuarioperfilt getNewuPerfil() {
+        return newuPerfil;
+    }
+
+    public void setNewuPerfil(Mdusuarioperfilt newuPerfil) {
+        this.newuPerfil = newuPerfil;
     }
 
     

@@ -30,7 +30,7 @@
             }
              
          </style>
-         <div id="contenido" class="wrapper row3">
+         <div class="wrapper row3">
             <main class="hoc container clear"> 
                 
                 <p:dialog header="Cédula incompleta" widgetVar="ctrlCi" modal="true" height="100">
@@ -39,6 +39,16 @@
                 <p:dialog header="Sin correspondencia..." widgetVar="ctrlCiExist" modal="true" height="100">
                        <h:outputText value="La cédula no existe" />
                     </p:dialog> 
+                
+				<nav id="mainavNO" class="fl_right">
+                    <ul class="clear">
+                      <li class="active">
+                          <h:form>
+                                            <p:commandButton  style="background: #4caf50; color: white;" value="Salir" action="#{myBean.logout()}" icon="fa fa-fw fa-external-link" />
+                                        </h:form>
+                      </li>
+                    </ul>
+                </nav>
                 <div class="btmspace-80 center">
                   <h3 class="nospace">Bienvenidos</h3>
                   <h:outputText value="Usuario con acceso"/>
@@ -62,7 +72,7 @@
                                                         <label for="url"><B> Ingresar Nuevo Evento</B></label>
                                         </div>
                                         <h:form>
-                                            <p:commandButton  style="background: #4fd48a; color: white; float: right;" value="Regresar"
+                                            <p:commandButton  style="background: #FF9800; color: white; float: right;" value="Regresar"
                                                             action="#{myBean.givmeLink(8)}" icon="fa fa-fw fa-undo" />
                                         </h:form>
                                                   
@@ -354,7 +364,7 @@
 
                                                 update="newinc"
                                                 ></p:commandButton>    
-                                                <p:commandButton  style="background: #4fd48a; color: white; float: right;" value="Regresar"
+                                                <p:commandButton  style="background: #FF9800; color: white; float: right;" value="Regresar"
                                                             action="#{myBean.givmeLink(8)}" icon="fa fa-fw fa-undo" />
                                             </p:panel>
                 </h:form>     

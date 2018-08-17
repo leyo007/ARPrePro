@@ -6,18 +6,119 @@
      xmlns:p="http://primefaces.org/ui"
 >
      <ui:define name="content">
-         <div id="contenido" class="wrapper row3">
+         <style>
+             #form1\:datosA {
+                margin: 0;
+                height: 100%;
+                left: 25%;
+                right: 25%;
+            }
+            #form1\:datosA {
+                display: table;
+                width: 50%;
+            }
+            #form1\:datosA {
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
+            #pform *{
+                clear: both;
+                //all: initial;
+                
+            }
+            
+            #myDiv {
+                width: 700px;
+                text-align:center;
+                background: linear-gradient(141deg, #ffeb3b30 35%, #2196f37a 50%, #e4171729 75%);
+                //background-image: url(images/3Logos.png);
+                color:#fff;
+                font-family:'Roboto';
+                font-weight:300;
+                font-size:32px;
+                padding-top:50px;
+                height:300px;
+                overflow:hidden;
+                -webkit-backface-visibility: hidden;
+                -webkit-perspective: 1000;
+                -webkit-transform: translate3d(0,0,0);
+                font-family: "DolceVita";
+              }
+
+              #divO {
+                display:inline-block;
+                overflow:hidden;
+                white-space:nowrap;
+              }
+
+              #divO:first-of-type {    /* For increasing performance 
+                                     ID/Class should've been used. 
+                                     For a small demo 
+                                     it's okaish for now */
+                animation: showup 7s infinite;
+              }
+
+              #divO:last-of-type {
+                width:0px;
+                animation: reveal 7s infinite;
+              }
+
+              #divO:last-of-type span {
+                margin-left:-355px;
+                animation: slidein 7s infinite;
+              }
+
+              @keyframes showup {
+                  0% {opacity:0;}
+                  20% {opacity:1;}
+                  80% {opacity:1;}
+                  100% {opacity:0;}
+              }
+
+              @keyframes slidein {
+                  0% { margin-left:-800px; }
+                  20% { margin-left:-800px; }
+                  35% { margin-left:0px; }
+                  100% { margin-left:0px; }
+              }
+
+              @keyframes reveal {
+                  0% {opacity:0;width:0px;}
+                  20% {opacity:1;width:0px;}
+                  30% {width:355px;}
+                  80% {opacity:1;}
+                  100% {opacity:0;width:355px;}
+              }
+
+
+              #imgcontainer
+                {
+                opacity:0.5;
+                background-color: Black;
+                z-index:10;
+                }
+                #imgcontainer img
+                {
+                      Z-index: 5;
+                }
+         </style>
+       
+         <div class="wrapper row3">
+               
             <main class="hoc container clear"> 
-              <div class="btmspace-80 center">
-                <h3 class="nospace">Bienvenidos</h3>      
+              
+				
+                <div class="btmspace-80 center">
+                  <h3 class="nospace" style="font-family: 'DolceVita';">Bienvenidos</h3>      
               </div>
              <!-- InstanceBeginEditable name="EditRegion1" -->
-                 
+             
               <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
             </h:outputLink>
             <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
             <h:form id="form1" >
-            <p:panel id="datosA"   style="margin-top: 5%; text-align: center;" widgetVar="dlg" styleClass=" col-md-6 ">
+            <p:panel id="datosA"   style="text-align: center;" widgetVar="dlg" styleClass=" col-md-6 ">
                
                      <h:outputLabel value="Inicio de sesión"/>
                     <p:separator></p:separator>
@@ -33,7 +134,7 @@
                        <p:password id="pwd" value="#{myBean.password}" required="true" requiredMessage="Contraseña obligatoria" label="password" placeholder="Contraseña" size="50" 
                                    styleClass="col-sm-6 col-xs-8"
                                    />
-                       <p:message for="pwd" style="color:red" showDetail="Password"/>
+                       <p:message for="pwd" style="color:white" showDetail="Password"/>
                        
                         <!--p:inputText id="captcha" value="" required="false" label="captcha" placeholder="Captcha" size="50" style="margin-bottom: 2%;"/-->
                         
@@ -60,10 +161,14 @@
                         //window.location.replace(window.location.href);
                     }
                     else {
-                        PF('dlg').hide();
+                        PF('welcome').hide();
                         $('#loginLink').fadeOut();
                     }
                 }
+                function clickBody() {
+                    PF('welcome').hide();
+                }
+                window.onload = setTimeout(function(){  PF('welcome').hide(); }, 3000); document.body.addEventListener("click",clickBody);
             </script>
             
             
@@ -73,5 +178,24 @@
               <div class="clear"></div>
             </main>
           </div>
+         
+         
+            <p:dialog  visible="true" height="300" id="welcome" widgetVar="welcome" modal="true" draggable="false" 
+                       closable="true" resizable="false" showHeader="true" header="Plan Alto Rendimiento" 
+                       style="background-image: url(images/LogoMD-06.png); background-size: 300px; background-repeat: no-repeat; padding-top: 50px; background: black;">
+               
+               
+             <div id='myDiv'>
+                
+                 <div style="    font-family: Georgia, 'Times New Roman', Times, serif; ">Bienvenidos</div> 
+                                        <div id='divO'>Alto Rendimiento|</div> 
+                                        <div id='divO'> 
+                                          <span>SECRETARÍA DEL DEPORTE</span>
+                                        </div>
+                                        <p style="font-family: Georgia, 'Times New Roman', Times, serif;  font-size:12px; color:#999; margin-top:50px;">Dirección de Tecnología - 2018</p>
+             </div>
+        </p:dialog>
+             
+         
      </ui:define>
 </ui:composition>

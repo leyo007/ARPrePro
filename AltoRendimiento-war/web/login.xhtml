@@ -20,6 +20,21 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dosis"/>
         <style>
+             #form1\:datosA {
+                margin: 0;
+                height: 100%;
+                left: 25%;
+                right: 25%;
+            }
+            #form1\:datosA {
+                display: table;
+                width: 50%;
+            }
+            #form1\:datosA {
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
             #pform *{
                 clear: both;
                 //all: initial;
@@ -101,7 +116,7 @@
                 <ul class="slides">
                   <li>
                     <article>
-                      <p>Ministerio del Deporte</p>
+                      <p>Secretaría del Deporte</p>
                       <h3 class="heading">Proyecto de Alto Rendimiento</h3>
                       <p>Vitae lobortis id ut mi in molestie in</p>
 
@@ -117,7 +132,17 @@
         
         <div class="wrapper row3">
             <main class="hoc container clear"> 
-              <div class="btmspace-80 center">
+              
+				<nav id="mainavNO" class="fl_right">
+                    <ul class="clear">
+                      <li class="active">
+                          <h:form>
+                                            <p:commandButton  style="background: #4caf50; color: white;" value="Salir" action="#{myBean.logout()}" icon="fa fa-fw fa-external-link" />
+                                        </h:form>
+                      </li>
+                    </ul>
+                </nav>
+                <div class="btmspace-80 center">
                 <h3 class="nospace">Bienvenidos</h3>      
               </div>
              <!-- InstanceBeginEditable name="EditRegion1" -->

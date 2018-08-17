@@ -32,5 +32,6 @@ public interface MdusuarioperfiltFacadeLocal {
     int count();
     
     public Mdusuarioperfilt findThisUser(Mdusuariot u);
-    
+    public boolean guardarDatos(Mdusuarioperfilt x);
+    public boolean modificarDatos(Mdusuarioperfilt x);
 }

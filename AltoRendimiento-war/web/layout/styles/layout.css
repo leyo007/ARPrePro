@@ -11,7 +11,18 @@ File: Layout CSS
 @import url("fontawesome-4.6.3.min.css");
 @import url("custom.flexslider.css");
 @import url("framework.css");
-
+@font-face {
+    font-family: "DolceVita";
+    src: url(fonts/DolceVita.ttf);
+}
+@font-face {
+    font-family: "DolceVitaHeavyBold";
+    src: url(fonts/DolceVitaHeavyBold.ttf);
+}
+@font-face {
+    font-family: "DolceVitaLight";
+    src: url(fonts/DolceVitaLight.ttf);
+}
 /* Rows
 --------------------------------------------------------------------------------------------------------------- */
 .row0, .row0 a{}
@@ -32,7 +43,7 @@ File: Layout CSS
 
 /* Page Intro
 --------------------------------------------------------------------------------------------------------------- */
-#pageintro{padding:150px 0;}
+#pageintro{padding:60px 0;}
 
 #pageintro li article{display:block; max-width:75%; margin:0 auto; text-align:center;}
 #pageintro li article *{margin:0;}
@@ -104,7 +115,7 @@ File: Layout CSS
 
 /* Transition Fade
 --------------------------------------------------------------------------------------------------------------- */
-*, *::before, *::after{transition:all .3s ease-in-out;}
+/**, *::before, *::after{transition:all .3s ease-in-out;}*/
 #mainav form *{transition:none !important;}
 
 
@@ -227,7 +238,7 @@ hr, .borderedbox{border-color:#D7D7D7;}
 label span{color:#FF0000; background-color:inherit;}
 input:focus, textarea:focus, *:required:focus{border-color:#C5A059;}
 .overlay{color:#FFFFFF; background-color:inherit;}
-.overlay::after{color:inherit; background-color:rgba(0,0,0,.55);}
+.overlay::after{color:inherit; background-color:rgba(0,0,0,.5);}
 
 .btn, .btn.inverse:hover{color:#FFFFFF; background-color:#C5A059; border-color:#C5A059;}
 .btn:hover, .btn.inverse{color:inherit; background-color:transparent; border-color:inherit;}
@@ -247,7 +258,8 @@ input:focus, textarea:focus, *:required:focus{border-color:#C5A059;}
 
 
 /* Content Area */
-.services article{color:inherit; border-color:#C5A059;}
+/*.services article{color:inherit; border-color:#C5A059;}*/
+.services article{color:#ecedef; border-color:#C5A059;text-shadow: 2px 2px #000000;}
 .services article .txtwrap{border-color:transparent;}
 .services article:hover .txtwrap, .services .active article .txtwrap{color:#FFFFFF; border-color:#D7D7D7;}
 .services article footer a{color:#FFFFFF; background-color:#C5A059;}

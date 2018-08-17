@@ -65,8 +65,6 @@ public class Mdperfilt implements Serializable {
     private String perestado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idperfil")
     private List<Mdusuarioperfilt> mdusuarioperfiltList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idperfil")
-    private List<Mdperfilmodulot> mdperfilmodulotList;
 
     public Mdperfilt() {
     }
@@ -130,15 +128,6 @@ public class Mdperfilt implements Serializable {
 
     public void setMdusuarioperfiltList(List<Mdusuarioperfilt> mdusuarioperfiltList) {
         this.mdusuarioperfiltList = mdusuarioperfiltList;
-    }
-
-    @XmlTransient
-    public List<Mdperfilmodulot> getMdperfilmodulotList() {
-        return mdperfilmodulotList;
-    }
-
-    public void setMdperfilmodulotList(List<Mdperfilmodulot> mdperfilmodulotList) {
-        this.mdperfilmodulotList = mdperfilmodulotList;
     }
 
     @Override

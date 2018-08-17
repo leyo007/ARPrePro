@@ -47,7 +47,7 @@
                 position: fixed!important;
             }
          </style>
-          <p:dialog id="changePerfil" header="Añadir Categoría Propuesta" widgetVar="newU" modal="true" >
+            <p:dialog id="changePerfil" header="Modificar Usuario #{myBean.selectedUser.usuapellidos}" widgetVar="newU" modal="true" >
                                         <p:growl id="growlB" sticky="false" showDetail="true" life="1000" autoUpdate="true" />
                                            <h:outputText value="Llene todos los campos." />
 
@@ -56,10 +56,10 @@
                                                <h:panelGrid columns="3"  border="0" style="width: 100%;">
 
                                                    <h:outputText value="Usuario"/>
-                                                   <p:inputText style="" value="#{myBean.selectedUser.usunombre}" id="pnombre"  placeholder="Categoría"/>
+                                                   <p:inputText  value="#{myBean.selectedUser.usunombre}" id="pnombre"  placeholder="Categoría"/>
                                                         <p:message for="pnombre" />
                                                    <h:outputText value="Nombres"/>
-                                                   <p:inputText style="" value="#{myBean.selectedUser.usuapellidos} #{myBean.selectedUser.usunombres}" id="papellido" placeholder="formato 0.0"/>
+                                                   <p:inputText  value="#{myBean.selectedUser.usuapellidos} #{myBean.selectedUser.usunombres}" id="papellido" placeholder="formato 0.0"/>
                                                         <p:message for="papellido" />
                                                    <h:outputText value="Institución"/>
                                                    <h:outputText id="inst" value="#{myBean.selectedUser.institucion}"  />
@@ -87,22 +87,22 @@
                                                <h:panelGrid columns="3"  border="0" style="width: 100%;">
 
                                                    <h:outputText value="Cédula"/>
-                                                   <p:inputText style="" value="#{myBean.newUser.usucedula}" id="nci"  placeholder="CI"/>
+                                                   <p:inputText required="true" requiredMessage="Campo obligatorio" value="#{myBean.newUser.usucedula}" id="nci"  placeholder="CI"/>
                                                         <p:message for="nci" />
                                                    <h:outputText value="Usuario"/>
-                                                   <p:inputText style="" value="#{myBean.newUser.usunombre}" id="nuser"  placeholder="Escoja usuario"/>
+                                                   <p:inputText required="true" requiredMessage="Campo obligatorio" value="#{myBean.newUser.usunombre}" id="nuser"  placeholder="Escoja usuario"/>
                                                         <p:message for="nuser" />
                                                    <h:outputText value="Contraseña"/>
-                                                   <p:inputText style="" value="#{myBean.newUser.usuclave}" id="npwd"  placeholder="Escriba contraseña"/>
+                                                   <p:inputText required="true" requiredMessage="Campo obligatorio" value="#{myBean.newUser.usuclave}" id="npwd"  placeholder="Escriba contraseña"/>
                                                         <p:message for="npwd" />
                                                    <h:outputText value="Nombres"/>
-                                                   <p:inputText style="" value="#{myBean.newUser.usunombres}" id="nnombre" placeholder="Nombres"/>
+                                                   <p:inputText required="true" requiredMessage="Campo obligatorio" value="#{myBean.newUser.usunombres}" id="nnombre" placeholder="Nombres"/>
                                                         <p:message for="nnombre" />
                                                    <h:outputText value="Apellidos"/>
-                                                   <p:inputText style="" value="#{myBean.newUser.usuapellidos}" id="napellido" placeholder="Apellidos"/>
+                                                   <p:inputText required="true" requiredMessage="Campo obligatorio" value="#{myBean.newUser.usuapellidos}" id="napellido" placeholder="Apellidos"/>
                                                         <p:message for="napellido" />
                                                    <h:outputText value="Institución"/>
-                                                   <p:selectOneMenu id="inst"  value="#{myBean.newUser.codinst}" >
+                                                   <p:selectOneMenu id="inst"  value="#{myBean.newUser.codinst}" required="true" requiredMessage="Campo obligatorio" >
                                                         <f:selectItem itemLabel="Federación"/>
                                                         <f:selectItems value="#{myBean.listFede}" var="pv" itemLabel="#{pv.nombre}" itemValue="#{pv.id}" />
                                                     </p:selectOneMenu>
@@ -113,8 +113,6 @@
                                                <p:commandButton action="#{myBean.nuevousuario()}" value="Guardar" 
                                                             icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
                                                             update="@(form) form-lista"
-                                                            oncomplete="if (#{not facesContext.validationFailed})PF('newUser').hide()"
-
                                                             >
                                                </p:commandButton>
                                            </h:form>
@@ -124,8 +122,18 @@
          
          
          
-         <div id="contenido" class="wrapper row3">
+         <div class="wrapper row3">
             <main class="clear"> 
+                
+				<nav id="mainavNO" class="fl_right">
+                    <ul class="clear">
+                      <li class="active">
+                          <h:form>
+                                            <p:commandButton  style="background: #4caf50; color: white;" value="Salir" action="#{myBean.logout()}" icon="fa fa-fw fa-external-link" />
+                                        </h:form>
+                      </li>
+                    </ul>
+                </nav>
                 <div class="btmspace-80 center">
                   <h3 class="nospace">Bienvenidos</h3>
                   <h:outputText value="Usuario con acceso"/>
@@ -149,7 +157,7 @@
                                                         <label for="url"><B> Gestión de los usuarios</B></label>
                                          </div>
                                          <h:form>
-                                            <p:commandButton  style="background: #4fd48a; color: white; float: right;" value="Regresar"
+                                            <p:commandButton  style="background: #FF9800; color: white; float: right;" value="Regresar"
                                                             action="#{myBean.givmeLink(1)}" icon="fa fa-fw fa-undo" />
                                         </h:form>
                                         <p:commandButton id="gt" 
@@ -195,7 +203,7 @@
                                                     </p:column>
                                                     <p:column filterBy="#{persona.usunombres}" headerText="Nombres"  filterMatchMode="contains">
                                                         <h:outputText value="#{persona.usunombres}" />
-                                                    </p:column>xxx
+                                                    </p:column>
                                                     <p:column filterBy="#{persona.usumail}" headerText="Mail"  filterMatchMode="contains">
                                                         <h:outputText value="#{persona.usumail}" />
                                                     </p:column>
@@ -258,7 +266,7 @@
                                                             <f:facet name="output"> <h:outputText id="apr" value="#{persona.aprobado ? 'Aprobado': 'Negado'}"/></f:facet>
                                                             <f:facet name="input">
                                                                 <p:selectBooleanButton id="currentAprob" value="#{myBean.aprovacion}" 
-                                                                    onLabel="Aprobado" offLabel="Negado" style="" 
+                                                                    onLabel="Aprobado" offLabel="Negado" 
                                                                     disabled="false"
                                                                     
                                                                     >
