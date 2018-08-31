@@ -1,0 +1,469 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+         
+     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+     <ui:define name="content">
+         <style>
+             .ui-fileupload-choose{
+                 overflow: visible!important;
+             }
+             #dlg1{
+                position:fixed!important;
+            }
+             #modalNewHE{
+                position:fixed!important;
+            }
+             #modalNewRD{
+                position:fixed!important;
+            }
+             #modalNewDR{
+                position:fixed!important;
+            }
+             
+         </style> 
+            <p:dialog header="Foto #{myBean.selectReport}" widgetVar="dlg1" id="dlg1" modal="true" height="auto" width="auto">
+            <h:form id="foto" enctype="multipart/form-data">
+                   <p:fileUpload  id="des" value="#{myBean.archivo}" 
+                      skinSimple="true" label="Foto"
+                      disabled="false"
+                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                     mode="advanced" 
+                     sizeLimit="3000000"
+                      multiple="false"
+                      fileLimit="2"
+                      uploadLabel="Cargar"
+                      cancelLabel="Cancelar"
+                      fileUploadListener="#{myBean.fileUploadListener}"
+                      update=":newinc"
+                      oncomplete="PF(dlg1).hide()"
+                      />
+                 
+                </h:form>
+            <h:form id="mensaje">
+               
+                <h:panelGrid columns="2" width="500">
+                    <h:outputText value="Foto: "/>
+                    
+                </h:panelGrid>
+                <p:separator></p:separator>
+                <img  style="padding-bottom: 10px;border: white;border-style: solid; border-radius: 20px 3px; width: 80px;" 
+                      src="/img/#{myBean.selectReport}.jpg" 
+                      onerror="this.src='images/noprofile.jpeg'"  
+                      alt="Foto"/>
+            </h:form>
+            
+       </p:dialog>
+         
+         
+         <p:dialog id="modalNewHE" header="Añadir Informe Tipo 1" widgetVar="newHE" modal="true" >
+              <p:growl id="growlA" sticky="true" showDetail="true" life="3000" />
+                <h:outputText value="Añada el archivo y los campos." />
+                <h:form id="informe1" enctype="multipart/form-data">
+                   <p:fileUpload  id="inf1" value="#{myBean.archivo}" 
+                      skinSimple="true" label="PDF"
+                      disabled="false"
+                      allowTypes="/(\.|\/)(pdf)$/" 
+                     mode="advanced" 
+                     sizeLimit="3000000"
+                      multiple="false"
+                      fileLimit="2"
+                      uploadLabel="Cargar"
+                      cancelLabel="Cancelar"
+                      fileUploadListener="#{myBean.fileUploadListener}"
+                      update=":newinc"
+                      oncomplete="PF(dlg1).hide()"
+                      />
+                 
+                </h:form>
+                <h:form id="mensaje1">
+
+                    <h:panelGrid columns="2" width="500">
+                        <h:outputText value="Foto: "/>
+
+                    </h:panelGrid>
+                    <p:separator></p:separator>
+                    <h3>PDF</h3><object type="application/pdf" data="/showcase/resources/demo/media/guide.pdf?pfdrid_c=true" height="300px" width="100%" internalinstanceid="3">
+                        Su navegador no permite visualizar pdf, <a href="/resources/demo/media/guide.pdf">click</a> para descargarlo.
+                    </object>
+                </h:form>
+                
+                <h:form>
+                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                        <h:outputText value="Año"/>
+                        <p:inputText style="" value="#{myBean.selectReport.archivo}" id="heano"  placeholder="2000"/>
+                             <p:message for="heano" />
+                        <h:outputText value="Nombres"/>
+                        <p:inputText style="" value="#{myBean.selectReport.archivo}" id="henombres" placeholder="y Apellidos"/>
+                             <p:message for="henombres" />
+                       
+                        
+                        
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton action="#{myBean.registrarExEntrenador()}" value="Guardar" 
+                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                 update="@(form) newinc"
+                                 oncomplete="if (#{not facesContext.validationFailed})PF('newHE').hide()"
+                                 
+                                 >
+                    </p:commandButton>
+                </h:form>
+                
+            </p:dialog> 
+         <p:dialog id="modalNewRD" header="Añadir Resultado Deportivo" widgetVar="newRD" modal="true" >
+              <p:growl id="growlB" sticky="true" showDetail="true" life="3000" />
+                <h:outputText value="Llene todos los campos." />
+                
+                
+                <h:form>
+                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                        
+                        <h:outputText value="Nombre Evento"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.evento}" id="rdentidad" placeholder="Evento"/>
+                             <p:message for="rdentidad" />
+                        <h:outputText value="fecha"/>
+                        <p:calendar value="#{myBean.selCvResDep.fecha}"  id="rdfecha"
+                                    pattern="dd/MM/yyyy" 
+                                    navigator="true"
+                                    required="true"
+                                    requiredMessage="Falta Fecha Evento"
+                                    locale="es"
+                                    >
+                        </p:calendar>
+                        <p:message for="rdfecha" />
+                        
+                        <h:outputText value="Lugar"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.lugar}" id="rdlugar" placeholder="Lugar Evento" required="true" requiredMessage="Lugar Obligatorio"/>
+                             <p:message for="rdlugar" />
+                       
+                        <h:outputText value="Prueba/división"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.prueba}" id="rdprueba" placeholder="Prueba"/>
+                             <p:message for="rdprueba" />
+                        <h:outputText value="Nº atletas"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.numatle}" id="rdnumatle" placeholder="Atletas"/>
+                             <p:message for="rdnumatle" />
+                        <h:outputText value="Nº paises"/>
+                        <p:inputText style="" value="#{myBean.selCvResDep.npaises}" id="rdnpaises" placeholder="Paises"/>
+                             <p:message for="rdnpaises" />
+                        <h:outputText value="Marca atleta"/>
+                        <p:calendar id="rdmarca" value="#{myBean.selCvResDep.marca}" pattern="HH:mm:ss" timeOnly="true" locale="es" />
+                        
+                             <p:message for="rdmarca" />
+                        
+                        
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton action="#{myBean.registrarResulDep()}" value="Guardar" 
+                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                 update="@(form) newinc"
+                                 oncomplete="if (#{not facesContext.validationFailed})PF('newRD').hide()"
+                                 
+                                 >
+                    </p:commandButton>
+                </h:form>
+                
+            </p:dialog> 
+         <p:dialog id="modalNewDR" header="Añadir Distinciones Recibidas" widgetVar="newDR" modal="true" >
+              <p:growl id="growlC" sticky="true" showDetail="true" life="3000" />
+                <h:outputText value="Llene todos los campos." />
+                
+                
+                <h:form>
+                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                        
+                        <h:outputText value="Distinciones Recividas como atleta"/>
+                        <p:inputText style="" value="#{myBean.selCvDistRe.distinciones}" id="drdistinciones" placeholder="Distinción"/>
+                             <p:message for="drdistinciones" />
+                        <h:outputText value="Fecha"/>
+                        <p:calendar value="#{myBean.selCvDistRe.fecha}"  id="drfecha"
+                                    pattern="dd/MM/yyyy" 
+                                    navigator="true"
+                                    required="true"
+                                    requiredMessage="Falta Fecha Evento"
+                                    locale="es"
+                                    >
+                        </p:calendar>
+                        <p:message for="drfecha" />
+                        
+                        <h:outputText value="Tipo de distinción"/>
+                        <p:inputText style="" value="#{myBean.selCvDistRe.tipo}" id="drtipo" placeholder="Tipo" required="true" requiredMessage="Falta el Tipo"/>
+                             <p:message for="drtipo" />
+                       
+                        <h:outputText value="Entidad que la otortgó"/>
+                        <p:inputText style="" value="#{myBean.selCvDistRe.entidad}" id="drentidad" placeholder="Prueba"/>
+                             <p:message for="drentidad" />
+                       
+                        
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:commandButton action="#{myBean.registrarDistRecib()}" value="Guardar" 
+                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                 update="@(form) newinc"
+                                 oncomplete="if (#{not facesContext.validationFailed})PF('newDR').hide()"
+                                 
+                                 >
+                    </p:commandButton>
+                </h:form>
+                
+            </p:dialog> 
+        
+         <style>
+            .menuSelect .ui-selectonemenu-label { 
+                //background: pink;
+               
+                box-sizing: content-box!important;
+            }
+            .panel .ui-selectonemenu-list { 
+                 //width: 100px;
+                //background: green;
+            }
+            
+            .ui-selectonemenu .ui-selectonemenu-trigger {
+                  // background-color: red;
+                width: auto!important;
+            }
+            .ui-state-highlight, .ui-widget-content .ui-state-highlight{
+                background-image: linear-gradient(to bottom, #f2dede, #254786);
+                    background-color: #555;
+            }
+             
+         </style>
+         <div class="wrapper row3">
+            <main class="clear"> 
+                
+				<nav id="mainavNO" class="fl_right">
+                    <ul class="clear">
+                      <li class="active">
+                          <h:form>
+                                            <p:commandButton  style="background: #4caf50; color: white;" value="Salir" action="#{myBean.logout()}" icon="fa fa-fw fa-external-link" />
+                                        </h:form>
+                      </li>
+                    </ul>
+                </nav>
+                <div class="btmspace-80 center">
+                  <h3 class="nospace">Bienvenidos</h3>
+                  <h:outputText value="Usuario con acceso"/>
+                </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+                <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                </h:outputLink>
+                <p:growl id="growl" sticky="false" showDetail="true" life="500" />
+               
+                    <h2>Definir campos necesarios, tipo de informes, formato y seguimiento.</h2>     
+                    <div id="comments">
+                        <ul>
+                            <li>
+                                <article>
+                                    <header>
+                                      <address><h2>REPOSITORIO INFORMES</h2></address>
+                                    </header>
+                                    <div class="comcont">
+                                        <div class="one_third first">
+                                                        <label for="url"><B> Añada los documentos</B></label>
+                                         </div>
+                                         <h:form>
+                                            <p:commandButton  style="background: #FF9800; color: white; float: right;" value="Regresar"
+                                                            action="#{myBean.givmeLink(1)}" icon="fa fa-fw fa-undo" />
+                                        </h:form>
+                                                  
+                                    </div>
+                                    <div class="comcont">
+                                        <h:form id="newinc" class="container" style="margin-left: 0%; margin-right: 0%; margin-bottom: 0px;">
+                                            
+                                            
+                                            <p:messages id="messages" closable="true" autoUpdate="true">
+                                                <p:effect type="puff" event="load" delay="300" />
+                                            </p:messages>
+                                            <p:panel header="Histórico documental de (Entrenador)" id="cvd" widgetVar="regWidget" style="padding-left: 0%; padding-right: 0%; background-color: rgba(255,255,255,0.5);">
+                                                <img id="fperfil" style="width: 120px; padding-bottom: 10px;border: white;border-style: solid; border-radius: 20px 3px;" 
+                                                    src="/img/#{myBean.selectPersona.depcedula}.jpg" 
+                                                    onerror="this.src='images/noprofile.jpeg'"  
+                                                    alt="Foto"/>
+                                                <p:commandButton value="Cambiar imagen" 
+                                                                  type="button"
+                                                    onclick="PF('dlg1').show()"
+                                                    icon="ui-icon-check"
+                                                    />
+                                                
+                                             
+                                                
+                                                
+                                                
+                                                
+                                               
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <p:row>
+                                                            <p:column style="font-weight: bold; text-align: center;">Informe Tipo 1</p:column>  
+                                                    </p:row>  
+                                                    <p:row>
+                                                        <p:column>
+                                                                <p:commandButton rendered="true" id="nuevoHE" value="Añadir Informe Tipo 1" 
+                                                                        style="color: #2196f3;"
+                                                                        onclick="PF('newHE').show()" 
+                                                                        icon="fa fa-fw fa-plus" 
+                                                                ></p:commandButton>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>                                                           
+                                                <p:dataTable var="he" value="#{myBean.listReport}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                        <p:column headerText="Nº">
+                                                            <h:outputText value="#{index+1}" />
+                                                        </p:column>
+                                                        <p:column headerText="Año">
+                                                            <h:outputText value="#{he.fechacarga}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nombres y apellidos">
+                                                            <h:outputText value="#{he.archivo}" />
+                                                        </p:column>
+                                                        <p:column headerText="Quipux">
+                                                            <h:outputText value="#{he.archivo}" />
+                                                        </p:column>
+                                                        
+                                                    </p:dataTable>                          
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="9">Resultado Eventos</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column>
+                                                                <p:commandButton rendered="true" id="nuevoRD" value="Añadir Resultado" 
+                                                                        style="color: #2196f3;"
+                                                                        onclick="PF('newRD').show()" 
+                                                                        icon="fa fa-fw fa-plus" 
+                                                                ></p:commandButton>
+                                                        </p:column>
+                                                    </p:row>                                                 
+                                                </p:panelGrid>                                                
+                                                <p:dataTable var="rd" value="#{myBean.listReport}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                        <p:column headerText="Nº">
+                                                            <h:outputText value="#{index+1}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nombre Evento">
+                                                            <h:outputText value="#{rd.archivo}" />
+                                                        </p:column>
+                                                        <p:column headerText="Fecha">
+                                                            <p:calendar value="#{rd.fechacarga}" pattern="dd/MM/yyyy" readonly="true"/>
+                                                        </p:column>
+                                                        <p:column headerText="Lugar">
+                                                            <h:outputText value="#{rd.cargadox}" />
+                                                        </p:column>
+                                                        <p:column headerText="Prueba/división">
+                                                            <h:outputText value="#{rd.mesano}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nº atletas">
+                                                            <h:outputText value="#{rd.pertenece}" />
+                                                        </p:column>
+                                                        <p:column headerText="Nº paises">
+                                                            <h:outputText value="#{rd.tipo}" />
+                                                        </p:column>
+                                                        <p:column headerText="Marca atleta">
+                                                            <p:calendar value="#{rd.titulo}"  pattern="HH:mm:ss"  readonly="true"/>
+                                                        </p:column>
+                                                </p:dataTable>
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="6">Informe Tipo 2</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column>
+                                                                <p:commandButton rendered="true" id="nuevoDR" value="Añadir Tipo 2" 
+                                                                        style="color: #2196f3;"
+                                                                        onclick="PF('newDR').show()" 
+                                                                        icon="fa fa-fw fa-plus" 
+                                                                ></p:commandButton>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>
+                                                <p:dataTable var="dr" value="#{myBean.listReport}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                        <p:column headerText="Nº">
+                                                            <h:outputText value="#{index+1}" />
+                                                        </p:column>
+                                                        <p:column headerText="Distinciones Recividas como atleta">
+                                                            <h:outputText value="#{dr.archivo}" />
+                                                        </p:column>
+                                                        <p:column headerText="Fecha">
+                                                            <p:calendar value="#{dr.archivado}"  pattern="dd/MM/yyyy"  readonly="true"/>
+                                                            
+                                                        </p:column>
+                                                        
+                                                </p:dataTable>
+                                                <p:separator />
+
+                                               
+                                                <p:separator />
+                                                <p:commandButton id="gt" 
+                                                style=" background: #FBFBFB; color: black;" 
+                                                value="Guardado temporal" 
+                                                action="#{myBean.cv(myBean.selectPersona)}"
+                                                icon="fa fa-fw fa-save"
+
+                                                update="newinc"
+                                                ></p:commandButton>       
+                                               
+                                            </p:panel>
+                </h:form>     
+                                    </div>
+                                </article>
+                            </li>
+                            <li>
+                              <article>
+                                    <div class="comcont">
+                                       <div class="scrollable">
+                                          <div id="datos"></div>
+                                       </div>
+                                    </div>
+                              </article>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                 
+                <script type="text/javascript">
+                    function handleLoginRequest(xhr, status, args) {
+                        if(args.validationFailed || !args.loggedIn) {
+                            PF('dlg').jq.effect("shake", {times:5}, 100);
+                            //location.reload(); 
+                            //window.location.replace(window.location.href);
+                        }
+                        else {
+                            PF('dlg').hide();
+                            $('#loginLink').fadeOut();
+                        }
+                    }
+                </script>
+                  <!-- InstanceEndEditable -->
+                <div class="clear"></div>
+            </main>
+        </div>
+         
+         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                     <p:dialog id="dgl" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                         <h3>Procesando...</h3>
+                                         <img  src="images/bar.gif"/>
+                                     </p:dialog>
+         
+         
+         
+         
+         
+         
+         
+     </ui:define>
+</ui:composition>

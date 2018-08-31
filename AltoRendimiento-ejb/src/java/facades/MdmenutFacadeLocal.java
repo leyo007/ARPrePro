@@ -31,5 +31,6 @@ public interface MdmenutFacadeLocal {
     int count();
     
     public List<Mdmenut> getAllBymodulo(int m);
+    public List<Mdmenut> getAllBymoduloCoach(int m);
     
 }

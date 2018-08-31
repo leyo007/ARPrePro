@@ -41,5 +41,17 @@ public class MdmenutFacade extends AbstractFacade<Mdmenut> implements MdmenutFac
             return null;
         }
     }
+
+    @Override
+    public List<Mdmenut> getAllBymoduloCoach(int m) {
+        try {
+              return  em.createQuery("SELECT m FROM Mdmenut m WHERE m.idmodulo =:pd and m.mennombre like '%Repositorio%'")
+                    .setParameter("pd",m)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré menus con módulo: "+ m+" Error: "+ e.getMessage());
+            return null;
+        }
+    }
     
 }

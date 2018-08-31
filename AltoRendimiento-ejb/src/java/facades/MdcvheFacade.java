@@ -6,6 +6,7 @@
 package facades;
 
 import entities.Mdcvhe;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -61,7 +62,7 @@ public class MdcvheFacade extends AbstractFacade<Mdcvhe> implements MdcvheFacade
                     .getResultList();
         } catch (Exception e) {
             System.out.println("Error, filtro lista Historico Entrenadores: " + e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
     }
     

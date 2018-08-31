@@ -54,7 +54,7 @@
                 </nav>
                 <div class="btmspace-80 center">
                   <h3 class="nospace">Bienvenidos necesidades</h3>
-                  <h:outputText value="Usuario con acceso"/>
+                  <h:outputText value="X"/>
                 </div>
              <!-- InstanceBeginEditable name="EditRegion1" -->
                  
@@ -108,7 +108,7 @@
                                                 </p:commandButton>
                                                 <p:dataTable id="all" value="#{myBean.filtroNecesidad}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                                              selectionMode="single" selection="#{myBean.selectedNecesidad}" rowKey="#{item.id}"
-                                                             widgetVar="listaR" filteredValue="#{myBean.filtroNecesidad}" emptyMessage="No hay registros..."
+                                                             widgetVar="listaR" filteredValue="#{myBean.listaNecesidad}" emptyMessage="No hay registros..."
                                                 >
                                                     
                                                     <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
@@ -155,7 +155,7 @@
                                                 
                                                         ></p:commandButton>  
                                                     </p:column>
-                                                    <p:column headerText="Individuales">
+                                                    <p:column headerText="Individuales" rendered="false">
                                                         <p:commandButton id="rp" 
                                                             style=" background: #10A9F0; color: white;" 
                                                             value="Añadir" 

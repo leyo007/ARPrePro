@@ -141,7 +141,7 @@
                                                     <p:column  width="60" filterBy="#{evento.tipo}" headerText="Tipo"  filterMatchMode="contains">
                                                         <h:outputText  value="#{evento.tipo}"/>
                                                     </p:column>
-                                                    <p:column filterBy="#{evento.fechai}" headerText="Fecha in" >
+                                                    <p:column width="60" filterBy="#{evento.fechai}" headerText="Fecha in" >
                                                          <f:facet name="filter">
                                                              <p:calendar pattern="yyyy-MM-dd"
                                                                 navigator="true"
@@ -154,7 +154,7 @@
                                                              <f:convertDateTime pattern="dd/MM/yyyy" />
                                                           </p:outputLabel>
                                                     </p:column>
-                                                    <p:column filterBy="#{evento.fechaf}" headerText="Fecha fin" >
+                                                    <p:column width="60" filterBy="#{evento.fechaf}" headerText="Fecha fin" >
                                                          <f:facet name="filter">
                                                              <p:calendar pattern="yyyy-MM-dd"
                                                                 navigator="true"

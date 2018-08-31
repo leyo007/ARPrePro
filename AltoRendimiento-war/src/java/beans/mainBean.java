@@ -37,6 +37,7 @@ import entities.Mdnecesidades;
 import entities.Mdperfilmodulot;
 import entities.Mdperfilt;
 import entities.Mdpersonast;
+import entities.Mdreportes;
 import entities.Mdusuarioperfilt;
 import entities.Mdusuariot;
 import facades.MdcategoriaactualtFacadeLocal;
@@ -60,6 +61,7 @@ import facades.MdnecesidadesFacadeLocal;
 import facades.MdperfilmodulotFacadeLocal;
 import facades.MdperfiltFacadeLocal;
 import facades.MdpersonastFacadeLocal;
+import facades.MdreportesFacadeLocal;
 import facades.MdusuarioperfiltFacadeLocal;
 import facades.MdusuariotFacadeLocal;
 import java.io.File;
@@ -86,6 +88,9 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean
@@ -93,6 +98,9 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 //@ViewScoped
 public class mainBean implements Serializable {
+
+    @EJB
+    private MdreportesFacadeLocal mdreportesFacade;
 
     @EJB
     private MdhonorariosFacadeLocal mdhonorariosFacade;
@@ -273,6 +281,18 @@ public class mainBean implements Serializable {
     private boolean imcoe;
     private boolean editHono;
     
+    private ScheduleModel eventModel;
+     
+    private ScheduleModel lazyEventModel;
+ 
+    private ScheduleEvent event = new DefaultScheduleEvent();
+    
+    private Mdreportes newReport;
+    private Mdreportes selectReport;
+    private List<Mdreportes> listReport;
+    private List<Mdreportes> filterReport;
+    
+    
     
     Renderizador r=new Renderizador();
     public void  noLogged() throws IOException{
@@ -312,8 +332,10 @@ public class mainBean implements Serializable {
                     System.out.println("5.- modulo: "+modulo.getModnombre());
                     
                                        
-                    
-                    menus=mdmenutFacade.getAllBymodulo(modulo.getIdmodulo());
+                    if(currentUser.getEntrenador())
+                        menus=mdmenutFacade.getAllBymoduloCoach(modulo.getIdmodulo());
+                    else
+                        menus=mdmenutFacade.getAllBymodulo(modulo.getIdmodulo());
                     System.out.println("6.- menus: "+menus.get(0));
                     
                     //menus.forEach((t) -> {
@@ -621,6 +643,24 @@ public class mainBean implements Serializable {
         
         return resultado;
     } 
+    public String registraNecesidadInd(){
+        String resultado="";
+        newNecesidad.setCreador(currentUser.getIdusuario());
+        newNecesidad.setDeporte(getnombreDeporte(newNecesidad.getIddep()));
+        newNecesidad.setTipo(false);
+        newNecesidad.setTotal(newNecesidad.getValor()*newNecesidad.getCantidad());
+         if(selectFede.getSector())
+            newNecesidad.setSector("CONVENCIONAL");
+        else
+            newNecesidad.setSector("DISCAPACIDAD");
+       
+        if(mdnecesidadesFacade.guardarDatos(newNecesidad)){
+            filtroNecesidad=mdnecesidadesFacade.getListByCreator(currentUser.getIdusuario());
+            resultado="necesidades";
+        }
+        
+        return resultado;
+    } 
     public String modificarNecesidadGral(){
         mdnecesidadesFacade.modificarDatos(newNecesidad);
         
@@ -628,10 +668,13 @@ public class mainBean implements Serializable {
         return "necesidades";
     } 
     public String modificarNecesidadGral(Mdnecesidades x){
+        String y="";
         newNecesidad=x;
-        
-        
-        return "necesidades_geditor";
+        if(newNecesidad.getTipo())
+            y="necesidades_geditor";
+        else 
+            y="necesidades_ieditor";
+        return y;
     } 
     public String modificarHonorario(Mdhonorarios x){
         String y="";
@@ -841,8 +884,8 @@ public class mainBean implements Serializable {
      //UploadImages  
     private UploadedFile archivo;
     //private String ubicacionEnDisco="C:\\Users\\TOSHIBA\\AppData\\Roaming\\NetBeans\\8.0\\config\\GF_4.0\\domain1\\docroot\\imagenes\\";
-    //private String ubicacionEnDisco="C:\\glassfish4\\glassfish\\domains\\domain1\\docroot\\imagenes\\";
-    private String ubicacionEnDisco="/opt/glassfish/4.0/glassfish/domains/domain1/docroot/img/";
+    private String ubicacionEnDisco="C:\\glassfish4\\glassfish\\domains\\domain1\\docroot\\imagenes\\";
+    //private String ubicacionEnDisco="/opt/glassfish/4.0/glassfish/domains/domain1/docroot/img/";
     
     public void fileUploadListener(FileUploadEvent event){
         archivo=event.getFile();
@@ -1986,8 +2029,10 @@ public class mainBean implements Serializable {
     }
 
     public Mdusuariot getNewUser() {
-        if(newUser==null)
+        if(newUser==null){
             newUser=new Mdusuariot();
+            newUser.setEntrenador(false);
+        }
         return newUser;
     }
 
@@ -2182,6 +2227,70 @@ public class mainBean implements Serializable {
 
     public void setNewuPerfil(Mdusuarioperfilt newuPerfil) {
         this.newuPerfil = newuPerfil;
+    }
+
+    public ScheduleModel getEventModel() {
+        return eventModel;
+    }
+
+    public void setEventModel(ScheduleModel eventModel) {
+        this.eventModel = eventModel;
+    }
+
+    public ScheduleModel getLazyEventModel() {
+        return lazyEventModel;
+    }
+
+    public void setLazyEventModel(ScheduleModel lazyEventModel) {
+        this.lazyEventModel = lazyEventModel;
+    }
+
+    public ScheduleEvent getEvent() {
+        return event;
+    }
+
+    public void setEvent(ScheduleEvent event) {
+        this.event = event;
+    }
+
+    public Mdreportes getNewReport() {
+        return newReport;
+    }
+
+    public void setNewReport(Mdreportes newReport) {
+        this.newReport = newReport;
+    }
+
+    public Mdreportes getSelectReport() {
+        return selectReport;
+    }
+
+    public void setSelectReport(Mdreportes selectReport) {
+        this.selectReport = selectReport;
+    }
+
+    public List<Mdreportes> getListReport() {
+        if(listReport==null){
+            if(currentUser.getEntrenador()){
+                listReport=mdreportesFacade.getReportsByCreator(currentUser);
+            }else{
+                listReport=mdreportesFacade.findAll();
+            }
+        
+        }
+        return listReport;
+    }
+
+    public void setListReport(List<Mdreportes> listReport) {
+        this.listReport = listReport;
+    }
+
+    public List<Mdreportes> getFilterReport() {
+        return filterReport;
+    }
+
+    public void setFilterReport(List<Mdreportes> filterReport) {
+        this.filterReport = filterReport;
     }
 
     

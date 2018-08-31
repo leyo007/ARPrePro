@@ -51,6 +51,12 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Mdusuariot.findByCodinst", query = "SELECT m FROM Mdusuariot m WHERE m.codinst = :codinst")})
 public class Mdusuariot implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargadox")
+    private List<Mdreportes> mdreportesList;
+
+    @Column(name = "entrenador")
+    private Boolean entrenador;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -264,6 +270,23 @@ public class Mdusuariot implements Serializable {
     @Override
     public String toString() {
         return "entities.Mdusuariot[ idusuario=" + idusuario + " ]";
+    }
+
+    public Boolean getEntrenador() {
+        return entrenador;
+    }
+
+    public void setEntrenador(Boolean entrenador) {
+        this.entrenador = entrenador;
+    }
+
+    @XmlTransient
+    public List<Mdreportes> getMdreportesList() {
+        return mdreportesList;
+    }
+
+    public void setMdreportesList(List<Mdreportes> mdreportesList) {
+        this.mdreportesList = mdreportesList;
     }
     
 }

@@ -375,3 +375,9 @@ table a, #comments a{background-color:inherit;}
 	#pageintro li article{max-width:none; width:100%;}
 	#pageintro li .heading{font-size:1.6rem;}
 }
+
+
+.ui-state-active {
+    background-color: #2196F3!important;
+    color: white!important;
+}

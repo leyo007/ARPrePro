@@ -107,6 +107,12 @@
                                                         <f:selectItems value="#{myBean.listFede}" var="pv" itemLabel="#{pv.nombre}" itemValue="#{pv.id}" />
                                                     </p:selectOneMenu>
                                                         <p:message for="inst" />
+                                                        <h:outputText value="¿Es entrenador?"/>
+                                                        <p:selectOneButton id="entrenador" value="#{myBean.newUser.entrenador}" style="">
+                                                        <f:selectItem itemLabel="Si" itemValue="true" />
+                                                        <f:selectItem itemLabel="No" itemValue="false" />
+                                                    </p:selectOneButton>
+                                                        <p:message for="entrenador" />
                                                    
                                                </h:panelGrid>
                                                <p:separator/>
