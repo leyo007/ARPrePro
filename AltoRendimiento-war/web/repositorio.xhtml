@@ -25,7 +25,7 @@
             }
              
          </style> 
-            <p:dialog header="Foto #{myBean.selectReport}" widgetVar="dlg1" id="dlg1" modal="true" height="auto" width="auto">
+            <p:dialog header="Foto #{myBean.newReport}" widgetVar="dlg1" id="dlg1" modal="true" height="auto" width="auto">
             <h:form id="foto" enctype="multipart/form-data">
                    <p:fileUpload  id="des" value="#{myBean.archivo}" 
                       skinSimple="true" label="Foto"
@@ -51,7 +51,7 @@
                 </h:panelGrid>
                 <p:separator></p:separator>
                 <img  style="padding-bottom: 10px;border: white;border-style: solid; border-radius: 20px 3px; width: 80px;" 
-                      src="/img/#{myBean.selectReport}.jpg" 
+                      src="/img/#{myBean.newReport}.jpg" 
                       onerror="this.src='images/noprofile.jpeg'"  
                       alt="Foto"/>
             </h:form>
@@ -59,13 +59,45 @@
        </p:dialog>
          
          
-         <p:dialog id="modalNewHE" header="Añadir Informe Tipo 1" widgetVar="newHE" modal="true" >
+         <p:dialog id="modalNewHE" header="Añadir Informe Técnico" widgetVar="newHE" modal="true" >
               <p:growl id="growlA" sticky="true" showDetail="true" life="3000" />
-                <h:outputText value="Añada el archivo y los campos." />
+                <h:outputText value="Añada los campos, guarde y suba el archivo." />
+                
+                <h:form>
+                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
+
+                        <h:outputText value="Título Archivo"/>
+                        <p:inputText style="width: 250px;" value="#{myBean.newReport.titulo}" id="heano" required="true" requiredMessage="Título Obligatorio" placeholder="Informe Técnico nº (por ejemplo)"/>
+                             <p:message for="heano" />
+                        <h:outputText value="Mes/Año"/>
+                        <p:calendar style="width: 250px;" value="#{myBean.newReport.mesano}"  disabled="false" id="henombres" converterMessage="Fecha erronea"
+                                                                pattern="MMM/yyyy" 
+                                                                navigator="true"
+                                                                required="true"
+                                                                readonly="false"
+                                                                requiredMessage="Falta Mes y Año del documento"
+                                                                locale="es"
+                                                                >
+                                                            </p:calendar>
+                             <p:message for="henombres" />
+                       
+                        
+                        
+                    </h:panelGrid>
+                    <p:separator/>
+                    <!-- oncomplete="if ( numeral {not facesContext.validationFailed})PF('newHE').hide()"-->
+                    <p:commandButton action="#{myBean.registraInforme(1)}" value="Guardar" 
+                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
+                                 update="@(form) informe1"
+                                 style="    background: #2196F3;    color: white;"
+                                 
+                                 >
+                    </p:commandButton>
+                </h:form>
                 <h:form id="informe1" enctype="multipart/form-data">
                    <p:fileUpload  id="inf1" value="#{myBean.archivo}" 
                       skinSimple="true" label="PDF"
-                      disabled="false"
+                      disabled="#{myBean.newReport.id==null}"
                       allowTypes="/(\.|\/)(pdf)$/" 
                      mode="advanced" 
                      sizeLimit="3000000"
@@ -75,47 +107,16 @@
                       cancelLabel="Cancelar"
                       fileUploadListener="#{myBean.fileUploadListener}"
                       update=":newinc"
-                      oncomplete="PF(dlg1).hide()"
+                      oncomplete="if(#{not facesContext.validationFailed})PF('newHE').hide()"
                       />
                  
                 </h:form>
-                <h:form id="mensaje1">
-
-                    <h:panelGrid columns="2" width="500">
-                        <h:outputText value="Foto: "/>
-
-                    </h:panelGrid>
-                    <p:separator></p:separator>
-                    <h3>PDF</h3><object type="application/pdf" data="/showcase/resources/demo/media/guide.pdf?pfdrid_c=true" height="300px" width="100%" internalinstanceid="3">
-                        Su navegador no permite visualizar pdf, <a href="/resources/demo/media/guide.pdf">click</a> para descargarlo.
-                    </object>
-                </h:form>
                 
-                <h:form>
-                    <h:panelGrid columns="3"  border="0" style="width: 100%;">
-
-                        <h:outputText value="Año"/>
-                        <p:inputText style="" value="#{myBean.selectReport.archivo}" id="heano"  placeholder="2000"/>
-                             <p:message for="heano" />
-                        <h:outputText value="Nombres"/>
-                        <p:inputText style="" value="#{myBean.selectReport.archivo}" id="henombres" placeholder="y Apellidos"/>
-                             <p:message for="henombres" />
-                       
-                        
-                        
-                    </h:panelGrid>
-                    <p:separator/>
-                    <p:commandButton action="#{myBean.registrarExEntrenador()}" value="Guardar" 
-                                 icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
-                                 update="@(form) newinc"
-                                 oncomplete="if (#{not facesContext.validationFailed})PF('newHE').hide()"
-                                 
-                                 >
-                    </p:commandButton>
-                </h:form>
+                
+                
                 
             </p:dialog> 
-         <p:dialog id="modalNewRD" header="Añadir Resultado Deportivo" widgetVar="newRD" modal="true" >
+         <p:dialog id="modalNewRD" header="Añadir Registro Asistencia" widgetVar="newRD" modal="true" >
               <p:growl id="growlB" sticky="true" showDetail="true" life="3000" />
                 <h:outputText value="Llene todos los campos." />
                 
@@ -123,93 +124,110 @@
                 <h:form>
                     <h:panelGrid columns="3"  border="0" style="width: 100%;">
 
-                        
-                        <h:outputText value="Nombre Evento"/>
-                        <p:inputText style="" value="#{myBean.selCvResDep.evento}" id="rdentidad" placeholder="Evento"/>
-                             <p:message for="rdentidad" />
-                        <h:outputText value="fecha"/>
-                        <p:calendar value="#{myBean.selCvResDep.fecha}"  id="rdfecha"
-                                    pattern="dd/MM/yyyy" 
-                                    navigator="true"
-                                    required="true"
-                                    requiredMessage="Falta Fecha Evento"
-                                    locale="es"
-                                    >
-                        </p:calendar>
-                        <p:message for="rdfecha" />
-                        
-                        <h:outputText value="Lugar"/>
-                        <p:inputText style="" value="#{myBean.selCvResDep.lugar}" id="rdlugar" placeholder="Lugar Evento" required="true" requiredMessage="Lugar Obligatorio"/>
-                             <p:message for="rdlugar" />
+                        <h:outputText value="Título Archivo"/>
+                        <p:inputText style="" value="#{myBean.newReport.titulo}" id="t2" required="true" requiredMessage="Título Obligatorio" placeholder="Informe Técnico nº (por ejemplo)"/>
+                             <p:message for="t2" />
+                        <h:outputText value="Mes/Año"/>
+                        <p:calendar value="#{myBean.newReport.mesano}"  disabled="false" id="ma2" converterMessage="Fecha erronea"
+                                                                pattern="MMM/yyyy" 
+                                                                navigator="true"
+                                                                required="true"
+                                                                readonly="false"
+                                                                requiredMessage="Falta Mes y Año del documento"
+                                                                locale="es"
+                                                                >
+                                                            </p:calendar>
+                             <p:message for="ma2" />
                        
-                        <h:outputText value="Prueba/división"/>
-                        <p:inputText style="" value="#{myBean.selCvResDep.prueba}" id="rdprueba" placeholder="Prueba"/>
-                             <p:message for="rdprueba" />
-                        <h:outputText value="Nº atletas"/>
-                        <p:inputText style="" value="#{myBean.selCvResDep.numatle}" id="rdnumatle" placeholder="Atletas"/>
-                             <p:message for="rdnumatle" />
-                        <h:outputText value="Nº paises"/>
-                        <p:inputText style="" value="#{myBean.selCvResDep.npaises}" id="rdnpaises" placeholder="Paises"/>
-                             <p:message for="rdnpaises" />
-                        <h:outputText value="Marca atleta"/>
-                        <p:calendar id="rdmarca" value="#{myBean.selCvResDep.marca}" pattern="HH:mm:ss" timeOnly="true" locale="es" />
-                        
-                             <p:message for="rdmarca" />
                         
                         
                     </h:panelGrid>
                     <p:separator/>
-                    <p:commandButton action="#{myBean.registrarResulDep()}" value="Guardar" 
+                    <!-- oncomplete="if ( numeral {not facesContext.validationFailed})PF('newHE').hide()"-->
+                    <p:commandButton action="#{myBean.registraInforme(2)}" value="Guardar" 
                                  icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
-                                 update="@(form) newinc"
-                                 oncomplete="if (#{not facesContext.validationFailed})PF('newRD').hide()"
+                                 update="@(form) informe2"
+                                 style="    background: #2196F3;    color: white;"
                                  
                                  >
                     </p:commandButton>
                 </h:form>
+                <h:form id="informe2" enctype="multipart/form-data">
+                   <p:fileUpload  id="inf2" value="#{myBean.archivo}" 
+                      skinSimple="true" label="PDF"
+                      disabled="#{myBean.newReport.id==null}"
+                      allowTypes="/(\.|\/)(pdf)$/" 
+                     mode="advanced" 
+                     sizeLimit="3000000"
+                      multiple="false"
+                      fileLimit="2"
+                      uploadLabel="Cargar"
+                      cancelLabel="Cancelar"
+                      fileUploadListener="#{myBean.fileUploadListener}"
+                      update=":newinc"
+                      oncomplete="if(#{not facesContext.validationFailed})PF('newRD').hide()"
+                      />
+                 
+                </h:form>
                 
             </p:dialog> 
-         <p:dialog id="modalNewDR" header="Añadir Distinciones Recibidas" widgetVar="newDR" modal="true" >
+         <p:dialog id="modalNewDR" header="Añadir Pago IESS" widgetVar="newDR" modal="true" >
               <p:growl id="growlC" sticky="true" showDetail="true" life="3000" />
                 <h:outputText value="Llene todos los campos." />
                 
                 
-                <h:form>
+                 <h:form>
                     <h:panelGrid columns="3"  border="0" style="width: 100%;">
 
+                        <h:outputText value="Detalles Archivo"/>
+                        <p:inputText style="width: 350px;" value="#{myBean.newReport.titulo}" id="tiess" required="true" requiredMessage="Título Obligatorio" placeholder="Informe Técnico nº (por ejemplo)"/>
+                             <p:message for="tiess" />
+                        <h:outputText value="Mes/Año"/>
+                        <p:calendar style="width: 350px;" value="#{myBean.newReport.mesano}"  disabled="false" id="maiess" converterMessage="Fecha erronea"
+                                                                pattern="MMM/yyyy" 
+                                                                navigator="true"
+                                                                required="true"
+                                                                readonly="false"
+                                                                requiredMessage="Falta Mes y Año del documento"
+                                                                locale="es"
+                                                                >
+                                                            </p:calendar>
+                             <p:message for="maiess" />
+                         <h:outputText value="Atleta"/>
+                         <p:selectOneMenu id="persona" required="true" requiredMessage="Selecione Deportista" value="#{myBean.newReport.pertenece}" styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Atleta"/>
+                                                        <f:selectItems value="#{myBean.listaPersonas}" var="per" itemLabel="#{per.depapellido} #{per.depnombre}" itemValue="#{per.iddep}" />
+                                                    </p:selectOneMenu>
+                        <p:message for="persona" />
                         
-                        <h:outputText value="Distinciones Recividas como atleta"/>
-                        <p:inputText style="" value="#{myBean.selCvDistRe.distinciones}" id="drdistinciones" placeholder="Distinción"/>
-                             <p:message for="drdistinciones" />
-                        <h:outputText value="Fecha"/>
-                        <p:calendar value="#{myBean.selCvDistRe.fecha}"  id="drfecha"
-                                    pattern="dd/MM/yyyy" 
-                                    navigator="true"
-                                    required="true"
-                                    requiredMessage="Falta Fecha Evento"
-                                    locale="es"
-                                    >
-                        </p:calendar>
-                        <p:message for="drfecha" />
-                        
-                        <h:outputText value="Tipo de distinción"/>
-                        <p:inputText style="" value="#{myBean.selCvDistRe.tipo}" id="drtipo" placeholder="Tipo" required="true" requiredMessage="Falta el Tipo"/>
-                             <p:message for="drtipo" />
-                       
-                        <h:outputText value="Entidad que la otortgó"/>
-                        <p:inputText style="" value="#{myBean.selCvDistRe.entidad}" id="drentidad" placeholder="Prueba"/>
-                             <p:message for="drentidad" />
-                       
                         
                     </h:panelGrid>
                     <p:separator/>
-                    <p:commandButton action="#{myBean.registrarDistRecib()}" value="Guardar" 
+                    <!-- oncomplete="if ( numeral {not facesContext.validationFailed})PF('newHE').hide()"-->
+                    <p:commandButton action="#{myBean.registraInforme(3)}" value="Guardar" 
                                  icon="fa fa-fw fa-save" styleClass="w3-btn botones" 
-                                 update="@(form) newinc"
-                                 oncomplete="if (#{not facesContext.validationFailed})PF('newDR').hide()"
+                                 update="@(form) informe3"
+                                 style="    background: #2196F3;    color: white;"
                                  
                                  >
                     </p:commandButton>
+                </h:form>
+                <h:form id="informe3" enctype="multipart/form-data">
+                   <p:fileUpload  id="inf3" value="#{myBean.archivo}" 
+                      skinSimple="true" label="PDF"
+                      disabled="#{myBean.newReport.id==null}"
+                      allowTypes="/(\.|\/)(pdf)$/" 
+                     mode="advanced" 
+                     sizeLimit="3000000"
+                      multiple="false"
+                      fileLimit="2"
+                      uploadLabel="Cargar"
+                      cancelLabel="Cancelar"
+                      fileUploadListener="#{myBean.fileUploadListener}"
+                      update=":newinc"
+                      oncomplete="if(#{not facesContext.validationFailed})PF('newDR').hide()"
+                      />
+                 
                 </h:form>
                 
             </p:dialog> 
@@ -257,7 +275,7 @@
                 </h:outputLink>
                 <p:growl id="growl" sticky="false" showDetail="true" life="500" />
                
-                    <h2>Definir campos necesarios, tipo de informes, formato y seguimiento.</h2>     
+                    <h2></h2>     
                     <div id="comments">
                         <ul>
                             <li>
@@ -282,16 +300,8 @@
                                             <p:messages id="messages" closable="true" autoUpdate="true">
                                                 <p:effect type="puff" event="load" delay="300" />
                                             </p:messages>
-                                            <p:panel header="Histórico documental de (Entrenador)" id="cvd" widgetVar="regWidget" style="padding-left: 0%; padding-right: 0%; background-color: rgba(255,255,255,0.5);">
-                                                <img id="fperfil" style="width: 120px; padding-bottom: 10px;border: white;border-style: solid; border-radius: 20px 3px;" 
-                                                    src="/img/#{myBean.selectPersona.depcedula}.jpg" 
-                                                    onerror="this.src='images/noprofile.jpeg'"  
-                                                    alt="Foto"/>
-                                                <p:commandButton value="Cambiar imagen" 
-                                                                  type="button"
-                                                    onclick="PF('dlg1').show()"
-                                                    icon="ui-icon-check"
-                                                    />
+                                            <p:panel header="Histórico documental de #{myBean.currentUser.entrenador?'Entrenadores':'Pagos Iess'}" id="cvd" widgetVar="regWidget" style="padding-left: 0%; padding-right: 0%; background-color: rgba(255,255,255,0.5);">
+                                                <h:outputText value="#{myBean.currentUser.usuapellidos} #{myBean.currentUser.usunombres}" />
                                                 
                                              
                                                 
@@ -304,13 +314,13 @@
                                                 
                                                 
                                                 
-                                                <p:panelGrid style="margin-top:20px">
+                                                <p:panelGrid style="margin-top:20px" rendered="#{myBean.currentUser.entrenador}">
                                                     <p:row>
-                                                            <p:column style="font-weight: bold; text-align: center;">Informe Tipo 1</p:column>  
+                                                            <p:column style="font-weight: bold; text-align: center;">Registro Informes Técnicos</p:column>  
                                                     </p:row>  
                                                     <p:row>
                                                         <p:column>
-                                                                <p:commandButton rendered="true" id="nuevoHE" value="Añadir Informe Tipo 1" 
+                                                                <p:commandButton rendered="true" id="nuevoHE" value="Añadir Informe Técnico" 
                                                                         style="color: #2196f3;"
                                                                         onclick="PF('newHE').show()" 
                                                                         icon="fa fa-fw fa-plus" 
@@ -318,30 +328,40 @@
                                                         </p:column>
                                                     </p:row>
                                                 </p:panelGrid>                                                           
-                                                <p:dataTable var="he" value="#{myBean.listReport}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                <p:dataTable var="he" value="#{myBean.listInfTec}" 
+                                                             emptyMessage="No hay registros..." rowIndexVar="index"
+                                                             rendered="#{myBean.currentUser.entrenador}">
                                                         <p:column headerText="Nº">
                                                             <h:outputText value="#{index+1}" />
                                                         </p:column>
-                                                        <p:column headerText="Año">
-                                                            <h:outputText value="#{he.fechacarga}" />
+                                                    <p:column headerText="Título" sortBy="#{he.titulo}">
+                                                            <h:outputText value="#{he.titulo}" />
                                                         </p:column>
-                                                        <p:column headerText="Nombres y apellidos">
-                                                            <h:outputText value="#{he.archivo}" />
+                                                    <p:column headerText="Mes y Año" sortBy="#{he.mesano}">
+                                                            <p:outputLabel value="#{he.mesano}">
+                                                             <f:convertDateTime pattern="MMM/yyyy" />
+                                                          </p:outputLabel>
                                                         </p:column>
-                                                        <p:column headerText="Quipux">
-                                                            <h:outputText value="#{he.archivo}" />
+                                                    <p:column headerText="Archivo" sortBy="#{he.archivo}">
+                                                            <a target="_blank" href="../imagenes/#{he.archivo}">#{he.archivo}</a>
+                                                        </p:column>
+                                                        
+                                                    <p:column headerText="Fecha de Carga" sortBy="#{he.fechacarga}">
+                                                            <p:outputLabel value="#{he.fechacarga}">
+                                                             <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                          </p:outputLabel>
                                                         </p:column>
                                                         
                                                     </p:dataTable>                          
-                                                <p:panelGrid style="margin-top:20px">
+                                                <p:panelGrid style="margin-top:20px" rendered="#{myBean.currentUser.entrenador}">
                                                     <f:facet name="header">
                                                         <p:row>
-                                                            <p:column colspan="9">Resultado Eventos</p:column>
+                                                            <p:column colspan="9">Registro Asistencia</p:column>
                                                         </p:row>
                                                     </f:facet>
                                                     <p:row>
                                                         <p:column>
-                                                                <p:commandButton rendered="true" id="nuevoRD" value="Añadir Resultado" 
+                                                                <p:commandButton rendered="true" id="nuevoRD" value="Añadir registro" 
                                                                         style="color: #2196f3;"
                                                                         onclick="PF('newRD').show()" 
                                                                         icon="fa fa-fw fa-plus" 
@@ -349,41 +369,39 @@
                                                         </p:column>
                                                     </p:row>                                                 
                                                 </p:panelGrid>                                                
-                                                <p:dataTable var="rd" value="#{myBean.listReport}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                <p:dataTable var="ra" value="#{myBean.listRegAsist}" emptyMessage="No hay registros..." 
+                                                             rowIndexVar="index"
+                                                             rendered="#{myBean.currentUser.entrenador}">
                                                         <p:column headerText="Nº">
                                                             <h:outputText value="#{index+1}" />
                                                         </p:column>
-                                                        <p:column headerText="Nombre Evento">
-                                                            <h:outputText value="#{rd.archivo}" />
+                                                    <p:column headerText="Título" sortBy="#{ra.titulo}">
+                                                            <h:outputText value="#{ra.titulo}" />
                                                         </p:column>
-                                                        <p:column headerText="Fecha">
-                                                            <p:calendar value="#{rd.fechacarga}" pattern="dd/MM/yyyy" readonly="true"/>
+                                                    <p:column headerText="Mes y Año" sortBy="#{ra.mesano}">
+                                                            <p:outputLabel value="#{ra.mesano}">
+                                                             <f:convertDateTime pattern="MMM/yyyy" />
+                                                          </p:outputLabel>
                                                         </p:column>
-                                                        <p:column headerText="Lugar">
-                                                            <h:outputText value="#{rd.cargadox}" />
+                                                    <p:column headerText="Archivo" sortBy="#{ra.archivo}">
+                                                            <a target="_blank" href="../imagenes/#{ra.archivo}">#{ra.archivo}</a>
                                                         </p:column>
-                                                        <p:column headerText="Prueba/división">
-                                                            <h:outputText value="#{rd.mesano}" />
-                                                        </p:column>
-                                                        <p:column headerText="Nº atletas">
-                                                            <h:outputText value="#{rd.pertenece}" />
-                                                        </p:column>
-                                                        <p:column headerText="Nº paises">
-                                                            <h:outputText value="#{rd.tipo}" />
-                                                        </p:column>
-                                                        <p:column headerText="Marca atleta">
-                                                            <p:calendar value="#{rd.titulo}"  pattern="HH:mm:ss"  readonly="true"/>
+                                                        
+                                                    <p:column headerText="Fecha de Carga" sortBy="#{ra.fechacarga}">
+                                                            <p:outputLabel value="#{ra.fechacarga}">
+                                                             <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                          </p:outputLabel>
                                                         </p:column>
                                                 </p:dataTable>
-                                                <p:panelGrid style="margin-top:20px">
+                                                <p:panelGrid style="margin-top:20px" rendered="#{!myBean.currentUser.entrenador}">
                                                     <f:facet name="header">
                                                         <p:row>
-                                                            <p:column colspan="6">Informe Tipo 2</p:column>
+                                                            <p:column colspan="6">Pagos IESS</p:column>
                                                         </p:row>
                                                     </f:facet>
                                                     <p:row>
                                                         <p:column>
-                                                                <p:commandButton rendered="true" id="nuevoDR" value="Añadir Tipo 2" 
+                                                                <p:commandButton rendered="true" id="nuevoDR" value="Añadir Pago IESS" 
                                                                         style="color: #2196f3;"
                                                                         onclick="PF('newDR').show()" 
                                                                         icon="fa fa-fw fa-plus" 
@@ -391,16 +409,31 @@
                                                         </p:column>
                                                     </p:row>
                                                 </p:panelGrid>
-                                                <p:dataTable var="dr" value="#{myBean.listReport}" emptyMessage="No hay registros..." rowIndexVar="index">
+                                                <p:dataTable var="iess" value="#{myBean.listPagoIess}" emptyMessage="No hay registros..." 
+                                                             rowIndexVar="index"
+                                                             rendered="#{!myBean.currentUser.entrenador}">
                                                         <p:column headerText="Nº">
                                                             <h:outputText value="#{index+1}" />
                                                         </p:column>
-                                                        <p:column headerText="Distinciones Recividas como atleta">
-                                                            <h:outputText value="#{dr.archivo}" />
+                                                    <p:column headerText="Título" sortBy="#{iess.titulo}">
+                                                            <h:outputText value="#{iess.titulo}" />
                                                         </p:column>
-                                                        <p:column headerText="Fecha">
-                                                            <p:calendar value="#{dr.archivado}"  pattern="dd/MM/yyyy"  readonly="true"/>
-                                                            
+                                                    <p:column headerText="Atleta" sortBy="#{myBean.searchIessAtleta(iess.pertenece)}">
+                                                        <h:outputText value="#{myBean.searchIessAtleta(iess.pertenece)}" />
+                                                        </p:column>
+                                                    <p:column headerText="Mes y Año" sortBy="#{iess.mesano}">
+                                                            <p:outputLabel value="#{iess.mesano}">
+                                                             <f:convertDateTime pattern="MMM/yyyy" />
+                                                          </p:outputLabel>
+                                                        </p:column>
+                                                    <p:column headerText="Archivo" sortBy="#{iess.archivo}">
+                                                            <a target="_blank" href="../imagenes/#{iess.archivo}">#{iess.archivo}</a>
+                                                        </p:column>
+                                                        
+                                                    <p:column headerText="Fecha de Carga" sortBy="#{iess.fechacarga}">
+                                                            <p:outputLabel value="#{iess.fechacarga}">
+                                                             <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                          </p:outputLabel>
                                                         </p:column>
                                                         
                                                 </p:dataTable>
@@ -408,14 +441,7 @@
 
                                                
                                                 <p:separator />
-                                                <p:commandButton id="gt" 
-                                                style=" background: #FBFBFB; color: black;" 
-                                                value="Guardado temporal" 
-                                                action="#{myBean.cv(myBean.selectPersona)}"
-                                                icon="fa fa-fw fa-save"
-
-                                                update="newinc"
-                                                ></p:commandButton>       
+                                                
                                                
                                             </p:panel>
                 </h:form>     

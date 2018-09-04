@@ -44,10 +44,11 @@ public class MdreportesFacade extends AbstractFacade<Mdreportes> implements Mdre
     }
 
     @Override
-    public List<Mdreportes> getReportsByType(String x) {
+    public List<Mdreportes> getReportsByType(String x, Mdusuariot y) {
         try {
-            return  em.createQuery("SELECT r from Mdreportes r where r.tipo like  '%:x%' ")
+            return  em.createQuery("SELECT r from Mdreportes r where r.cargadox =:y AND r.tipo =:x")
                     .setParameter("x", x)
+                    .setParameter("y", y)
                     .getResultList();
         } catch (Exception e) {
             System.out.println("Error, no encontré usuarios con perfil de: "+x+" Error: " + e.getMessage());
@@ -76,6 +77,18 @@ public class MdreportesFacade extends AbstractFacade<Mdreportes> implements Mdre
             System.out.println("Error al modificar user "+e.getMessage());
             return false;
             
+        }
+    }
+
+    @Override
+    public List<Mdreportes> getAllReportsByType(String x) {
+        try {
+            return  em.createQuery("SELECT r from Mdreportes r where r.tipo =:x")
+                    .setParameter("x", x)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré usuarios con perfil de: "+x+" Error: " + e.getMessage());
+            return null;
         }
     }
     

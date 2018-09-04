@@ -292,6 +292,10 @@ public class mainBean implements Serializable {
     private List<Mdreportes> listReport;
     private List<Mdreportes> filterReport;
     
+    private List<Mdreportes> listInfTec;
+    private List<Mdreportes> listRegAsist;
+    private List<Mdreportes> listPagoIess;
+    
     
     
     Renderizador r=new Renderizador();
@@ -896,7 +900,7 @@ public class mainBean implements Serializable {
              Logger.getLogger(mainBean.class.getName()).log(Level.SEVERE, null, ex);
          }
     }
-
+String name="";
  public void subirImagen(String nombreImagen) throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
         String extension = "";
@@ -904,13 +908,43 @@ public class mainBean implements Serializable {
         int i = archivo.getFileName().lastIndexOf('.');
         if (i > 0) {
             extension = archivo.getFileName().substring(i+1);
+            System.out.println("extension: "+extension);
         }
         if(!archivo.getFileName().isEmpty()){
              try {
-                 escribirEnDisco(selectPersona.getDepcedula()+"."+extension, archivo.getInputstream());
-                 context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Archivo ", archivo.getFileName()+" almacenado correctaente."));
-                 archivo = null;
+                 
+                 if(!extension.equals("pdf")){
+                     System.out.println("No pdf");
+                     
+                    escribirEnDisco(selectPersona.getDepcedula()+"."+extension, archivo.getInputstream());
+                    
+                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Archivo ", archivo.getFileName()+" almacenado correctamente."));
+                    
+                    archivo = null;
+                 }else{
+                     System.out.println("pdf");
+                     
+                     if(newReport.getId()!=null){
+                     
+                        Calendar hoy = Calendar. getInstance();
+                        hoy.setTime(newReport.getMesano());
+                        name=hoy.get(Calendar.MONTH)+"_"+hoy.get(Calendar.YEAR);
+                     }
+                    name=name+"_"+currentUser.getUsucedula()+"."+extension;
+                    newReport.setArchivo(name);
+                    mdreportesFacade.modificarDatos(newReport);
+                    escribirEnDisco(name, archivo.getInputstream());
+                    listInfTec=mdreportesFacade.getReportsByType("IT", currentUser);
+                    listRegAsist=mdreportesFacade.getReportsByType("RA", currentUser);
+                    listPagoIess=mdreportesFacade.getReportsByType("IESS", currentUser);
+                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Archivo ", archivo.getFileName()+" almacenado correctamente."));
+                    
+                    archivo = null;
+                    newReport = null;
+                 
+                 }
              } catch (Exception e) {
+                 System.out.println("error carga file: "+e.getMessage());
                  context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", " al subir archivo "+e.getMessage()));
              }
          }else{ 
@@ -1356,8 +1390,51 @@ public class mainBean implements Serializable {
        return mdusuariotFacade.find(x).getInstitucion();
     
     }
+    public String searchIessAtleta(int x){
+        String z="";
+        Mdpersonast y=mdpersonastFacade.findById(x);
+        return z=y.getDepapellido()+" "+y.getDepnombre();
+    }
+    public void registraInforme(int x){
+        FacesContext context = FacesContext.getCurrentInstance();
+     switch(x){
+        case 1: 
+                    
+                //newReport.setArchivo(name);
+                newReport.setFechacarga(new Date());
+                newReport.setCargadox(currentUser);
+                newReport.setTipo("IT");
+                if(mdreportesFacade.guardarDatos(newReport))
+                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro ", newReport.getArchivo()+" efectuado correctamente."));
+                else
+                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro ", " No realizad."));
+                
+                 
+                break;
+        case 2: 
+                newReport.setFechacarga(new Date());
+                newReport.setCargadox(currentUser);
+                newReport.setTipo("RA");
+                if(mdreportesFacade.guardarDatos(newReport))
+                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro ", newReport.getArchivo()+" efectuado correctamente."));
+                else
+                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro ", " No realizad."));
+                
+                break;
+        case 3: 
+                newReport.setFechacarga(new Date());
+                newReport.setCargadox(currentUser);
+                newReport.setTipo("IESS");
+                if(mdreportesFacade.guardarDatos(newReport))
+                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Registro IESS", newReport.getArchivo()+" efectuado correctamente."));
+                else
+                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Registro IESS", " No realizad."));
+                break;
+        case 4: break;
+        default: break;
+     }
     
-    
+    }
     
     
     public UploadedFile getArchivo() {
@@ -2254,6 +2331,8 @@ public class mainBean implements Serializable {
     }
 
     public Mdreportes getNewReport() {
+        if(newReport==null)
+            newReport= new Mdreportes();
         return newReport;
     }
 
@@ -2292,6 +2371,38 @@ public class mainBean implements Serializable {
     public void setFilterReport(List<Mdreportes> filterReport) {
         this.filterReport = filterReport;
     }
+
+    public List<Mdreportes> getListInfTec() {
+        if(listInfTec==null)
+            listInfTec=mdreportesFacade.getReportsByType("IT", currentUser);
+        return listInfTec;
+    }
+
+    public void setListInfTec(List<Mdreportes> listInfTec) {
+        this.listInfTec = listInfTec;
+    }
+
+    public List<Mdreportes> getListRegAsist() {
+        if(listRegAsist==null)
+            listRegAsist=mdreportesFacade.getReportsByType("RA", currentUser);
+        return listRegAsist;
+    }
+
+    public void setListRegAsist(List<Mdreportes> listRegAsist) {
+        this.listRegAsist = listRegAsist;
+    }
+
+    public List<Mdreportes> getListPagoIess() {
+        if(listPagoIess==null)
+            listPagoIess=mdreportesFacade.getReportsByType("IESS", currentUser);
+        return listPagoIess;
+    }
+
+    public void setListPagoIess(List<Mdreportes> listPagoIess) {
+        this.listPagoIess = listPagoIess;
+    }
+
+    
 
     
     

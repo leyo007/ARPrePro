@@ -48,14 +48,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Mdusuariot.findByUsusexo", query = "SELECT m FROM Mdusuariot m WHERE m.ususexo = :ususexo")
     , @NamedQuery(name = "Mdusuariot.findByUsufecnac", query = "SELECT m FROM Mdusuariot m WHERE m.usufecnac = :usufecnac")
     , @NamedQuery(name = "Mdusuariot.findByInstitucion", query = "SELECT m FROM Mdusuariot m WHERE m.institucion = :institucion")
-    , @NamedQuery(name = "Mdusuariot.findByCodinst", query = "SELECT m FROM Mdusuariot m WHERE m.codinst = :codinst")})
+    , @NamedQuery(name = "Mdusuariot.findByCodinst", query = "SELECT m FROM Mdusuariot m WHERE m.codinst = :codinst")
+    , @NamedQuery(name = "Mdusuariot.findByEntrenador", query = "SELECT m FROM Mdusuariot m WHERE m.entrenador = :entrenador")})
 public class Mdusuariot implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargadox")
-    private List<Mdreportes> mdreportesList;
-
-    @Column(name = "entrenador")
-    private Boolean entrenador;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -103,8 +98,10 @@ public class Mdusuariot implements Serializable {
     @Basic(optional = false)
     @Column(name = "codinst")
     private int codinst;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario")
-    private List<Mdusuarioperfilt> mdusuarioperfiltList;
+    @Column(name = "entrenador")
+    private Boolean entrenador;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargadox")
+    private List<Mdreportes> mdreportesList;
 
     public Mdusuariot() {
     }
@@ -238,13 +235,21 @@ public class Mdusuariot implements Serializable {
         this.codinst = codinst;
     }
 
-    @XmlTransient
-    public List<Mdusuarioperfilt> getMdusuarioperfiltList() {
-        return mdusuarioperfiltList;
+    public Boolean getEntrenador() {
+        return entrenador;
     }
 
-    public void setMdusuarioperfiltList(List<Mdusuarioperfilt> mdusuarioperfiltList) {
-        this.mdusuarioperfiltList = mdusuarioperfiltList;
+    public void setEntrenador(Boolean entrenador) {
+        this.entrenador = entrenador;
+    }
+
+    @XmlTransient
+    public List<Mdreportes> getMdreportesList() {
+        return mdreportesList;
+    }
+
+    public void setMdreportesList(List<Mdreportes> mdreportesList) {
+        this.mdreportesList = mdreportesList;
     }
 
     @Override
@@ -270,23 +275,6 @@ public class Mdusuariot implements Serializable {
     @Override
     public String toString() {
         return "entities.Mdusuariot[ idusuario=" + idusuario + " ]";
-    }
-
-    public Boolean getEntrenador() {
-        return entrenador;
-    }
-
-    public void setEntrenador(Boolean entrenador) {
-        this.entrenador = entrenador;
-    }
-
-    @XmlTransient
-    public List<Mdreportes> getMdreportesList() {
-        return mdreportesList;
-    }
-
-    public void setMdreportesList(List<Mdreportes> mdreportesList) {
-        this.mdreportesList = mdreportesList;
     }
     
 }

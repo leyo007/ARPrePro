@@ -33,7 +33,8 @@ public interface MdreportesFacadeLocal {
     
    
     public List<Mdreportes> getReportsByCreator(Mdusuariot x);
-    public List<Mdreportes> getReportsByType(String x);
+    public List<Mdreportes> getReportsByType(String x,Mdusuariot y );
+    public List<Mdreportes> getAllReportsByType(String x);
     
     public boolean guardarDatos(Mdreportes x);
     public boolean modificarDatos(Mdreportes x);

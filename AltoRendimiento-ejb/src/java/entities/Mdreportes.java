@@ -38,12 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdreportes.findByTitulo", query = "SELECT m FROM Mdreportes m WHERE m.titulo = :titulo")
     , @NamedQuery(name = "Mdreportes.findByMesano", query = "SELECT m FROM Mdreportes m WHERE m.mesano = :mesano")
     , @NamedQuery(name = "Mdreportes.findByTipo", query = "SELECT m FROM Mdreportes m WHERE m.tipo = :tipo")
-    , @NamedQuery(name = "Mdreportes.findByArchivado", query = "SELECT m FROM Mdreportes m WHERE m.archivado = :archivado")})
+    , @NamedQuery(name = "Mdreportes.findByArchivado", query = "SELECT m FROM Mdreportes m WHERE m.archivado = :archivado")
+    , @NamedQuery(name = "Mdreportes.findByPertenece", query = "SELECT m FROM Mdreportes m WHERE m.pertenece = :pertenece")})
 public class Mdreportes implements Serializable {
-
-    @Basic(optional = false)
-    @Column(name = "pertenece")
-    private int pertenece;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -68,6 +65,9 @@ public class Mdreportes implements Serializable {
     private String tipo;
     @Column(name = "archivado")
     private Boolean archivado;
+    @Basic(optional = false)
+    @Column(name = "pertenece")
+    private int pertenece;
     @JoinColumn(name = "cargadox", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Mdusuariot cargadox;
@@ -77,6 +77,11 @@ public class Mdreportes implements Serializable {
 
     public Mdreportes(Integer id) {
         this.id = id;
+    }
+
+    public Mdreportes(Integer id, int pertenece) {
+        this.id = id;
+        this.pertenece = pertenece;
     }
 
     public Integer getId() {
@@ -135,6 +140,14 @@ public class Mdreportes implements Serializable {
         this.archivado = archivado;
     }
 
+    public int getPertenece() {
+        return pertenece;
+    }
+
+    public void setPertenece(int pertenece) {
+        this.pertenece = pertenece;
+    }
+
     public Mdusuariot getCargadox() {
         return cargadox;
     }
@@ -166,14 +179,6 @@ public class Mdreportes implements Serializable {
     @Override
     public String toString() {
         return "entities.Mdreportes[ id=" + id + " ]";
-    }
-
-    public int getPertenece() {
-        return pertenece;
-    }
-
-    public void setPertenece(int pertenece) {
-        this.pertenece = pertenece;
     }
     
 }

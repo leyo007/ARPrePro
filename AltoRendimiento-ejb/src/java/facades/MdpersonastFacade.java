@@ -92,6 +92,18 @@ public class MdpersonastFacade extends AbstractFacade<Mdpersonast> implements Md
             return null;
         }
     }
+
+    @Override
+    public Mdpersonast findById(int x) {
+        try {
+              return (Mdpersonast) em.createQuery("SELECT p from Mdpersonast p WHERE p.iddep =:x")
+                      .setParameter("x", x)
+                    .getSingleResult();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré las personas del registro IESS: "+x+" Error: " + e.getMessage());
+            return new Mdpersonast();
+        }
+    }
     
      
   
