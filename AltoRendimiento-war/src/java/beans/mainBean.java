@@ -70,6 +70,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -79,9 +80,11 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.FileUploadEvent;
@@ -301,9 +304,12 @@ public class mainBean implements Serializable {
     Renderizador r=new Renderizador();
     public void  noLogged() throws IOException{
         if(currentUser==null){
-     
-           r.irAInicio();
-           
+            r.irAInicio();
+            /*ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            context.redirect(context.getRequestContextPath() + "/");
+            System.out.println("context: "+context.getApplicationContextPath());
+            System.out.println("context: "+context.getContextName());
+            System.out.println("context: "+context.getRealPath("AltoRendimiento-war"));*/
         }
     }
     
@@ -314,9 +320,9 @@ public class mainBean implements Serializable {
         
         if(usuario.length()>0&&password.length()>0){
            
-          
+            String pwd=DigestUtils.shaHex(password);
             
-            currentUser=mdusuariotFacade.findThisUser(usuario, password);
+            currentUser=mdusuariotFacade.findThisUser(usuario, pwd);
             System.out.println("Usuario: "+currentUser.getUsumail());
             if(currentUser.getIdusuario()!=null){
                 if(currentUser.getIdacticode()!=1){
@@ -729,16 +735,18 @@ public class mainBean implements Serializable {
     }
      public double totalEventos(List<Mdnecesidades> x){
          double y=0.0;
-         for (Mdnecesidades n : x) {
-             y+=n.getValor();
-         }
+         if(currentUser!=null)
+            for (Mdnecesidades n : x) {
+                y+=n.getValor();
+            }
         return y;
      }
      public double totalEvento(List<Mdnecesidades> x){
          double y=0.0;
-         for (Mdnecesidades n : x) {
-             y+=n.getTotal();
-         }
+         if(currentUser!=null)
+            for (Mdnecesidades n : x) {
+                y+=n.getTotal();
+            }
         return y;
      }
      
@@ -888,8 +896,8 @@ public class mainBean implements Serializable {
      //UploadImages  
     private UploadedFile archivo;
     //private String ubicacionEnDisco="C:\\Users\\TOSHIBA\\AppData\\Roaming\\NetBeans\\8.0\\config\\GF_4.0\\domain1\\docroot\\imagenes\\";
-    private String ubicacionEnDisco="C:\\glassfish4\\glassfish\\domains\\domain1\\docroot\\imagenes\\";
-    //private String ubicacionEnDisco="/opt/glassfish/4.0/glassfish/domains/domain1/docroot/img/";
+    //private String ubicacionEnDisco="C:\\glassfish4\\glassfish\\domains\\domain1\\docroot\\imagenes\\";
+    private String ubicacionEnDisco="/opt/glassfish/4.0/glassfish/domains/domain1/docroot/altorendimiento/";
     
     public void fileUploadListener(FileUploadEvent event){
         archivo=event.getFile();
@@ -1125,7 +1133,10 @@ String name="";
         FacesMessage msg = new FacesMessage("Suelta perfil: ", "this perfil");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+    private String newPwdUser;
      public void modificaperfil(){
+         if(newPwdUser!=null&&newPwdUser.length()>6)
+            selectedUser.setUsuclave(DigestUtils.shaHex(newPwdUser));
         if(mdusuariotFacade.modificarDatos(selectedUser)){
             System.out.println("Usuario modificado...");
              FacesMessage msg = new FacesMessage("usuario modificado", selectedUser.getUsunombre());
@@ -1163,6 +1174,7 @@ String name="";
        
         newUser.setInstitucion(mdfederacionFacade.buscarXid(newUser.getCodinst()).getNombre());
         newUser.setIdacticode(1);
+        newUser.setUsuclave(DigestUtils.shaHex(newUser.getUsuclave()));
         if(mdusuariotFacade.guardarDatos(newUser)){
             System.out.println("newUser: "+newUser.getIdusuario());
             newuPerfil.setIdusuario(newUser);
@@ -1172,11 +1184,9 @@ String name="";
                 FacesContext.getCurrentInstance().addMessage(null, msg); 
                 listUsers=mdusuariotFacade.findAll();
                 //pruebas
-            }
-                
+            }             
          }else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Usuario no generado"));
-               
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Usuario no generado"));       
         }
     
     }
@@ -1506,7 +1516,7 @@ String name="";
        
         // System.out.println("Perfil: "+uPerfil.getIdperfil().getIdperfil() );
         //if(listaPersonas==null){
-            
+        if(currentPerfil!=null){    
             if(currentPerfil.getIdperfil().getIdperfil()==3){
                  System.out.println("buscando personas de federación: "+currentPerfil.getIdperfil().getPernombre() );
                 //listaPersonas=mdpersonastFacade.findByPerfil(currentUser.getIdusuario());
@@ -1514,7 +1524,13 @@ String name="";
             }
             else{
                 //System.out.println("buscando todas las personas ");
+                System.out.println("buscando todos");
                 listaPersonas=mdpersonastFacade.findAll();
+            }
+        }else
+            if(listaPersonas==null){
+                System.out.println("buscando a nadie de los atletas....");
+                listaPersonas=new ArrayList<>();
             }
             /*for(Mdpersonast x: listaPersonas ){
                 System.out.println("Persona: "+x.getDepcedula());
@@ -1629,33 +1645,35 @@ String name="";
     }
 
     public List<Mddeportest> getListDeporte() {
-        System.out.println("Perfil: "+x.getIdperfil());
-        System.out.println("para buscar, usa: "+currentUser.getCodinst());
-        if(x.getIdperfil()==(Integer)3){
-          
-            System.out.println("Federacion selecionada: " +selectFede.getNombre()+" "+selectFede.getId());
-            listDeporte=mddeportestFacade.getDepByFed(selectFede.getId());
-            if(!selectFede.getSector())
-                selectPersona.setHandi(true);
-            
-        }
-        if(x.getIdperfil()==(Integer)4){
-            System.out.println("Es comite...");
-            if(nuevoHono!=null){
-                nuevoHono.setTipo(3);
-                System.out.println("nuevoHono.getTipo(): "+nuevoHono.getTipo());
+        if(currentUser!=null){
+            System.out.println("Perfil: "+x.getIdperfil());
+            System.out.println("para buscar, usa: "+currentUser.getCodinst());
+            if(x.getIdperfil()==(Integer)3){
+
+                System.out.println("Federacion selecionada: " +selectFede.getNombre()+" "+selectFede.getId());
+                listDeporte=mddeportestFacade.getDepByFed(selectFede.getId());
+                if(!selectFede.getSector())
+                    selectPersona.setHandi(true);
+
             }
-            if(imcoe)
-                listDeporte=mddeportestFacade.getDepByCat(true);
-            else
-                listDeporte=mddeportestFacade.getDepByCat(false);
+            if(x.getIdperfil()==(Integer)4){
+                System.out.println("Es comite...");
+                if(nuevoHono!=null){
+                    nuevoHono.setTipo(3);
+                    System.out.println("nuevoHono.getTipo(): "+nuevoHono.getTipo());
+                }
+                if(imcoe)
+                    listDeporte=mddeportestFacade.getDepByCat(true);
+                else
+                    listDeporte=mddeportestFacade.getDepByCat(false);
+            }
+            System.out.println("DEPORTES - XXXXXXXXXXXXXXXXX");
+            if(listDeporte==null){
+                System.out.println("LISTA DEPORTES");
+                listDeporte=mddeportestFacade.findAll();
+            }else
+                System.out.println("No está vacia....");
         }
-        System.out.println("DEPORTES - XXXXXXXXXXXXXXXXX");
-        if(listDeporte==null){
-            System.out.println("LISTA DEPORTES");
-            listDeporte=mddeportestFacade.findAll();
-        }else
-            System.out.println("No está vacia....");
         return listDeporte;
     }
 
@@ -2023,6 +2041,8 @@ String name="";
     }
 
     public Mdnecesidades getNewNecesidad() {
+        if(newNecesidad==null)
+            newNecesidad= new Mdnecesidades();
         return newNecesidad;
     }
 
@@ -2040,7 +2060,7 @@ String name="";
 
     public List<Mdnecesidades> getFiltroNecesidad() {
        
-        
+        if(currentUser!=null)
             if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
                
                 filtroNecesidad=mdnecesidadesFacade.findAll();
@@ -2400,6 +2420,14 @@ String name="";
 
     public void setListPagoIess(List<Mdreportes> listPagoIess) {
         this.listPagoIess = listPagoIess;
+    }
+
+    public String getNewPwdUser() {
+        return newPwdUser;
+    }
+
+    public void setNewPwdUser(String newPwdUser) {
+        this.newPwdUser = newPwdUser;
     }
 
     

@@ -61,6 +61,9 @@
                                                    <h:outputText value="Nombres"/>
                                                    <p:inputText  value="#{myBean.selectedUser.usuapellidos} #{myBean.selectedUser.usunombres}" id="papellido" placeholder="formato 0.0"/>
                                                         <p:message for="papellido" />
+                                                   <h:outputText value="Cambiar contraseña?"/>
+                                                   <p:password  value="#{myBean.newPwdUser}" id="pwd"  placeholder="No es obligatorio cambiarla" required="false" style="width: 160px;"/>
+                                                        <p:message for="pwd" />
                                                    <h:outputText value="Institución"/>
                                                    <h:outputText id="inst" value="#{myBean.selectedUser.institucion}"  />
                                                         
@@ -92,15 +95,22 @@
                                                    <h:outputText value="Usuario"/>
                                                    <p:inputText required="true" requiredMessage="Campo obligatorio" value="#{myBean.newUser.usunombre}" id="nuser"  placeholder="Escoja usuario"/>
                                                         <p:message for="nuser" />
-                                                   <h:outputText value="Contraseña"/>
-                                                   <p:inputText required="true" requiredMessage="Campo obligatorio" value="#{myBean.newUser.usuclave}" id="npwd"  placeholder="Escriba contraseña"/>
-                                                        <p:message for="npwd" />
+                                                    <h:outputText value="Contraseña"/>
+                                                   <p:password id="pwd1" value="#{myBean.newUser.usuclave}" match="pwd2" label="Password" required="true" requiredMessage="Campo obligatorio"/>
+                                                   <p:message for="pwd1" />
+                                                    <h:outputLabel for="pwd2" value="Repita: *" />
+                                                    <p:password id="pwd2" value="#{myBean.newUser.usuclave}" validatorMessage="Coinciden" label="las contraseñas deben coincidir" required="true" requiredMessage="Campo obligatorio"/>
+                                                        <p:message for="pwd2" />
+                                                   
                                                    <h:outputText value="Nombres"/>
                                                    <p:inputText required="true" requiredMessage="Campo obligatorio" value="#{myBean.newUser.usunombres}" id="nnombre" placeholder="Nombres"/>
                                                         <p:message for="nnombre" />
                                                    <h:outputText value="Apellidos"/>
                                                    <p:inputText required="true" requiredMessage="Campo obligatorio" value="#{myBean.newUser.usuapellidos}" id="napellido" placeholder="Apellidos"/>
                                                         <p:message for="napellido" />
+                                                   <h:outputText value="Mail"/>
+                                                   <p:inputText  value="#{myBean.newUser.usumail}" id="mail" placeholder="abc@deporte.gob.ec" style="width: 160px;"/>
+                                                        <p:message for="mail" />
                                                    <h:outputText value="Institución"/>
                                                    <p:selectOneMenu id="inst"  value="#{myBean.newUser.codinst}" required="true" requiredMessage="Campo obligatorio" >
                                                         <f:selectItem itemLabel="Federación"/>

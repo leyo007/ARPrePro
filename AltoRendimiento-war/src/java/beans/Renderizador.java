@@ -95,12 +95,8 @@ public class Renderizador {
     public void irAInicio() throws IOException {
         ExternalContext contexto = FacesContext.getCurrentInstance().getExternalContext();
         String strPathContext = ((ServletContext) contexto.getContext()).getContextPath();
-        
-        System.out.println("contexto: "+contexto);
-        System.out.println("strPathContext: "+strPathContext);
-        
         try {
-            contexto.redirect(strPathContext);
+            contexto.redirect(strPathContext + "/");
         } catch (IOException e) {
             System.err.println("Error:" + e.getMessage());
             contexto.redirect(strPathContext + "/");
