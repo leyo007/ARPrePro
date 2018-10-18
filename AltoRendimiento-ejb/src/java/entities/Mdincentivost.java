@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,7 +34,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdincentivost.findByIdcatactual", query = "SELECT m FROM Mdincentivost m WHERE m.idcatactual = :idcatactual")
     , @NamedQuery(name = "Mdincentivost.findByIdedad", query = "SELECT m FROM Mdincentivost m WHERE m.idedad = :idedad")
     , @NamedQuery(name = "Mdincentivost.findByIddep", query = "SELECT m FROM Mdincentivost m WHERE m.iddep = :iddep")
-    , @NamedQuery(name = "Mdincentivost.findByIdestado", query = "SELECT m FROM Mdincentivost m WHERE m.idestado = :idestado")})
+    , @NamedQuery(name = "Mdincentivost.findByIdestado", query = "SELECT m FROM Mdincentivost m WHERE m.idestado = :idestado")
+    , @NamedQuery(name = "Mdincentivost.findByEligibidad", query = "SELECT m FROM Mdincentivost m WHERE m.eligibidad = :eligibidad")
+    , @NamedQuery(name = "Mdincentivost.findByProyeccion", query = "SELECT m FROM Mdincentivost m WHERE m.proyeccion = :proyeccion")})
 public class Mdincentivost implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,38 +52,26 @@ public class Mdincentivost implements Serializable {
     private Integer idmes;
     @Column(name = "incvalormensual")
     private Float incvalormensual;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "idcatpro")
-    private int idcatpro;
-    @Basic(optional = false)
-    @NotNull
+    private Integer idcatpro;
     @Column(name = "idcatactual")
-    private int idcatactual;
-    @Basic(optional = false)
-    @NotNull
+    private Integer idcatactual;
     @Column(name = "idedad")
-    private int idedad;
-    @Basic(optional = false)
-    @NotNull
+    private Integer idedad;
     @Column(name = "iddep")
-    private int iddep;
+    private Integer iddep;
     @Column(name = "idestado")
     private Boolean idestado;
+    @Column(name = "eligibidad")
+    private Integer eligibidad;
+    @Column(name = "proyeccion")
+    private Integer proyeccion;
 
     public Mdincentivost() {
     }
 
     public Mdincentivost(Integer idincentivo) {
         this.idincentivo = idincentivo;
-    }
-
-    public Mdincentivost(Integer idincentivo, int idcatpro, int idcatactual, int idedad, int iddep) {
-        this.idincentivo = idincentivo;
-        this.idcatpro = idcatpro;
-        this.idcatactual = idcatactual;
-        this.idedad = idedad;
-        this.iddep = iddep;
     }
 
     public Integer getIdincentivo() {
@@ -117,35 +106,35 @@ public class Mdincentivost implements Serializable {
         this.incvalormensual = incvalormensual;
     }
 
-    public int getIdcatpro() {
+    public Integer getIdcatpro() {
         return idcatpro;
     }
 
-    public void setIdcatpro(int idcatpro) {
+    public void setIdcatpro(Integer idcatpro) {
         this.idcatpro = idcatpro;
     }
 
-    public int getIdcatactual() {
+    public Integer getIdcatactual() {
         return idcatactual;
     }
 
-    public void setIdcatactual(int idcatactual) {
+    public void setIdcatactual(Integer idcatactual) {
         this.idcatactual = idcatactual;
     }
 
-    public int getIdedad() {
+    public Integer getIdedad() {
         return idedad;
     }
 
-    public void setIdedad(int idedad) {
+    public void setIdedad(Integer idedad) {
         this.idedad = idedad;
     }
 
-    public int getIddep() {
+    public Integer getIddep() {
         return iddep;
     }
 
-    public void setIddep(int iddep) {
+    public void setIddep(Integer iddep) {
         this.iddep = iddep;
     }
 
@@ -155,6 +144,22 @@ public class Mdincentivost implements Serializable {
 
     public void setIdestado(Boolean idestado) {
         this.idestado = idestado;
+    }
+
+    public Integer getEligibidad() {
+        return eligibidad;
+    }
+
+    public void setEligibidad(Integer eligibidad) {
+        this.eligibidad = eligibidad;
+    }
+
+    public Integer getProyeccion() {
+        return proyeccion;
+    }
+
+    public void setProyeccion(Integer proyeccion) {
+        this.proyeccion = proyeccion;
     }
 
     @Override

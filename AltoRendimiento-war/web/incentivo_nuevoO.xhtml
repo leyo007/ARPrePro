@@ -303,7 +303,57 @@
                                                     <h:outputText value="" />
                                                     <p:message for="prov" display="text"/>
                                                     
+                                                    <h:outputText value="MES INGRESO" />
+                                                    <p:selectOneMenu id="mesingreso" value="#{myBean.selectIncentivo.idmes}" required="true" requiredMessage="Mes obligstorio" >
+                                                                    <f:selectItem itemLabel="Mes Ingreso" />
+                                                                    <f:selectItem  itemLabel="Enero" itemValue="1" />
+                                                                    <f:selectItem  itemLabel="Febrero" itemValue="2" />
+                                                                    <f:selectItem  itemLabel="Marzo" itemValue="3" />
+                                                                    <f:selectItem  itemLabel="Abril" itemValue="4" />
+                                                                    <f:selectItem  itemLabel="Mayo" itemValue="5" />
+                                                                    <f:selectItem  itemLabel="Junio" itemValue="6" />
+                                                                    <f:selectItem  itemLabel="Julio" itemValue="7" />
+                                                                    <f:selectItem  itemLabel="Agosto" itemValue="8" />
+                                                                    <f:selectItem  itemLabel="Séptiembre" itemValue="9" />
+                                                                    <f:selectItem  itemLabel="Octubre" itemValue="10" />
+                                                                    <f:selectItem  itemLabel="Noviembre" itemValue="11" />
+                                                                    <f:selectItem  itemLabel="Diciembre" itemValue="12" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="" />
+                                                    <p:message for="mesingreso" display="text"/>
                                                     
+                                                    
+                                                    
+                                                    <h:outputText value="CATEGORÍA EDAD" />
+                                                    <p:selectOneMenu id="catEdad" required="true" requiredMessage="Categoría obligatoria" value="#{myBean.selectIncentivo.idedad}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="#{myBean.listCatE}" var="ce" itemLabel="#{ce.catedaddescripcion}" itemValue="#{ce.idedad}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="" />
+                                                    <p:message for="catEdad" display="text"/>
+                                                    
+                                                    <h:outputText value="CONVOCATORIA" />
+                                                    <p:selectOneMenu id="conv" required="true" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectPersona.idconv}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="#{myBean.listConv}" var="lc" itemLabel="#{lc.condescripcion}" itemValue="#{lc.idconv}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value=""/>
+                                                    <p:message for="conv" display="text"/>
+                                                    
+                                                    <h:outputText value="CATEGORÍA PROPUESTA" />
+                                                    <p:selectOneMenu id="catPro" required="true" requiredMessage="Categoría obligatoria" value="#{myBean.selectIncentivo.idcatpro}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="#{myBean.listCatP}" var="cp" itemLabel="#{cp.catdescripcion}" itemValue="#{cp.idcatpro}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value=""/>
+                                                    <p:message for="catPro" display="text"/>
+                                                    
+                                                    <h:outputText value="RESULTADOS ELEGIBILIDAD" />
+                                                    <p:inputTextarea value="#{myBean.selectPersona.depresultados}" rows="6" cols="50" />
+                                                    <h:outputText value="PROYECCIÓN" />
+                                                    <p:inputTextarea value="#{myBean.selectPersona.depproyeccion}" rows="6" cols="50" />
+                                                    <h:outputText value="NOVEDAD" />
+                                                    <p:inputTextarea value="#{myBean.selectPersona.depnovedad}" rows="6" cols="50" />
                                                     
                                                     
                                                 </h:panelGrid>

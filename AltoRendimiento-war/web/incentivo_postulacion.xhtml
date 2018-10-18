@@ -1,0 +1,264 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+         
+     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+     <ui:define name="content">
+         
+         
+
+         <style>
+            .menuSelect .ui-selectonemenu-label { 
+                //background: pink;
+               
+                box-sizing: content-box!important;
+            }
+            .panel .ui-selectonemenu-list { 
+                 //width: 100px;
+                //background: green;
+            }
+            
+            .ui-selectonemenu .ui-selectonemenu-trigger {
+                  // background-color: red;
+                width: auto!important;
+            }
+            .ui-state-highlight, .ui-widget-content .ui-state-highlight{
+                background-image: linear-gradient(to bottom, #f2dede, #254786);
+                    background-color: #555;
+            }
+             
+         </style>
+         <div class="wrapper row3">
+            <main class="hoc container clear"> 
+                
+               
+                
+				<nav id="mainavNO" class="fl_right">
+                    <ul class="clear">
+                      <li class="active">
+                          <h:form>
+                                            <p:commandButton  style="background: #4caf50; color: white;" value="Salir" action="#{myBean.logout()}" icon="fa fa-fw fa-external-link" />
+                                        </h:form>
+                      </li>
+                    </ul>
+                </nav>
+                <div class="btmspace-80 center">
+                  <h3 class="nospace">Bienvenidos</h3>
+                  <h:outputText value="Usuario con acceso"/>
+                </div>
+             <!-- InstanceBeginEditable name="EditRegion1" -->
+                 
+                <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                </h:outputLink>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+               
+                    <h2>POSTULACIÓN INCENTIVO</h2>     
+                    <div id="comments">
+                        <ul>
+                            <li>
+                                <article>
+                                    <header>
+                                      <address><h2>Deportistas</h2></address>
+                                    </header>
+                                    <div class="comcont">
+                                        <div class="one_third first">
+                                                        <label for="url"><B> Creación nueva potulación</B></label>
+                                        </div>
+                                        <h:form>
+                                            <p:commandButton  style="background: #FF9800; color: white; float: right;" value="Regresar"
+                                                            action="#{myBean.givmeLink(2)}" icon="fa fa-fw fa-undo" />
+                                        </h:form>
+                                                  
+                                    </div>
+                                    <div class="comcont">
+                                        <h:form id="newinc" class="container" style="margin-left: 0%; margin-right: 0%; margin-bottom: 0px;">
+                                            <p:growl id="growl" sticky="false" showDetail="true" autoUpdate="true" life="1500"/>
+                                            <p:messages id="messages" closable="true">
+                                                <p:effect type="puff" event="load" delay="300" />
+                                            </p:messages>
+                                            
+                                            <p:panel header="DATOS DEL DEPORTISTA" id="panel-datos" widgetVar="regWidget" style="padding-left: 0%; padding-right: 0%; background-color: rgba(255,255,255,0.5);">
+
+                                                <h:panelGrid columns="2"  border="0" style="width: 100%;">
+                                                    <h:outputText class="one_third" value="CEDULA"/>
+                                                    <h:outputText class="one_third" value=""/>                                                    
+                                                    <h:outputText styleClass="one_third" value="#{myBean.selectPersona.depcedula}" id="cedula" />
+                                                    <h:outputText value="" />
+                                                    
+                                                    
+                                                    <p:message for="cedula" display="text"/><h:outputText value=""/>
+                                                 </h:panelGrid>
+                                                <h:panelGrid columns="2"  border="0" style="width: 100%;">   
+                                                    <h:outputText value="NOMBRES"/>
+                                                    <h:outputText style="" value="#{myBean.selectPersona.depnombre} #{myBean.selectPersona.depapellido}" id="apellidosynombres" />
+                                                    <h:outputText value=""/>
+                                                    <p:message for="apellidosynombres" display="text"/>
+                                                    
+                                                    
+                                                    <h:outputText value="FECHA DE NACIMIENTO" />
+                                                    <p:calendar value="#{myBean.selectPersona.depdob}"  disabled="true" id="fechanac" 
+                                                                pattern="dd/MM/yyyy" 
+                                                                navigator="false"
+                                                                readonly="true"
+                                                                locale="es"
+                                                                >
+                                                        
+                                                    </p:calendar>
+                                                     <h:outputText value=""/>
+                                                    <p:message for="fechanac" display="text"/>
+                                                    
+                                                    <h:outputText value="SEXO" />
+                                                    <c:if test="#{myBean.selectPersona.idsexo eq 0}">
+                                                        <h:outputText id="sex" value="M"/>
+                                                    </c:if>
+                                                    <c:if test="#{myBean.selectPersona.idsexo eq 1}">
+                                                        <h:outputText id="sex" value="F"/>
+                                                    </c:if>
+                                                     <h:outputText value=""/>
+                                                     <p:message for="sex" display="text"/>
+                                                    
+                                                    
+                                                     
+
+                                                <p:separator /> <p:separator />
+                                                    <h:outputText value="" /><h:outputText value="Cambie los datos para la repostulación:" />
+                                                    <h:outputText value="DEPORTE" />
+                                                    <p:selectOneMenu id="dep" required="true" requiredMessage="Deporte obligatorio" value="#{myBean.selectPersona.iddeporte}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Deportes"/>
+                                                        <f:selectItems value="#{myBean.listDeporte}" var="de" itemLabel="#{de.depdescripcion}" itemValue="#{de.iddeporte}"  />
+                                                        <p:ajax update="disc" listener="#{myBean.getDisXDep(myBean.selectPersona.iddeporte)}" event="change"/>
+                                                    </p:selectOneMenu>
+                                                     <h:outputText value=""/>
+                                                     <p:message for="dep" display="text"/>
+                                                     
+                                                    <h:outputText value="DISCIPLINA" />
+                                                    <p:selectOneMenu id="disc" required="true" requiredMessage="Disiciplina obligatoria" value="#{myBean.selectPersona.iddis}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Disciplinas"/>
+                                                        <f:selectItems value="#{myBean.listDisciplina}" var="di" itemLabel="#{di.disdescripcion}" itemValue="#{di.iddis}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="" />
+                                                     <p:message for="disc" display="text"/>
+                                                     
+                                                    <h:outputText value="PRUEBA" />
+                                                    <p:inputText style="" value="#{myBean.selectPersona.depprueba}" id="prueba" required="true" requiredMessage="Prueba obligstoria" placeholder="Especifique la prueba, si solo es numérica, añada la medida (ejm: 100 con metros = 100m)"/>
+                                                    <p:message for="prueba" display="text"/>
+                                                    <p:selectOneMenu id="medida" required="true" requiredMessage="Medida!" value="#{myBean.medida}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Ninguna" itemValue=""/>
+                                                        <f:selectItem itemLabel="Metros" itemValue="m"/>
+                                                        <f:selectItem itemLabel="HH:mm:ss" itemValue="s"/>
+                                                    </p:selectOneMenu>
+                                                    
+                                                    <h:outputText value="REPRESENTA A" />
+                                                    <p:selectOneMenu id="prov" required="true" requiredMessage="Selecione la provincia" value="#{myBean.selectPersona.idprorep}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Provincia"/>
+                                                        <f:selectItems value="#{myBean.listaProv}" var="pv" itemLabel="#{pv.nombredivpol}" itemValue="#{pv.iddivpol}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="" />
+                                                    <p:message for="prov" display="text"/>
+                                                    
+                                                    <h:outputText value="MES INGRESO" />
+                                                    <p:selectOneMenu id="mesingreso" value="#{myBean.selectIncentivo.idmes}" required="true" requiredMessage="Mes obligstorio" >
+                                                                    <f:selectItem itemLabel="Mes Ingreso" />
+                                                                    <f:selectItem  itemLabel="Enero" itemValue="1" />
+                                                                    <f:selectItem  itemLabel="Febrero" itemValue="2" />
+                                                                    <f:selectItem  itemLabel="Marzo" itemValue="3" />
+                                                                    <f:selectItem  itemLabel="Abril" itemValue="4" />
+                                                                    <f:selectItem  itemLabel="Mayo" itemValue="5" />
+                                                                    <f:selectItem  itemLabel="Junio" itemValue="6" />
+                                                                    <f:selectItem  itemLabel="Julio" itemValue="7" />
+                                                                    <f:selectItem  itemLabel="Agosto" itemValue="8" />
+                                                                    <f:selectItem  itemLabel="Séptiembre" itemValue="9" />
+                                                                    <f:selectItem  itemLabel="Octubre" itemValue="10" />
+                                                                    <f:selectItem  itemLabel="Noviembre" itemValue="11" />
+                                                                    <f:selectItem  itemLabel="Diciembre" itemValue="12" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="" />
+                                                    <p:message for="mesingreso" display="text"/>
+                                                    
+                                                    
+                                                    <h:outputText value="RESULTADOS ELEGIBILIDAD" />
+                                                    <p:selectOneMenu id="result" required="true" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectIncentivo.eligibidad}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="#{myBean.listaResult}" var="lr" itemLabel="#{lr.division } #{lr.edad.concat( ' - '.concat(lr.programa))}" itemValue="#{lr.id}" />
+                                                        <p:ajax update="proyeccion conv" listener="#{myBean.getproyeccion(myBean.selectIncentivo.eligibidad)}" event="change"/>
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="PROYECCIÓN" />
+                                                    <h:outputText id="proyeccion" value="#{myBean.proyeccion}" />
+                                                    
+                                                    <h:outputText value="CONVOCATORIA" />
+                                                    <p:selectOneMenu disabled="true" id="conv" required="true" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectPersona.idconv}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="#{myBean.listConv}" var="lc" itemLabel="#{lc.condescripcion}" itemValue="#{lc.idconv}" />
+                                                    </p:selectOneMenu>
+                                                    <p:message for="conv" display="text"/>
+                                                    <!--h:outputText value="CATEGORÍA EDAD" />
+                                                    <p:selectOneMenu id="catEdad" required="true" requiredMessage="Categoría obligatoria" value="{myBean.selectIncentivo.idedad}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="{myBean.listCatE}" var="ce" itemLabel="{ce.catedaddescripcion}" itemValue="{ce.idedad}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="" />
+                                                    <p:message for="catEdad" display="text"/-->
+                                                    
+                                                    
+                                                    
+                                                    <!--h:outputText value="CATEGORÍA PROPUESTA" />
+                                                    <p:selectOneMenu id="catPro" required="true" requiredMessage="Categoría obligatoria" value="{myBean.selectIncentivo.idcatpro}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                        <f:selectItem itemLabel="Seleccione"/>
+                                                        <f:selectItems value="{myBean.listCatP}" var="cp" itemLabel="{cp.catdescripcion}" itemValue="{cp.idcatpro}" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value=""/>
+                                                    <p:message for="catPro" display="text"/-->
+                                                    
+                                                    
+                                                    <h:outputText value="NOVEDAD" />
+                                                    <p:inputTextarea value="#{myBean.selectPersona.depnovedad}" rows="6" cols="50" />
+                                                    
+                                                    
+                                                </h:panelGrid>
+
+                                               
+                                                <p:separator />
+                                                <p:commandButton id="gt" 
+                                                style=" background: #FBFBFB; color: black;" 
+                                                value="Guardado temporal" 
+                                                action="#{myBean.repostulacion()}"
+                                                icon="fa fa-fw fa-save"
+
+                                                update="newinc"
+                                                ></p:commandButton>       
+                                            </p:panel>
+                </h:form>     
+                                    </div>
+                                </article>
+                            </li>
+                            <li>
+                              <article>
+                                    <div class="comcont">
+                                       <div class="scrollable">
+                                          <div id="datos"></div>
+                                       </div>
+                                    </div>
+                              </article>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                 
+                
+                  <!-- InstanceEndEditable -->
+                <div class="clear"></div>
+            </main>
+        </div>
+         
+         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                     <p:dialog id="dgl" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                         <h3>Procesando...</h3>
+                                         <img  src="images/bar.gif"/>
+                                     </p:dialog>
+         
+                    
+     </ui:define>
+</ui:composition>

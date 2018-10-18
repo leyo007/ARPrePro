@@ -5,7 +5,10 @@
  */
 package facades;
 
+import entities.Mdfederacion;
 import entities.Mdnecesidades;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -69,12 +72,49 @@ public class MdnecesidadesFacade extends AbstractFacade<Mdnecesidades> implement
 
     @Override
     public List<Mdnecesidades> getListByGral(int x) {
+        System.out.println("getListByGral: "+x);
         try {
             return  em.createQuery("SELECT n from Mdnecesidades n WHERE n.padre =:x")
                     .setParameter("x", x)
                     .getResultList();
         } catch (Exception e) {
             System.out.println("Error, no encontré necesidades individuales de: "+x+" Error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public List<Mdnecesidades> getListByFede(int x) {
+        System.out.println("getListByFede deporte: "+x);
+        try {
+            return  em.createQuery("SELECT n from Mdnecesidades n WHERE n.iddep =:x")
+                    .setParameter("x", x)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré necesidades individuales de: "+x+" Error: " + e.getMessage());
+            return null;
+        }
+    }
+    MdfederacionFacade fede;
+    @Override
+    public List<Mdnecesidades> getListBySector(boolean x) {
+        System.out.println("getListBySector S/N: "+x);
+        List <Mdfederacion> listF;
+        listF=fede.getListBySector(x);
+        int y=0; 
+        List<Mdnecesidades> myReturn=new ArrayList<>();
+        
+        try {
+            for (Mdfederacion fedes : listF) {
+                myReturn.add((Mdnecesidades) em.createQuery("SELECT n from Mdnecesidades n WHERE n.iddep =:x")
+                    .setParameter("x", fedes.getId())
+                    .getSingleResult());
+            }
+            
+            
+            return  myReturn;
+        } catch (Exception e) {
+            System.out.println("Error, no encontré necesidades del sector: "+x+" Error: " + e.getMessage());
             return null;
         }
     }

@@ -227,12 +227,13 @@
                                                     <p:column filterBy="#{persona.depprueba}" headerText="Prueba"  filterMatchMode="contains">
                                                         <h:outputText value="#{persona.depprueba}" />
                                                     </p:column>
-                                                    <p:column filterBy="#{persona.depproyeccion}" headerText="Proyección"  filterMatchMode="contains">
-                                                        <h:outputText value="#{persona.depproyeccion}" />
+                                                    <p:column filterBy="#{myBean.getIncePropuesta(persona)}" headerText="Eligibidad"  filterMatchMode="contains">
+                                                        <h:outputText value="#{myBean.getIncePropuesta(persona)}" />
                                                     </p:column>
-                                                    <p:column filterBy="#{persona.depresultados}" headerText="Resultados"  filterMatchMode="contains">
-                                                        <h:outputText value="#{persona.depresultados}" />
+                                                    <p:column filterBy="#{myBean.getPostulacion(persona).projuegos}" headerText="Proyección"  filterMatchMode="contains">
+                                                        <h:outputText value="#{myBean.getPostulacion(persona).projuegos}" />
                                                     </p:column>
+                                                    
                                                     <p:column filterBy="#{persona.idanosproy}" headerText="Años en el proyecto"  filterMatchMode="contains">
                                                         <h:outputText value="#{persona.idanosproy}" />
                                                     </p:column>
@@ -242,16 +243,13 @@
                                                     <p:column filterBy="#{myBean.getnombreDciplina(persona.iddeporte)}" headerText="Diciplina"  filterMatchMode="contains">
                                                         <h:outputText value="#{myBean.getnombreDciplina(persona.iddeporte)}" />
                                                     </p:column>
-                                                    <p:column filterBy="#{myBean.getIncePropuesta(persona)}" headerText="Cat. Propuesta"  filterMatchMode="contains">
-                                                        <h:outputText value="#{myBean.getIncePropuesta(persona)}" />
-                                                    </p:column>
+                                                    
                                                     <p:column filterBy="#{myBean.getincentivosMenXpersona(persona)}" headerText="Mensual"  filterMatchMode="contains">
                                                         <h:outputText value="#{myBean.getincentivosMenXpersona(persona)}" />
                                                     </p:column>
-                                                    <p:column filterBy="#{myBean.getincentivosMenXpersona(persona)}" headerText="Aprovación"  filterMatchMode="contains">
+                                                    <p:column filterBy="#{myBean.getincentivosMenXpersona(persona)}" headerText="Aprobación"  filterMatchMode="contains">
                                                         <h:outputText id="apr" value="#{persona.aprobado ? 'Aprobado': 'Negado'}"/>
-                                                    </p:column>
-                                                    
+                                                    </p:column>            
                                                 </p:dataTable>
                                                 <p:dataTable id="perAprobacion" value="#{myBean.listaPersonas}" var="persona" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                                              selection="#{myBean.selAprobados}" rowKey="#{persona.iddep}"

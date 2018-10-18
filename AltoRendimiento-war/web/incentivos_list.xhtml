@@ -116,7 +116,7 @@
                                                     <p:column filterBy="#{myBean.getnombreDeporte(item.iddeporte)}" headerText="Deporte"  filterMatchMode="contains">
                                                         <h:outputText value="#{myBean.getnombreDeporte(item.iddeporte)}"/>
                                                     </p:column>
-                                                    <p:column  filterBy="#{myBean.getIncePropuesta(item)}" headerText="Cat. Propuesta"  filterMatchMode="contains">
+                                                    <p:column  filterBy="#{myBean.getIncePropuesta(item)}" headerText="Categoría"  filterMatchMode="contains">
                                                         <h:outputText  value="#{myBean.getIncePropuesta(item)}"/>
                                                     </p:column>
                                                     <p:column rendered="false" sortBy="#{myBean.getincentivosMenXpersona(item)}" headerText="Delete values"  filterMatchMode="contains" >
@@ -125,7 +125,7 @@
                                                     <p:column rendered="false" sortBy="#{myBean.getincentivosTotXpersona(item)}" headerText="Delete values"  filterMatchMode="contains"  >
                                                         <h:outputText value="#{myBean.getincentivosTotXpersona(item)}"/>
                                                     </p:column>
-                                                    <p:column headerText="Estado">
+                                                    <p:column headerText="Hoja de Vida">
                                                         <p:commandButton id="gt" 
                                                             style=" background: #F0BE10; color: white;" 
                                                             value="Editar" 
@@ -135,10 +135,10 @@
                                                 
                                                         ></p:commandButton>  
                                                     </p:column>
-                                                    <p:column headerText="Repostular">
+                                                    <p:column headerText="Postular">
                                                         <p:commandButton id="rp" 
                                                             style=" background: #10A9F0; color: white;" 
-                                                            value="Repostular" 
+                                                            value="Postular" 
                                                             action="#{myBean.reposDeport(item)}"
                                                             icon="fa fa-fw fa-edit"
 

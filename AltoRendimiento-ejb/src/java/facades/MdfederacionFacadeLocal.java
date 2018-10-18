@@ -31,5 +31,6 @@ public interface MdfederacionFacadeLocal {
     int count();
     
     public Mdfederacion buscarXid(int x);
+    public List<Mdfederacion> getListBySector(boolean x);
     
 }
