@@ -60,15 +60,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdevento.findBySector", query = "SELECT m FROM Mdevento m WHERE m.sector = :sector")
     , @NamedQuery(name = "Mdevento.findByAd", query = "SELECT m FROM Mdevento m WHERE m.ad = :ad")
     , @NamedQuery(name = "Mdevento.findByVtranscear", query = "SELECT m FROM Mdevento m WHERE m.vtranscear = :vtranscear")
-    , @NamedQuery(name = "Mdevento.findByCreador", query = "SELECT m FROM Mdevento m WHERE m.creador = :creador")})
+    , @NamedQuery(name = "Mdevento.findByCreador", query = "SELECT m FROM Mdevento m WHERE m.creador = :creador")
+    , @NamedQuery(name = "Mdevento.findByAprobado", query = "SELECT m FROM Mdevento m WHERE m.aprobado = :aprobado")
+    , @NamedQuery(name = "Mdevento.findByTipomacro", query = "SELECT m FROM Mdevento m WHERE m.tipomacro = :tipomacro")
+    , @NamedQuery(name = "Mdevento.findByVtransaereointer", query = "SELECT m FROM Mdevento m WHERE m.vtransaereointer = :vtransaereointer")
+    , @NamedQuery(name = "Mdevento.findByVtransterrinter", query = "SELECT m FROM Mdevento m WHERE m.vtransterrinter = :vtransterrinter")
+    , @NamedQuery(name = "Mdevento.findByTradextras", query = "SELECT m FROM Mdevento m WHERE m.tradextras = :tradextras")
+    , @NamedQuery(name = "Mdevento.findByGastosbanca", query = "SELECT m FROM Mdevento m WHERE m.gastosbanca = :gastosbanca")
+    , @NamedQuery(name = "Mdevento.findByReuniotaller", query = "SELECT m FROM Mdevento m WHERE m.reuniotaller = :reuniotaller")
+    , @NamedQuery(name = "Mdevento.findByActualizacioncono", query = "SELECT m FROM Mdevento m WHERE m.actualizacioncono = :actualizacioncono")
+    , @NamedQuery(name = "Mdevento.findByLicencias", query = "SELECT m FROM Mdevento m WHERE m.licencias = :licencias")})
 public class Mdevento implements Serializable {
-
-    @Size(max = 2147483647)
-    @Column(name = "tipomacro")
-    private String tipomacro;
-
-    @Column(name = "aprobado")
-    private Boolean aprobado;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -147,6 +149,25 @@ public class Mdevento implements Serializable {
     @Basic(optional = false)
     @Column(name = "creador")
     private int creador;
+    @Column(name = "aprobado")
+    private Boolean aprobado;
+    @Size(max = 2147483647)
+    @Column(name = "tipomacro")
+    private String tipomacro;
+    @Column(name = "vtransaereointer")
+    private Double vtransaereointer;
+    @Column(name = "vtransterrinter")
+    private Double vtransterrinter;
+    @Column(name = "tradextras")
+    private Double tradextras;
+    @Column(name = "gastosbanca")
+    private Double gastosbanca;
+    @Column(name = "reuniotaller")
+    private Double reuniotaller;
+    @Column(name = "actualizacioncono")
+    private Double actualizacioncono;
+    @Column(name = "licencias")
+    private Double licencias;
 
     public Mdevento() {
     }
@@ -408,6 +429,78 @@ public class Mdevento implements Serializable {
         this.creador = creador;
     }
 
+    public Boolean getAprobado() {
+        return aprobado;
+    }
+
+    public void setAprobado(Boolean aprobado) {
+        this.aprobado = aprobado;
+    }
+
+    public String getTipomacro() {
+        return tipomacro;
+    }
+
+    public void setTipomacro(String tipomacro) {
+        this.tipomacro = tipomacro;
+    }
+
+    public Double getVtransaereointer() {
+        return vtransaereointer;
+    }
+
+    public void setVtransaereointer(Double vtransaereointer) {
+        this.vtransaereointer = vtransaereointer;
+    }
+
+    public Double getVtransterrinter() {
+        return vtransterrinter;
+    }
+
+    public void setVtransterrinter(Double vtransterrinter) {
+        this.vtransterrinter = vtransterrinter;
+    }
+
+    public Double getTradextras() {
+        return tradextras;
+    }
+
+    public void setTradextras(Double tradextras) {
+        this.tradextras = tradextras;
+    }
+
+    public Double getGastosbanca() {
+        return gastosbanca;
+    }
+
+    public void setGastosbanca(Double gastosbanca) {
+        this.gastosbanca = gastosbanca;
+    }
+
+    public Double getReuniotaller() {
+        return reuniotaller;
+    }
+
+    public void setReuniotaller(Double reuniotaller) {
+        this.reuniotaller = reuniotaller;
+    }
+
+    public Double getActualizacioncono() {
+        return actualizacioncono;
+    }
+
+    public void setActualizacioncono(Double actualizacioncono) {
+        this.actualizacioncono = actualizacioncono;
+    }
+
+    public Double getLicencias() {
+        return licencias;
+    }
+
+    public void setLicencias(Double licencias) {
+        this.licencias = licencias;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -431,22 +524,6 @@ public class Mdevento implements Serializable {
     @Override
     public String toString() {
         return "entities.Mdevento[ id=" + id + " ]";
-    }
-
-    public Boolean getAprobado() {
-        return aprobado;
-    }
-
-    public void setAprobado(Boolean aprobado) {
-        this.aprobado = aprobado;
-    }
-
-    public String getTipomacro() {
-        return tipomacro;
-    }
-
-    public void setTipomacro(String tipomacro) {
-        this.tipomacro = tipomacro;
     }
     
 }

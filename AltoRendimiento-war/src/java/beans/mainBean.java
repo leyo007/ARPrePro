@@ -5,6 +5,7 @@ package beans;
 
 
 
+import com.sun.xml.ws.security.opt.impl.util.SOAPUtil;
 import entities.Mdcategoriaactualt;
 import entities.Mdcvdp;
 import entities.Mdcvdr;
@@ -613,6 +614,9 @@ public class mainBean implements Serializable {
     public String registraEvento(){
         String resultado="";
         newEvent.setCreador(currentUser.getIdusuario());
+        newEvent.setValoja(eventosP[0]*eventosD[0]*newEvent.getValoja());
+        System.out.println(" "+eventosP[0]+" "+eventosD[0]+" "+newEvent.getValoja());
+        
         if(mdeventoFacade.guardarDatos(newEvent)){
             
                 if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
@@ -2080,6 +2084,9 @@ String name="";
 
     public List<Mdevento> getFiltroEventos() {
         System.out.println("GET EVENTOS BY CREADOR");
+        System.out.println(getEventosD().length);
+        System.out.println(getEventosD().length);
+        
         if(filtroEventos==null){
             if(currentUser==null){
                 filtroEventos=mdeventoFacade.findAll();
@@ -2591,6 +2598,31 @@ String name="";
    
 
     
+ private double eventosP[];
+ private double eventosD[];
+
+    public double[] getEventosP() {
+        System.out.println("eventosP.......................................");
+        if(eventosP==null)
+        eventosP=new double[20];
+        return eventosP;
+    }
+
+    public void setEventosP(double[] eventosP) {
+        this.eventosP = eventosP;
+    }
+
+    public double[] getEventosD() {
+        System.out.println("eventosD.......................................");
+        if(eventosD==null)
+        eventosD=new double[20];
+        return eventosD;
+    }
+
+    public void setEventosD(double[] eventosD) {
+        this.eventosD = eventosD;
+    }
+
     
     
     
