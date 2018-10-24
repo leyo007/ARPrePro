@@ -324,7 +324,9 @@ public class mainBean implements Serializable {
     
     Mdperfilt x = new Mdperfilt();
     Mdperfilt y = new Mdperfilt();
+    
     public String accessLogin() throws IOException{
+        getUbicacionEnDisco();
         String resultado="";
         
         if(usuario.length()>0&&password.length()>0){
@@ -466,6 +468,7 @@ public class mainBean implements Serializable {
         return "cv";
     }
     public String givmeLink(int x){
+        
         String link="";
          switch (x) {
                     case 1:  link = "menu";
@@ -540,8 +543,12 @@ public class mainBean implements Serializable {
         
         return "incentivo_nuevo";
     }
+    private int delegacion;
     public String newEvento(){ 
+        System.out.println("dentro nuevo evento....");
+        System.out.println(delegacion);
         newEvent=new Mdevento();
+        newEvent.setDelegacion(delegacion);
         
         newEvent.setAd(selectFede.getAd());
         if(selectFede.getTipo().equals("NACIONALES"))
@@ -612,20 +619,30 @@ public class mainBean implements Serializable {
     
     }
     public String registraEvento(){
+        System.out.println("eventos:::::::::::::::::::: ");
         String resultado="";
         newEvent.setCreador(currentUser.getIdusuario());
-        newEvent.setValoja(eventosP[0]*eventosD[0]*newEvent.getValoja());
-        System.out.println(" "+eventosP[0]+" "+eventosD[0]+" "+newEvent.getValoja());
+        newEvent.setValoja(newEvent.getValojap()*newEvent.getValojad()*newEvent.getValoja());
+        //falta multiplicadores * 19 valores
+        System.out.println("eventos:::::::::::::::::::: "+newEvent.getValoja());
         
         if(mdeventoFacade.guardarDatos(newEvent)){
             
                 if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
                     filtroEventos=mdeventoFacade.findAll();
-                    resultado="eventosView";
+                    if(delegacion==1)
+                        resultado="eventosView";
+                    else{
+                        
+                        mdeventoFacade.guardarDatos(newEvent);
+                        editEvent(newEvent);
+                    }
+                    
                 }
                 else{
                     filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
-                    resultado="eventos";
+                    if(delegacion==1)
+                        resultado="eventos";
                 }
             
             
@@ -636,6 +653,7 @@ public class mainBean implements Serializable {
     public String modificarEvento(){
         String resultado="";
         selectedEvent.setCreador(currentUser.getIdusuario());
+        selectedEvent.setValoja(selectedEvent.getValojap()*selectedEvent.getValojad()*selectedEvent.getValoja());
         if(mdeventoFacade.modificarDatos(selectedEvent))
             if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
                     filtroEventos=mdeventoFacade.findAll();
@@ -648,6 +666,10 @@ public class mainBean implements Serializable {
         
         return resultado;
     } 
+    public boolean controlArticulo(String y){        
+        return y.equals("Especifique");
+    }
+    
     public String registraNecesidadGral(){
         String resultado="";
         newNecesidad.setCreador(currentUser.getIdusuario());
@@ -685,6 +707,7 @@ public class mainBean implements Serializable {
         return resultado;
     } 
     public String modificarNecesidadGral(){
+        newNecesidad.setTotal(newNecesidad.getValor()*newNecesidad.getCantidad());
         mdnecesidadesFacade.modificarDatos(newNecesidad);
         
         
@@ -781,9 +804,9 @@ public class mainBean implements Serializable {
             resultado="";
         
         }else{
-            if(selectPersona.getIddep()==null&&nuevoDeportista){
+            if(selectPersona.getIddep()==null){
                 System.out.println("puedo registrar nuevo");
-                resultado="incentivos_list";
+                
                 nombres = selectPersona.getDepnombre().split("\\s+");
                 int numnom=nombres.length;
                 switch (numnom) {
@@ -800,26 +823,34 @@ public class mainBean implements Serializable {
                 }
                 System.out.println("Persona Nombre: "+ selectPersona.getDepnombre());
                 System.out.println("Persona Apellidos: "+ selectPersona.getDepapellido());
+                System.out.println("Current User: "+ currentUser.getIdusuario());
                 System.out.println(selectPersona.getIddeporte()); 
                 selectPersona.setIdcreador(currentUser.getIdusuario());
+                selectPersona.setFederacion(currentUser.getCodinst());
                 selectPersona.setDepprueba(selectPersona.getDepprueba()+" "+medida);
                 selectPersona.setAprobado(false);
-                mdpersonastFacade.guardarDatos(selectPersona);  
                 
-                selectIncentivo.setIddep(selectPersona.getIddep());
-                //mdincentivostFacade.guardarDatos(selectIncentivo);
-                selCvSociEc.setPersona(selectPersona);
-                mdcvdpFacade.guardarDatos(selCvSociEc);
-                selCvForAc.setPersona(selectPersona);
-                mdcvfaFacade.guardarDatos(selCvForAc);
-                selCvInfEnt.setPersona(selectPersona);
-                mdcvieFacade.guardarDatos(selCvInfEnt);
-            }
+                if(mdpersonastFacade.guardarDatos(selectPersona)){  
+                
+                    selectIncentivo.setIddep(selectPersona.getIddep());
+                    selectIncentivo.setIncvalormensual(0f);
+                    selectIncentivo.setEligibidad(0);
+                    selectIncentivo.setIdcatpro(0);
+                    mdincentivostFacade.guardarDatos(selectIncentivo);
+                    selCvSociEc.setPersona(selectPersona);
+                    mdcvdpFacade.guardarDatos(selCvSociEc);
+                    selCvForAc.setPersona(selectPersona);
+                    mdcvfaFacade.guardarDatos(selCvForAc);
+                    selCvInfEnt.setPersona(selectPersona);
+                    mdcvieFacade.guardarDatos(selCvInfEnt);
+                    resultado="incentivos_list";
+                }
+            }   
             else{
 
                 System.out.println("modifico solo algunos datos");
                 mdpersonastFacade.modificarDatos(selectPersona);  
-                //mdincentivostFacade.modificarDatos(selectIncentivo);
+                mdincentivostFacade.modificarDatos(selectIncentivo);
                 mdcvdpFacade.modificarDatos(selCvSociEc);
                 mdcvfaFacade.modificarDatos(selCvForAc);
                 mdcvieFacade.modificarDatos(selCvInfEnt);
@@ -971,8 +1002,31 @@ public class mainBean implements Serializable {
     private UploadedFile archivo;
     //private String ubicacionEnDisco="C:\\Users\\TOSHIBA\\AppData\\Roaming\\NetBeans\\8.0\\config\\GF_4.0\\domain1\\docroot\\imagenes\\";
     //private String ubicacionEnDisco="C:\\glassfish4\\glassfish\\domains\\domain1\\docroot\\imagenes\\";
-    private String ubicacionEnDisco="/opt/glassfish/4.0/glassfish/domains/domain1/docroot/altorendimiento/";
+    //private String ubicacionEnDisco="/opt/glassfish/4.0/glassfish/domains/domain1/docroot/altorendimiento/";
+    private String ubicacionEnDisco="";
+    private String folder;
+  
+    private boolean controlFileUp;
+    private boolean archivoPostulante;
+    public void tipoArchivo(){
+        controlFileUp=true; 
+    }
     
+    public String getUbicacionEnDisco() {
+        System.out.println("get path");
+        System.out.println("ubicacionEnDisco: "+ubicacionEnDisco);
+        if(ubicacionEnDisco.length()<1){
+            System.out.println("find path...");
+            if(System.getProperty("os.name").equals("Windows 7"))
+                ubicacionEnDisco="C:\\glassfish4\\glassfish\\domains\\domain1\\docroot\\altorendimiento\\";
+            else
+                ubicacionEnDisco="/opt/glassfish/4.0/glassfish/domains/domain1/docroot/altorendimiento/";
+        }
+        return ubicacionEnDisco;
+    }
+    public void setUbicacionEnDisco(String ubicacionEnDisco) {
+        this.ubicacionEnDisco = ubicacionEnDisco;
+    }
     public void fileUploadListener(FileUploadEvent event){
         archivo=event.getFile();
         System.out.println("Archivo: "+archivo.getFileName());
@@ -994,36 +1048,46 @@ String name="";
         }
         if(!archivo.getFileName().isEmpty()){
              try {
-                 
-                 if(!extension.equals("pdf")){
-                     System.out.println("No pdf");
-                     
-                    escribirEnDisco(selectPersona.getDepcedula()+"."+extension, archivo.getInputstream());
-                    
-                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Archivo ", archivo.getFileName()+" almacenado correctamente."));
-                    
-                    archivo = null;
+                 if(controlFileUp){
+                        if(!extension.equals("pdf")){
+                            System.out.println("No pdf");
+
+                           escribirEnDisco(selectPersona.getDepcedula()+"."+extension, archivo.getInputstream());
+
+                           context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Archivo ", archivo.getFileName()+" almacenado correctamente."));
+
+                           archivo = null;
+                        }else{
+                            System.out.println("pdf");
+
+                            if(newReport.getId()!=null){
+
+                               Calendar hoy = Calendar. getInstance();
+                               hoy.setTime(newReport.getMesano());
+                               name=hoy.get(Calendar.MONTH)+"_"+hoy.get(Calendar.YEAR);
+                            }
+                           name=name+"_"+currentUser.getUsucedula()+"."+extension;
+                           newReport.setArchivo(name);
+                           mdreportesFacade.modificarDatos(newReport);
+                           escribirEnDisco(name, archivo.getInputstream());
+                           listInfTec=mdreportesFacade.getReportsByType("IT", currentUser);
+                           listRegAsist=mdreportesFacade.getReportsByType("RA", currentUser);
+                           listPagoIess=mdreportesFacade.getReportsByType("IESS", currentUser);
+                           context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Archivo ", archivo.getFileName()+" almacenado correctamente."));
+
+                           archivo = null;
+                           newReport = null;
+
+                        }
                  }else{
-                     System.out.println("pdf");
-                     
-                     if(newReport.getId()!=null){
-                     
-                        Calendar hoy = Calendar. getInstance();
-                        hoy.setTime(newReport.getMesano());
-                        name=hoy.get(Calendar.MONTH)+"_"+hoy.get(Calendar.YEAR);
-                     }
-                    name=name+"_"+currentUser.getUsucedula()+"."+extension;
-                    newReport.setArchivo(name);
-                    mdreportesFacade.modificarDatos(newReport);
-                    escribirEnDisco(name, archivo.getInputstream());
-                    listInfTec=mdreportesFacade.getReportsByType("IT", currentUser);
-                    listRegAsist=mdreportesFacade.getReportsByType("RA", currentUser);
-                    listPagoIess=mdreportesFacade.getReportsByType("IESS", currentUser);
-                    context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Archivo ", archivo.getFileName()+" almacenado correctamente."));
-                    
-                    archivo = null;
-                    newReport = null;
-                 
+                     System.out.println("Postulación....");
+
+                           escribirEnDisco(selectPersona.getDepcedula()+"_postulacion."+extension, archivo.getInputstream());
+
+                           context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Archivo ", archivo.getFileName()+" almacenado correctamente."));
+
+                           archivo = null;
+                           controlFileUp=false;
                  }
              } catch (Exception e) {
                  System.out.println("error carga file: "+e.getMessage());
@@ -1088,9 +1152,11 @@ String name="";
         int x=mdincentivostFacade.buscaXpersona(p).getIdcatpro();
         String y="";
         Mdresultados rex = mdresultadosFacade.find(mdincentivostFacade.buscaXpersona(p).getEligibidad());
+        if(rex==null){
+            y="Sin postulación";
+        }else{
         System.out.println(rex.getPrograma()+ " id: "+rex.getId());
-        y=rex.getPrograma();
-        
+            y=rex.getPrograma();}
         /*if(x>0){
             System.out.println("X>0: "+x);
             y=mdcategoriapropuestatFacade.find(x).getCatdescripcion();
@@ -2598,30 +2664,84 @@ String name="";
    
 
     
- private double eventosP[];
- private double eventosD[];
+ private int eventosP[];
+ private int eventosD[];
 
-    public double[] getEventosP() {
-        System.out.println("eventosP.......................................");
-        if(eventosP==null)
-        eventosP=new double[20];
+    public int[] getEventosP() {
+        if(eventosP==null){
+            eventosP=new int[20];
+            for (int i = 0; i < eventosP.length; i++) {
+                eventosP[i]=1;
+            }
+        
+        }
+        System.out.println("Valor eventosP[0]: "+eventosP[0]);
         return eventosP;
     }
 
-    public void setEventosP(double[] eventosP) {
+    public void setEventosP(int[] eventosP) {
         this.eventosP = eventosP;
     }
 
-    public double[] getEventosD() {
-        System.out.println("eventosD.......................................");
-        if(eventosD==null)
-        eventosD=new double[20];
+    public int[] getEventosD() {
+        if(eventosD==null){
+            eventosD=new int[20];
+            for (int i = 0; i < eventosD.length; i++) {
+                eventosD[i]=1;
+            }
+        
+        }
+        System.out.println("Valor eventosD[0]: "+eventosD[0]);
         return eventosD;
     }
 
-    public void setEventosD(double[] eventosD) {
+    public void setEventosD(int[] eventosD) {
         this.eventosD = eventosD;
     }
+
+    public String getFolder() {
+        return folder;
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
+
+    public boolean isControlFileUp() {
+        return controlFileUp;
+    }
+
+    public void setControlFileUp(boolean controlFileUp) {
+        this.controlFileUp = controlFileUp;
+    }
+
+    public boolean isArchivoPostulante() {
+        
+        File f = new File(ubicacionEnDisco+selectPersona.getDepcedula()+"_postulacion.pdf");
+        System.out.println("FILE: "+f.getAbsolutePath());
+        System.out.println("FILE: "+f.getName());
+        System.out.println("FILE: "+f.getPath());
+        if(f.exists() && !f.isDirectory()) { 
+            archivoPostulante=true;
+        }else{
+        archivoPostulante=false;
+        }
+        return archivoPostulante;
+    }
+
+    public void setArchivoPostulante(boolean archivoPostulante) {
+        this.archivoPostulante = archivoPostulante;
+    }
+
+    public int getDelegacion() {
+        return delegacion;
+    }
+
+    public void setDelegacion(int delegacion) {
+        this.delegacion = delegacion;
+    }
+
+    
 
     
     

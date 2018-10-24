@@ -33,7 +33,7 @@ public class MdresultadosFacade extends AbstractFacade<Mdresultados> implements 
     @Override
     public List<Mdresultados> getListBySector(boolean x) {
         try {
-            return  em.createQuery("SELECT f from Mdresultados f WHERE f.convencional =:x")
+            return  em.createQuery("SELECT f from Mdresultados f WHERE f.convencional =:x order by f.division")
                     .setParameter("x", x)
                     .getResultList();
         } catch (Exception e) {

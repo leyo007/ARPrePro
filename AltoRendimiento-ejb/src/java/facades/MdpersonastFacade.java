@@ -36,7 +36,7 @@ public class MdpersonastFacade extends AbstractFacade<Mdpersonast> implements Md
                 em.persist(x);
                 return true;
         } catch (Exception e) {
-            System.out.println("Error al crear new Persona "+e.getMessage());
+            System.out.println("MdpersonastFacade - Error al crear new Persona "+e.getMessage());
             return false;
             
         }

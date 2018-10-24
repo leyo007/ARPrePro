@@ -51,6 +51,8 @@
             
 
          </style>
+         
+         
          <div class="wrapper row3">
             <main class="clear"> 
                 
@@ -92,7 +94,7 @@
                                         <p:commandButton id="gt" 
                                                 style=" background: #FBFBFB; color: black;" 
                                                 value="Nuevo Evento" 
-                                                action="#{myBean.newEvento()}" 
+                                                onclick="PF('newEvent').show()" 
                                                 icon="fa fa-fw fa-plus-circle"
 
                                                 
@@ -277,5 +279,28 @@
                                          <h3>Procesando...</h3>
                                          <img  src="images/bar.gif"/>
                                      </p:dialog>
+         
+         <p:dialog id="modalNewEV" header="Añadir Número de delegaciones del Evento" widgetVar="newEvent" modal="true" draggable="false" >
+              <p:growl id="growlA" sticky="true" showDetail="true" life="3000" />
+              <p:messages id="messages" closable="true">
+                    <p:effect type="puff" event="load" delay="300" />
+                </p:messages>
+                <h:outputText value="Añada el campo para crear el Evento." />
+                <h:form id="nuevoForm">
+                    <p:inputText value="#{myBean.delegacion}" 
+                                id="dele" required="true" 
+                                requiredMessage="Añada Número de delegaciones" placeholder="Delegaciones"
+                                 converterMessage="Solo números"/>
+                   <p:message for="dele" display="text"/>
+                   <p:commandButton id="gtok" 
+                        style=" background: #FBFBFB; color: black;" 
+                        value="Nuevo Evento" 
+                        action="#{myBean.newEvento()}" 
+                        icon="fa fa-fw fa-plus-circle"
+                        process="@form"
+                        update="nuevoForm"
+                    ></p:commandButton>  
+                </h:form>
+            </p:dialog>
      </ui:define>
 </ui:composition>

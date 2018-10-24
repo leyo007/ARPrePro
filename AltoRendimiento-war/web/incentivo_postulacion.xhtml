@@ -1,3 +1,4 @@
+
 <ui:composition template="/WEB-INF/templates/layout.xhtml"
      xmlns="http://www.w3.org/1999/xhtml"
      xmlns:f="http://java.sun.com/jsf/core"
@@ -7,8 +8,18 @@
          
      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
      <ui:define name="content">
-         
-         
+ 
+         <script>
+             /*$( document ).ready(function() {
+                console.log($(document).height());
+                var Top = ($(document).height()/2)+($(document).height()/3);
+                Top=Top+'px !important;';
+                console.log(Top);
+                 $('#modalNewHE').css('top', Top);
+                 $('#modalNewHE').attr('style', Top);
+            });*/
+            
+         </script>
 
          <style>
             .menuSelect .ui-selectonemenu-label { 
@@ -29,12 +40,49 @@
                 background-image: linear-gradient(to bottom, #f2dede, #254786);
                     background-color: #555;
             }
-             
+            .ui-dialog{
+                font-size: 10px!important;
+                position: absolute;
+
+            }
+            .ui-dialog-content .ui-widget-content{
+                 font-size: 10px;
+                
+            }
+            #fresult\:all_head{
+                
+                font-size: 10px!important;
+                
+            }
+          
          </style>
-         <p:dialog id="modalResult" header="Resultados de elegibilidad y proyección" widgetVar="viewListR" modal="true" >
+            <p:dialog id="modalNewHE" header="Añadir Informe Técnico" widgetVar="attach" modal="true" draggable="false" >
               <p:growl id="growlA" sticky="true" showDetail="true" life="3000" />
+                <h:outputText value="Añada los campos, guarde y suba el archivo." />
+                <h:form id="informe1" enctype="multipart/form-data">
+                   <p:fileUpload  id="inf1" value="#{myBean.archivo}" 
+                      skinSimple="true" label="PDF"
+                      
+                      allowTypes="/(\.|\/)(pdf)$/" 
+                     mode="advanced" 
+                     sizeLimit="3000000"
+                     invalidSizeMessage="El archivo no puede superar los 30mb..."
+                      multiple="false"
+                      fileLimit="1"
+                      fileLimitMessage="Solo se puede cargar un archivo por atleta..."
+                      uploadLabel="Cargar"
+                      cancelLabel="Cancelar"
+                      fileUploadListener="#{myBean.fileUploadListener}"
+                      update=":newinc"
+                      oncomplete="if(#{not facesContext.validationFailed})PF('newHE').hide()"
+                      />
+                </h:form>  
+            </p:dialog>
+         <p:dialog id="modalResult" header="Resultados de elegibilidad y proyección" widgetVar="viewListR" modal="true" 
+                   draggable="true" responsive="true" width="1000">
+              <p:growl id="growlB" sticky="true" showDetail="true" life="3000" />
                 <h:outputText value="Llene todos los campos." />   
-                <h:form>
+                <h:form id="fresult">
                     <p:dataTable id="all" value="#{myBean.listaResult}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                  selectionMode="single" selection="#{myBean.selectResultado}" rowKey="#{item.id}"
                                  widgetVar="listaR" filteredValue="#{myBean.filtroResult}" emptyMessage="No hay registros..."
@@ -50,10 +98,10 @@
                         <p:column width="75" headerText="División">
                             <h:outputText value="#{item.division} " />
                         </p:column>
-                        <p:column width="350" headerText="Tipo" >
+                        <p:column width="200" headerText="Tipo" >
                             <h:outputText value="#{item.tipo}"/>
                         </p:column>
-                        <p:column width="100" headerText="Edad">
+                        <p:column width="100" headerText="Edad" style="background: #03a9f4; color: white;">
                             <h:outputText value="#{item.edad}"/>
                         </p:column>
                         <p:column width="100" headerText="J. Olimpicos  Camp. Mundial">
@@ -71,10 +119,10 @@
                         <p:column headerText="Camp. Pana  Suramericanos">
                             <h:outputText  value="#{item.campa}"/>
                         </p:column>
-                        <p:column headerText="Proyección Juegos">
+                        <p:column headerText="Proyección Juegos" style="background: #FF9800; color: white;">
                             <h:outputText  value="#{item.projuegos}"/>
                         </p:column>
-                        <p:column headerText="Proyección Campamentos">
+                        <p:column headerText="Proyección Campamentos" style="background: #FF9800; color: white;">
                             <h:outputText  value="#{item.procampa}"/>
                         </p:column>
                         
@@ -203,13 +251,9 @@
                                                      <p:message for="disc" display="text"/>
                                                      
                                                     <h:outputText value="PRUEBA" />
-                                                    <p:inputText style="" value="#{myBean.selectPersona.depprueba}" id="prueba" required="true" requiredMessage="Prueba obligstoria" placeholder="Especifique la prueba, si solo es numérica, añada la medida (ejm: 100 con metros = 100m)"/>
+                                                    <p:inputText style="" value="#{myBean.selectIncentivo.prueba}" id="prueba" required="true" requiredMessage="Prueba obligstoria" placeholder="Especifique la prueba, si solo es numérica, añada la medida (ejm: 100 con metros = 100m)"/>
+                                                    <h:outputText value="" />
                                                     <p:message for="prueba" display="text"/>
-                                                    <p:selectOneMenu id="medida" required="true" requiredMessage="Medida!" value="#{myBean.medida}"  styleClass="menuSelect" panelStyleClass="panel">
-                                                        <f:selectItem itemLabel="Ninguna" itemValue=""/>
-                                                        <f:selectItem itemLabel="Metros" itemValue="m"/>
-                                                        <f:selectItem itemLabel="HH:mm:ss" itemValue="s"/>
-                                                    </p:selectOneMenu>
                                                     
                                                     <h:outputText value="REPRESENTA A" />
                                                     <p:selectOneMenu id="prov" required="true" requiredMessage="Selecione la provincia" value="#{myBean.selectPersona.idprorep}"  styleClass="menuSelect" panelStyleClass="panel">
@@ -245,15 +289,25 @@
                                                         <f:selectItems value="#{myBean.listaResult}" var="lr" itemLabel="#{lr.division } #{lr.edad.concat( ' - '.concat(lr.programa))}" itemValue="#{lr.id}" />
                                                         <p:ajax update="proyeccion conv" listener="#{myBean.getproyeccion(myBean.selectIncentivo.eligibidad)}" event="change"/>
                                                     </p:selectOneMenu>
+                                                    <h:outputText value="Detalle Elegibilidad" />
+                                                    <p:inputTextarea value="#{myBean.selectIncentivo.detallelegible}" rows="6" cols="50" />
                                                     <h:outputText value="PROYECCIÓN" />
                                                     <h:outputText id="proyeccion" value="#{myBean.proyeccion}" />
-                                                    
+                                                     <h:outputText value="Detalle Proyección" />
+                                                     <p:inputTextarea value="#{myBean.selectIncentivo.detalleproyeccion}" rows="6" cols="50" />
                                                     <h:outputText value="CONVOCATORIA" />
-                                                    <p:selectOneMenu disabled="true" id="conv" required="true" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectPersona.idconv}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                    <p:selectOneMenu  id="conv" required="true" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectPersona.idconv}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Seleccione"/>
                                                         <f:selectItems value="#{myBean.listConv}" var="lc" itemLabel="#{lc.condescripcion}" itemValue="#{lc.idconv}" />
                                                     </p:selectOneMenu>
                                                     <p:message for="conv" display="text"/>
+                                                    <h:outputText value="" />
+                                                    <h:outputText value="ARCHIVO ENVIADO?" />
+                                                    <h:outputText value="#{myBean.archivoPostulante?'Si':'No'}"/> 
+                                                                      <h:outputText value="" />
+<a style="display: #{myBean.archivoPostulante?'block':'none'}" 
+                                                                      target="_blank" href="/altorendimiento/#{myBean.selectPersona.depcedula}_postulacion.pdf">Archivovo Enviado</a>
+                                                    
                                                     <!--h:outputText value="CATEGORÍA EDAD" />
                                                     <p:selectOneMenu id="catEdad" required="true" requiredMessage="Categoría obligatoria" value="{myBean.selectIncentivo.idedad}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Seleccione"/>
@@ -273,8 +327,7 @@
                                                     <p:message for="catPro" display="text"/-->
                                                     
                                                     
-                                                    <h:outputText value="NOVEDAD" />
-                                                    <p:inputTextarea value="#{myBean.selectPersona.depnovedad}" rows="6" cols="50" />
+                                                   
                                                     
                                                     
                                                 </h:panelGrid>
@@ -288,11 +341,19 @@
                                                 icon="fa fa-fw fa-save"
 
                                                 update="newinc"
-                                                ></p:commandButton>       
+                                                ></p:commandButton>  
+                                                <p:commandButton rendered="true" id="nuevoRD" value="Añadir registro" 
+                                                        style="color: #2196f3;"
+                                                        onclick="PF('attach').show()" 
+                                                        actionListener="#{myBean.tipoArchivo}"
+                                                        oncomplete="$('html, body').animate({ scrollTop: 0 }, 'fast');"
+                                                        icon="fa fa-fw fa-plus" 
+                                                ></p:commandButton>
                                                 <p:commandButton id="viewResul" 
                                                 style=" background: #fff; color: #2196f3;" 
                                                 value="Lista Resultados" 
                                                 onclick="PF('viewListR').show()" 
+                                                oncomplete="$('html, body').animate({ scrollTop: 0 }, 'fast');"
                                                 icon="fa fa-fw fa-list"
                                                 ></p:commandButton>       
                                             </p:panel>

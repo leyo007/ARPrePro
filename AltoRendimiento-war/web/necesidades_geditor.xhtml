@@ -108,8 +108,28 @@
                                                      <p:message for="disc" display="text"/>
                                                     
                                                    <h:outputText value="ARTÍCULO" />
-                                                   <p:inputText style="" value="#{myBean.newNecesidad.articulo}" id="articulo" required="true" requiredMessage="Nombre Artículo" placeholder="Especifique el artículo, su cantidad y valor a continuación"/>
-                                                    
+                                                   <p:selectOneMenu style="" value="#{myBean.newNecesidad.articulo}" id="articulo" styleClass="menuSelect"
+                                                                    disabled="#{myBean.controlArticulo(myBean.newNecesidad.articulo)}"
+                                                                    required="#{!myBean.controlArticulo(myBean.newNecesidad.articulo)}" 
+                                                                    requiredMessage="Nombre Artículo" placeholder="Especifique el artículo, su cantidad y valor a continuación">
+                                                        <f:selectItem itemLabel="Seleccione Artículo" itemValue="" />
+                                                        <f:selectItem itemLabel="Póliza de fidelidad y caución" itemValue="Póliza de fidelidad y caución" />
+                                                        <f:selectItem itemLabel="Equipos Deportivos" itemValue="Equipos Deportivos" />
+                                                        <f:selectItem itemLabel="Medicinas, exámenes médicos, vacunas, imagenología y radiología" itemValue="Medicinas, exámenes médicos, vacunas, imagenología y radiología" />
+                                                        <f:selectItem itemLabel="Equipos Médicos" itemValue="Equipos Médicos" />
+                                                        <f:selectItem itemLabel="Mantenimiento, adecuaciones y alquiler de escenario" itemValue="Mantenimiento, adecuaciones y alquiler de escenario" />
+                                                        <f:selectItem itemLabel="Mantenimiento, alquiler de implementos y maquinarias necesarias para los entrenamientos" itemValue="Mantenimiento, alquiler de implementos y maquinarias necesarias para los entrenamientos" />
+                                                        <f:selectItem itemLabel="Material de oficina" itemValue="Material de oficina" />
+                                                        <f:selectItem itemLabel="Otras necesidades" itemValue="Especifique" />
+                                                        <p:ajax update="articulotro" event="change" listener="#{myBean.controlArticulo(myBean.newNecesidad.articulo)}"/>
+                                                   </p:selectOneMenu>
+                                                    <h:outputText value="OTRO" />
+                                                    <p:inputText style="" value="#{myBean.newNecesidad.articulo}" id="articulotro" 
+                                                                 disabled="#{!myBean.controlArticulo(myBean.newNecesidad.articulo)}"
+                                                                 required="#{myBean.controlArticulo(myBean.newNecesidad.articulo)}" 
+                                                                 requiredMessage="Nombre Artículo" placeholder="Especifique el artículo, su cantidad y valor a continuación">
+                                                        <p:ajax update="articulo" event="change" listener="#{myBean.controlArticulo(myBean.newNecesidad.articulo)}"/>
+                                                    </p:inputText>
                                                     
                                                     <h:outputText value="CANTIDAD" />
                                                     <p:selectOneMenu disabled="false" required="true" requiredMessage="Falta nº de artículos"

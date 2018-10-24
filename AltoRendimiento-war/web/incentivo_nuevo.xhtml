@@ -135,64 +135,7 @@
              
          </style>
          
-         <p:dialog id="modalResult" header="Resultados de elegibilidad y proyección" widgetVar="viewListR" modal="true" >
-              <p:growl id="growlA" sticky="true" showDetail="true" life="3000" />
-                <h:outputText value="Llene todos los campos." />   
-                <h:form>
-                    <p:dataTable id="all" value="#{myBean.listaResult}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
-                                 selectionMode="single" selection="#{myBean.selectResultado}" rowKey="#{item.id}"
-                                 widgetVar="listaR" filteredValue="#{myBean.filtroResult}" emptyMessage="No hay registros..."
-                                                >
-                                                    
-                        <p:column width="30">
-                                <f:facet name="header">
-                                    <h:outputText value="Nº" />
-                                </f:facet>
-                                <h:outputText 
-                                    value="#{index + 1}" />
-                        </p:column>
-                        <p:column width="75" headerText="División">
-                            <h:outputText value="#{item.division} " />
-                        </p:column>
-                        <p:column width="350" headerText="Tipo" >
-                            <h:outputText value="#{item.tipo}"/>
-                        </p:column>
-                        <p:column width="100" headerText="Edad">
-                            <h:outputText value="#{item.edad}"/>
-                        </p:column>
-                        <p:column width="100" headerText="J. Olimpicos  Camp. Mundial">
-                            <h:outputText value="#{item.programa}"/>
-                        </p:column>
-                        <p:column headerText="Juegos">
-                            <h:outputText value="#{item.olimpomundial}"/>
-                        </p:column>
-                        <p:column headerText="Ranking">
-                            <h:outputText value="#{item.ranking}"/>
-                        </p:column>
-                        <p:column headerText="J. Pan. Sur. Bol.">
-                            <h:outputText  value="#{item.panasudaboli}"/>
-                        </p:column>
-                        <p:column headerText="Camp. Pana  Suramericanos">
-                            <h:outputText  value="#{item.campa}"/>
-                        </p:column>
-                        <p:column headerText="Proyección Juegos">
-                            <h:outputText  value="#{item.projuegos}"/>
-                        </p:column>
-                        <p:column headerText="Proyección Campamentos">
-                            <h:outputText  value="#{item.procampa}"/>
-                        </p:column>
-                        
-                        
-                    </p:dataTable>
-                    <p:separator/>
-                    <p:commandButton value="Cerrar" 
-                                 icon="fa fa-fw fa-window-close-o" styleClass="w3-btn botones" 
-                                 oncomplete="if (#{not facesContext.validationFailed})PF('viewListR').hide()"
-                                 >
-                    </p:commandButton>
-                </h:form>
-                
-            </p:dialog> 
+         
          
          <div class="wrapper row3">
             <main class="hoc container clear"> 
@@ -331,12 +274,9 @@
                                                      
                                                     <h:outputText value="PRUEBA" />
                                                     <p:inputText style="" value="#{myBean.selectPersona.depprueba}" id="prueba" required="true" requiredMessage="Prueba obligstoria" placeholder="Especifique la prueba, si solo es numérica, añada la medida (ejm: 100 con metros = 100m)"/>
+                                                     <h:outputText value="" />
                                                     <p:message for="prueba" display="text"/>
-                                                    <p:selectOneMenu id="medida" required="true" requiredMessage="Medida!" value="#{myBean.medida}"  styleClass="menuSelect" panelStyleClass="panel">
-                                                        <f:selectItem itemLabel="Ninguna" itemValue="ND"/>
-                                                        <f:selectItem itemLabel="Metros" itemValue="m"/>
-                                                        <f:selectItem itemLabel="HH:mm:ss" itemValue="s"/>
-                                                    </p:selectOneMenu>
+                                                    
                                                     
                                                     <h:outputText value="DISCAPACIDAD" />
                                                     
@@ -379,12 +319,7 @@
                                                 update="newinc"
                                                 ></p:commandButton>     
                                                 
-                                                <p:commandButton id="viewResul" 
-                                                style=" background: #fff; color: #2196f3;" 
-                                                value="Lista Resultados" 
-                                                onclick="PF('viewListR').show()" 
-                                                icon="fa fa-fw fa-list"
-                                                ></p:commandButton>   
+                                                
                                             </p:panel>
                 </h:form>     
                                     </div>

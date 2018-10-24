@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -36,7 +37,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdincentivost.findByIddep", query = "SELECT m FROM Mdincentivost m WHERE m.iddep = :iddep")
     , @NamedQuery(name = "Mdincentivost.findByIdestado", query = "SELECT m FROM Mdincentivost m WHERE m.idestado = :idestado")
     , @NamedQuery(name = "Mdincentivost.findByEligibidad", query = "SELECT m FROM Mdincentivost m WHERE m.eligibidad = :eligibidad")
-    , @NamedQuery(name = "Mdincentivost.findByProyeccion", query = "SELECT m FROM Mdincentivost m WHERE m.proyeccion = :proyeccion")})
+    , @NamedQuery(name = "Mdincentivost.findByProyeccion", query = "SELECT m FROM Mdincentivost m WHERE m.proyeccion = :proyeccion")
+    , @NamedQuery(name = "Mdincentivost.findByDetallelegible", query = "SELECT m FROM Mdincentivost m WHERE m.detallelegible = :detallelegible")
+    , @NamedQuery(name = "Mdincentivost.findByDetalleproyeccion", query = "SELECT m FROM Mdincentivost m WHERE m.detalleproyeccion = :detalleproyeccion")
+    , @NamedQuery(name = "Mdincentivost.findByPrueba", query = "SELECT m FROM Mdincentivost m WHERE m.prueba = :prueba")})
 public class Mdincentivost implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +70,15 @@ public class Mdincentivost implements Serializable {
     private Integer eligibidad;
     @Column(name = "proyeccion")
     private Integer proyeccion;
+    @Size(max = 2147483647)
+    @Column(name = "detallelegible")
+    private String detallelegible;
+    @Size(max = 2147483647)
+    @Column(name = "detalleproyeccion")
+    private String detalleproyeccion;
+    @Size(max = 2147483647)
+    @Column(name = "prueba")
+    private String prueba;
 
     public Mdincentivost() {
     }
@@ -160,6 +173,30 @@ public class Mdincentivost implements Serializable {
 
     public void setProyeccion(Integer proyeccion) {
         this.proyeccion = proyeccion;
+    }
+
+    public String getDetallelegible() {
+        return detallelegible;
+    }
+
+    public void setDetallelegible(String detallelegible) {
+        this.detallelegible = detallelegible;
+    }
+
+    public String getDetalleproyeccion() {
+        return detalleproyeccion;
+    }
+
+    public void setDetalleproyeccion(String detalleproyeccion) {
+        this.detalleproyeccion = detalleproyeccion;
+    }
+
+    public String getPrueba() {
+        return prueba;
+    }
+
+    public void setPrueba(String prueba) {
+        this.prueba = prueba;
     }
 
     @Override

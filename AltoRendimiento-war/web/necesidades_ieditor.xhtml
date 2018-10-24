@@ -118,7 +118,24 @@
                                                      
                                                     
                                                    <h:outputText value="ARTÍCULO" />
-                                                   <p:inputText style="" value="#{myBean.newNecesidad.articulo}" id="articulo" required="true" requiredMessage="Nombre Artículo" placeholder="Especifique el artículo, su cantidad y valor a continuación"/>
+                                                   <p:selectOneMenu style="" value="#{myBean.newNecesidad.articulo}" id="articulo" styleClass="menuSelect"
+                                                                    disabled="#{myBean.controlArticulo(myBean.newNecesidad.articulo)}"
+                                                                    required="#{!myBean.controlArticulo(myBean.newNecesidad.articulo)}" 
+                                                                    requiredMessage="Nombre Artículo" placeholder="Especifique el artículo, su cantidad y valor a continuación">
+                                                        <f:selectItem itemLabel="Seleccione Artículo" itemValue="" />
+                                                        <f:selectItem itemLabel="Implementación" itemValue="Implementación" />
+                                                        <f:selectItem itemLabel="Indumentaria" itemValue="Indumentaria" />
+                                                        <f:selectItem itemLabel="Suplementación alimenticia, vitaminización e hidratación" itemValue="Suplementación alimenticia, vitaminización e hidratación" />
+                                                        <f:selectItem itemLabel="Materiales para laboratorio y uso médico" itemValue="Materiales para laboratorio y uso médico" />
+                                                        <f:selectItem itemLabel="Servicios Médicos Hospitalarios y Complementarios." itemValue="Servicios Médicos Hospitalarios y Complementarios." />
+                                                        <f:selectItem itemLabel="Charlas Informativas – Capacitación" itemValue="Charlas Informativas – Capacitación" />
+                                                        <f:selectItem itemLabel="Estudios" itemValue="Estudios" />
+                                                        <f:selectItem itemLabel="Vivienda" itemValue="Vivienda" />
+                                                        <f:selectItem itemLabel="Alimentación" itemValue="Alimentación" />
+                                                        <f:selectItem itemLabel="Seguro de vida, accidente y médico" itemValue="Seguro de vida, accidente y médico" />
+                                                        
+                                                        
+                                                   </p:selectOneMenu>
                                                     
                                                     
                                                     <h:outputText value="CANTIDAD" />

@@ -232,178 +232,280 @@
                                                     <h:outputText id="numpax" value="#{myBean.newEvent.numatl+myBean.newEvent.nument}" />
                                                     <h:outputText value="" />
                                                     <p:message for="numpax" display="text"/>
+                                                    
+                                                    <h:outputText value="ENTRENADORES" />
+                                                    
+                                                    <p:chips id="chips" />
+                                                
+                                                    <h:outputText value="" />
+                                                    <p:message for="numpax" display="text"/>
                                                  
                                                  <p:separator /> <p:separator />
-                                                 
+                                                 </h:panelGrid>
+                                                 <h:panelGrid columns="4"  border="0" style="width: 100%;">  
                                                     <h:outputText value="ALOJAMIENTO" />
-                                                    <p:inputNumber value="#{myBean.newEvent.valoja}" id="valoja" required="true" requiredMessage="Añada ALOJAMIENTO" placeholder="Valor Alojamiento" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.valoja}" id="valoja" required="true" requiredMessage="Añada ALOJAMIENTO" placeholder="Valor Alojamiento" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <p:inputNumber value="#{myBean.eventosP[0]}" id="valojap" required="true" requiredMessage="Personas" placeholder="Personas" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.valojap}" id="valojap" required="true" requiredMessage="Personas" placeholder="Personas" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="valojap" display="text"/>
-                                                    <p:inputNumber value="#{myBean.eventosD[0]}" id="valojad" required="true" requiredMessage="Personas" placeholder="Personas" 
+                                                    
+                                                    
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.valojad}" id="valojad" required="true" requiredMessage="Días" placeholder="Días" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="valojad" display="text"/>
+                                                    
                                                     
                                                     <h:outputText value="ALIMENTACIÓN" />
-                                                    <p:inputNumber value="#{myBean.newEvent.valimen}" id="valimen" required="true" requiredMessage="Añada ALIMENTACIÓN" placeholder="Valor ALIMENTACIÓN" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.valimen}" id="valimen" required="true" requiredMessage="Añada ALIMENTACIÓN" placeholder="Valor ALIMENTACIÓN" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="valimen" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.valimenp}" id="valimenp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.valimend}" id="valimend" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
+                                                    
                                                     
                                                     <h:outputText value="HIDRATACIÓN" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vhidra}" id="vhidra" required="true" requiredMessage="Añada HIDRATACIÓN" placeholder="Valor HIDRATACIÓN" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vhidra}" id="vhidra" required="true" requiredMessage="Añada HIDRATACIÓN" placeholder="Valor HIDRATACIÓN" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vhidra" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vhidrap}" id="vhidrap" required="true" requiredMessage="Personas" placeholder="Personas">  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vhidrad}" id="vhidrad" required="true" requiredMessage="Días" placeholder="Días">  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="TRANSPORTE AEREO NACIONAL" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vtransaereo}" id="vtransaereo" required="true" requiredMessage="Añada TRANSPORTE AEREO" placeholder="Valor TRANSPORTE AEREO" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransaereo}" id="vtransaereo" required="true" requiredMessage="Añada TRANSPORTE AEREO" placeholder="Valor TRANSPORTE AEREO" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vtransaereo" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransaereop}" id="vtransaereop" required="true" requiredMessage="Personas" placeholder="Personas">  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransaereod}" id="vtransaereod" required="true" requiredMessage="Días" placeholder="Días">  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="TRANSPORTE AEREO INTERNACIONAL" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vtransaereointer}" id="vtransaereointer" required="true" requiredMessage="Añada TRANSPORTE AEREO" placeholder="Valor TRANSPORTE AEREO" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransaereointer}" id="vtransaereointer" required="true" requiredMessage="Añada TRANSPORTE AEREO" placeholder="Valor TRANSPORTE AEREO" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vtransaereointer" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransaereointerp}" id="vtransaereointerp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransaereointerd}" id="vtransaereointerd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="EXSESOS EQUIPAJE" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vexcequi}" id="vexcequi" required="true" requiredMessage="Añada EXSESOS EQUIPAJE" placeholder="Valor EXSESOS EQUIPAJE" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vexcequi}" id="vexcequi" required="true" requiredMessage="Añada EXSESOS EQUIPAJE" placeholder="Valor EXSESOS EQUIPAJE" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vexcequi" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vexcequip}" id="vexcequip" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vexcequid}" id="vexcequid" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="TASAS AEROPUERTO - TARJETA DE ENTRADA" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vtaxaereo}" id="vtaxaereo" required="true" requiredMessage="Añada TASAS AEROPUERTO" placeholder="Valor TASAS AEROPUERTO" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtaxaereo}" id="vtaxaereo" required="true" requiredMessage="Añada TASAS AEROPUERTO" placeholder="Valor TASAS AEROPUERTO" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vtaxaereo" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtaxaereop}" id="vtaxaereop" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtaxaereod}" id="vtaxaereod" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="SEGURO DE VIAJE" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vsegviaje}" id="vsegviaje" required="true" requiredMessage="Añada SEGURO DE VIAJE" placeholder="Valor SEGURO DE VIAJE" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vsegviaje}" id="vsegviaje" required="true" requiredMessage="Añada SEGURO DE VIAJE" placeholder="Valor SEGURO DE VIAJE" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vsegviaje" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vsegviajep}" id="vsegviajep" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vsegviajed}" id="vsegviajed" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="TRANSPORTE INTERNO NACIONAL" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vtransterr}" id="vtransterr" required="true" requiredMessage="Añada TRANSPORTE TERRESTRE" placeholder="Valor TRANSPORTE TERRESTRE" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransterr}" id="vtransterr" required="true" requiredMessage="Añada TRANSPORTE TERRESTRE" placeholder="Valor TRANSPORTE TERRESTRE" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vtransterr" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransterrp}" id="vtransterrp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransterrd}" id="vtransterrd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="TRANSPORTE INTERNO EXTRANJERO" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vtransterrinter}" id="vtransterrinter" required="true" requiredMessage="Añada TRANSPORTE TERRESTRE" placeholder="Valor TRANSPORTE TERRESTRE" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransterrinter}" id="vtransterrinter" required="true" requiredMessage="Añada TRANSPORTE TERRESTRE" placeholder="Valor TRANSPORTE TERRESTRE" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vtransterrinter" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransterrinterp}" id="vtransterrinterp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vtransterrinterd}" id="vtransterrinterd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="BONO DEPORTIVO INTERNACIONAL" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vbonodep}" id="vbonodep" required="true" requiredMessage="Añada BONO DEPORTIVO INTERNACIONAL" placeholder="Valor BONO DEPORTIVO INTERNACIONAL" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vbonodep}" id="vbonodep" required="true" requiredMessage="Añada BONO DEPORTIVO INTERNACIONAL" placeholder="Valor BONO DEPORTIVO INTERNACIONAL" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vbonodep" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vbonodepp}" id="vbonodepp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vbonodepd}" id="vbonodepd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="INSCRIPCIÓN" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vinsc}" id="vinsc" required="true" requiredMessage="Añada INSCRIPCIÓN" placeholder="Valor INSCRIPCIÓN" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vinsc}" id="vinsc" required="true" requiredMessage="Añada INSCRIPCIÓN" placeholder="Valor INSCRIPCIÓN" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vinsc" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vinscp}" id="vinscp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vinscd}" id="vinscd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="VISA" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vvisa}" id="vvisa" required="true" requiredMessage="Añada VISA" placeholder="Valor VISA" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vvisa}" id="vvisa" required="true" requiredMessage="Añada VISA" placeholder="Valor VISA" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vvisa" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vvisap}" id="vvisap" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vvisad}" id="vvisad" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="FONDO EMERGENCIA" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vfondoem}" id="vfondoem" required="true" requiredMessage="Añada FONDO EMERGENCIA" placeholder="Valor FONDO EMERGENCIA" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vfondoem}" id="vfondoem" required="true" requiredMessage="Añada FONDO EMERGENCIA" placeholder="Valor FONDO EMERGENCIA" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vfondoem" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vfondoemp}" id="vfondoemp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vfondoemd}" id="vfondoemd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="TRADUCCIONES - COPIAS NOTARIADAS" />
-                                                    <p:inputNumber value="#{myBean.newEvent.tradextras}" id="tradextras" required="true" requiredMessage="Añada Traducciones, copias certificadas notariadas" placeholder="Valor Traducciones, copias certificadas notariadas" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.tradextras}" id="tradextras" required="true" requiredMessage="Añada Traducciones, copias certificadas notariadas" placeholder="Valor Traducciones, copias certificadas notariadas" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="tradextras" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.tradextrasp}" id="tradextrasp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.tradextrasd}" id="tradextrasd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="GASTOS MOVIMIENTOS BANCARIOS" />
-                                                    <p:inputNumber value="#{myBean.newEvent.gastosbanca}" id="gastosbanca" required="true" requiredMessage="Añada Gastos por trasferencias y movimientos Bancario" placeholder="Valor Gastos por trasferencias y movimientos Bancario" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.gastosbanca}" id="gastosbanca" required="true" requiredMessage="Añada Gastos por trasferencias y movimientos Bancario" placeholder="Valor Gastos por trasferencias y movimientos Bancario" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="gastosbanca" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.gastosbancap}" id="gastosbancap" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.gastosbancad}" id="gastosbancad" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="GASTOS MOVIMIENTOS BANCARIOS" />
-                                                    <p:inputNumber value="#{myBean.newEvent.reuniotaller}" id="reuniotaller" required="true" requiredMessage="Añada Asistencia a reuniones y talleres de trabajo" placeholder="Valor Asistencia a reuniones y talleres de trabajo" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.reuniotaller}" id="reuniotaller" required="true" requiredMessage="Añada Asistencia a reuniones y talleres de trabajo" placeholder="Valor Asistencia a reuniones y talleres de trabajo" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="reuniotaller" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.reuniotallerp}" id="reuniotallerp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.reuniotallerd}" id="reuniotallerd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="ACTUALIZACIÓN DE CONOCIMIENTOS" />
-                                                    <p:inputNumber value="#{myBean.newEvent.actualizacioncono}" id="actualizacioncono" required="true" requiredMessage="Añada Actualizaciones de Conocimientos" placeholder="Valor Actualizaciones de Conocimientos" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.actualizacioncono}" id="actualizacioncono" required="true" requiredMessage="Añada Actualizaciones de Conocimientos" placeholder="Valor Actualizaciones de Conocimientos" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="actualizacioncono" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.actualizacionconop}" id="actualizacionconop" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.actualizacionconod}" id="actualizacionconod" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="LICENCIAS Y MEMBRESÍAS" />
-                                                    <p:inputNumber value="#{myBean.newEvent.licencias}" id="licencias" required="true" requiredMessage="Añada LICENCIAS Y MEMBRESÍAS" placeholder="Valor LICENCIAS Y MEMBRESÍAS" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.licencias}" id="licencias" required="true" requiredMessage="Añada LICENCIAS Y MEMBRESÍAS" placeholder="Valor LICENCIAS Y MEMBRESÍAS" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="licencias" display="text"/>
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.licenciasp}" id="licenciasp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.licenciasd}" id="licenciasd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+                                                    
                                                     
                                                     <h:outputText value="ESPECIFICOS DEPORTE" />
-                                                    <p:inputNumber value="#{myBean.newEvent.vespdep}" id="vespdep" required="true" requiredMessage="Añada ESPECIFICOS DEPORTE" placeholder="Valor ESPECIFICOS DEPORTE" symbol=" USD" symbolPosition="s" 
+                                                    <p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vespdep}" id="vespdep" required="true" requiredMessage="Añada ESPECIFICOS DEPORTE" placeholder="Valor ESPECIFICOS DEPORTE" symbol=" USD" symbolPosition="s" 
                                                                     decimalSeparator="," thousandSeparator=".">  
                                                          <p:ajax update="" />  
                                                      </p:inputNumber>  
-                                                    <h:outputText value="" />
-                                                    <p:message for="vespdep" display="text"/>
+													<p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vespdepp}" id="vespdepp" required="true" requiredMessage="Personas" placeholder="Personas" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
+													<p:inputNumber style="width: 35px;" value="#{myBean.newEvent.vespdepd}" id="vespdepd" required="true" requiredMessage="Días" placeholder="Días" >  
+                                                         <p:ajax update="" />  
+                                                     </p:inputNumber>  
                                                     
                                                     <!--h:outputText value="SECTOR"/>
                                                     <p:selectOneMenu disabled="false"
