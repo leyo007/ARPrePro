@@ -33,6 +33,7 @@ public class MdperfilmodulotFacade extends AbstractFacade<Mdperfilmodulot> imple
     @Override
     public Mdperfilmodulot findModulo(Mdperfilt x) {
         try {
+            System.out.println("perfilModulo con Perfil: "+x.getPercodigo()+" "+x.getPernombre());
               return (Mdperfilmodulot) em.createQuery("SELECT pm FROM Mdperfilmodulot pm WHERE pm.idperfil =:ip")
                       
                     .setParameter("ip", x)

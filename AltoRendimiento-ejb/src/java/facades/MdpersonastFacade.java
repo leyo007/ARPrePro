@@ -104,6 +104,20 @@ public class MdpersonastFacade extends AbstractFacade<Mdpersonast> implements Md
             return new Mdpersonast();
         }
     }
+
+    @Override
+    public Mdpersonast findByCi(String x) {
+         try {
+              return (Mdpersonast)  em.createQuery("SELECT p FROM Mdpersonast p WHERE p.depcedula =:us")
+                    .setParameter("us", x)                    
+                    .getSingleResult();
+               
+               
+        } catch (Exception e) {
+            System.out.println("Error, deportista no encontrado con CI: " + e.getMessage());
+            return new Mdpersonast();
+        }
+    }
     
      
   

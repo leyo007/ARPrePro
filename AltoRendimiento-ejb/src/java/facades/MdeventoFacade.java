@@ -6,6 +6,7 @@
 package facades;
 
 import entities.Mdevento;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -67,5 +68,31 @@ public class MdeventoFacade extends AbstractFacade<Mdevento> implements Mdevento
         }
 
     }
+
+    @Override
+    public List<Mdevento> duplicateRows(int delegaciones, Mdevento padre) {
+        List<Mdevento> resultado=new ArrayList<>();
+        Mdevento row=new Mdevento();
+        int nextId=findAll().size();
+        
+       try {
+            
+            for (int i = 0; i < delegaciones; i++) { 
+                System.out.println("findAll().size(): "+findAll().size());
+                row.setId(padre.getId()+1+i); 
+                row.setEvento(padre.getEvento()+" Delegación");
+                row.setDelegacion(padre.getId());
+                em.persist(row);
+            }
+            
+              return  em.createQuery("SELECT p Mdevento p WHERE p.delegacion=:x").setParameter("x", padre.getId())
+                    .getResultList();
+        } catch (Exception ex) {
+            System.out.println("Error, no realicé las duplicaciones: " + ex.getMessage());
+            return null;
+        }
+    }
+
+
     
 }

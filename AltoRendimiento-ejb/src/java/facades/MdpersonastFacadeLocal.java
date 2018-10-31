@@ -35,5 +35,6 @@ public interface MdpersonastFacadeLocal {
     public boolean findById(String x);
     public List<Mdpersonast> findByCodFed(int x);
     public Mdpersonast findById(int x);
+    public Mdpersonast findByCi(String x);
     
 }

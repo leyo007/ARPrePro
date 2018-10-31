@@ -51,7 +51,73 @@
             
 
          </style>
-         
+            <p:dialog header="Detalles" widgetVar="dlg1" id="dlg" modal="true" height="auto" width="auto">
+                <h:form id="mensaje">
+                    <h:outputText value="#{myBean.selectedEvent.evento}"/>
+                    <p:growl id="messages" showDetail="true"  autoUpdate="true"/>
+                    <h:panelGrid columns="2"  border="0" style="width: 100%;">
+                        <h:outputText value="No. ENT. OFIC." />
+                        <h:outputText value="#{myBean.selectedEvent.nument}"/>
+
+                        <h:outputText value="No. ATL." />
+                        <h:outputText value="#{myBean.selectedEvent.numatl}"/>
+
+                        <h:outputText value="No. Días" />
+                        <h:outputText value="#{myBean.selectedEvent.numdias}"/>
+                        
+                    </h:panelGrid>
+                    <h:panelGrid columns="2"  border="0" style="width: 100%;">
+                        <h:outputText value="" />
+                        <h:outputText value="Total" />
+                        <h:outputText value="ALOJAMIENTO" />
+                        <h:outputText style="width: 15px;"  id="valojat" value="#{myBean.selectedEvent.valoja*myBean.selectedEvent.valojap*myBean.selectedEvent.valojad}"/>
+                        <h:outputText value="ALIMENTACIÓN" />
+                        <h:outputText style="width: 15px;"  id="valiment" value="#{myBean.selectedEvent.valimen*myBean.selectedEvent.valimenp*myBean.selectedEvent.valimend}"/>
+                        <h:outputText value="HIDRATACIÓN" />
+                        <h:outputText style="width: 15px;"  id="vhidrat" value="#{myBean.selectedEvent.vhidra*myBean.selectedEvent.vhidrap*myBean.selectedEvent.vhidrad}"/>
+                        <h:outputText value="TRANSPORTE AEREO NACIONAL" />
+                        <h:outputText style="width: 15px;"  id="vtransaereot" value="#{myBean.selectedEvent.vtransaereo*myBean.selectedEvent.vtransaereop*myBean.selectedEvent.vtransaereod}"/>
+                        <h:outputText value="TRANSPORTE AEREO INTERNACIONAL" />
+                        <h:outputText style="width: 15px;"  id="vtransaereointert" value="#{myBean.selectedEvent.vtransaereointer*myBean.selectedEvent.vtransaereointerp*myBean.selectedEvent.vtransaereointerd}"/>
+                        <h:outputText value="EXCESOS EQUIPAJE" />
+                        <h:outputText style="width: 15px;"  id="vexcequit" value="#{myBean.selectedEvent.vexcequi*myBean.selectedEvent.vexcequip*myBean.selectedEvent.vexcequid}"/>
+                        <h:outputText value="TASAS AEROPUERTO - TARJETA DE ENTRADA" />
+                        <h:outputText style="width: 15px;"  id="vtaxaereot" value="#{myBean.selectedEvent.vtaxaereo*myBean.selectedEvent.vtaxaereop*myBean.selectedEvent.vtaxaereod}"/>
+                        <h:outputText value="SEGURO DE VIAJE" />
+                        <h:outputText style="width: 15px;"  id="vsegviajet" value="#{myBean.selectedEvent.vsegviaje*myBean.selectedEvent.vsegviajep*myBean.selectedEvent.vsegviajed}"/>
+                        <h:outputText value="TRANSPORTE INTERNO NACIONAL" />
+                        <h:outputText style="width: 15px;"  id="vtransterrt" value="#{myBean.selectedEvent.vtransterr*myBean.selectedEvent.vtransterrp*myBean.selectedEvent.vtransterrd}"/>
+                        <h:outputText value="TRANSPORTE INTERNO EXTRANJERO" />
+                        <h:outputText style="width: 15px;"  id="vtransterrintert" value="#{myBean.selectedEvent.vtransterrinter*myBean.selectedEvent.vtransterrinterp*myBean.selectedEvent.vtransterrinterd}"/>
+                        <h:outputText value="BONO DEPORTIVO INTERNACIONAL" />
+                        <h:outputText style="width: 15px;"  id="vbonodept" value="#{myBean.selectedEvent.vbonodep*myBean.selectedEvent.vbonodepp*myBean.selectedEvent.vbonodepd}"/>
+                        <h:outputText value="INSCRIPCIÓN" />
+                        <h:outputText style="width: 15px;"  id="vinsct" value="#{myBean.selectedEvent.vinsc*myBean.selectedEvent.vinscp*myBean.selectedEvent.vinscd}"/>
+                        <h:outputText value="VISA" />
+                        <h:outputText style="width: 15px;"  id="vvisat" value="#{myBean.selectedEvent.vvisa*myBean.selectedEvent.vvisap*myBean.selectedEvent.vvisad}"/>
+                        <h:outputText value="FONDO EMERGENCIA" />
+                        <h:outputText style="width: 15px;"  id="vfondoemt" value="#{myBean.selectedEvent.vfondoem*myBean.selectedEvent.vfondoemp*myBean.selectedEvent.vfondoemd}"/>
+                        <h:outputText value="TRADUCCIONES - COPIAS NOTARIADAS" />
+                        <h:outputText style="width: 15px;"  id="tradextrast" value="#{myBean.selectedEvent.tradextras*myBean.selectedEvent.tradextrasp*myBean.selectedEvent.tradextrasd}"/>
+                        <h:outputText value="GASTOS MOVIMIENTOS BANCARIOS" />
+                        <h:outputText style="width: 15px;"  id="gastosbancat" value="#{myBean.selectedEvent.gastosbanca*myBean.selectedEvent.gastosbancap*myBean.selectedEvent.gastosbancad}"/>
+                        <h:outputText value="REUNIONES - TALLERES" />
+                        <h:outputText style="width: 15px;"  id="reuniotallert" value="#{myBean.selectedEvent.reuniotaller*myBean.selectedEvent.reuniotallerp*myBean.selectedEvent.reuniotallerd}"/>													 
+                        <h:outputText value="ACTUALIZACIÓN DE CONOCIMIENTOS" />
+                        <h:outputText style="width: 15px;"  id="actualizacionconot" value="#{myBean.selectedEvent.actualizacioncono*myBean.selectedEvent.actualizacionconop*myBean.selectedEvent.actualizacionconod}"/>													 
+                        <h:outputText value="LICENCIAS Y MEMBRESÍAS" />
+                        <h:outputText style="width: 15px;"  id="licenciast" value="#{myBean.selectedEvent.licencias*myBean.selectedEvent.licenciasp*myBean.selectedEvent.licenciasd}"/>													 
+                        <h:outputText value="ESPECIFICOS DEPORTE" />
+                        <h:outputText style="width: 15px;"  id="vespdept" value="#{myBean.selectedEvent.vespdep*myBean.selectedEvent.vespdepp*myBean.selectedEvent.vespdepd}"/>                                                                                    
+                        <p:commandButton  value="Cerrar" icon="fa fa-times-circle"
+                            style="color: #C8232C;"
+                            styleClass="w3-btn botones"
+                            onclick="PF('dlg1').hide()">
+                        </p:commandButton>
+
+                    </h:panelGrid>     
+                </h:form>
+            </p:dialog> 
          
          <div class="wrapper row3">
             <main class="clear"> 
@@ -113,11 +179,12 @@
                                                 </p:commandButton>
                                                 <p:dataTable id="all" value="#{myBean.filtroEventos}" var="evento" style='font-size: 9px!important;    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                                              selectionMode="single" selection="#{myBean.selectedEvent}" rowKey="#{evento.id}"
-                                                             widgetVar="listaR" filteredValue="#{myBean.filtroTEventos}" emptyMessage="No hay registros..."
+                                                             widgetVar="listaR" filteredValue="#{myBean.listaEventos}" emptyMessage="No hay registros..."
                                                              scrollable="true"
                                                 >
                                                     
-                                                    <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()" and scrollable="true" scrollWidth="2200" tableStyle="width:100"  /-->
+                                                    <p:ajax event="rowSelect" listener="#{myBean.onRowSelectEvento}" update=":dlg" oncomplete="PF('dlg1').show()" />
+                                                    <p:ajax event="rowUnselect" listener="#{myBean.onRowUnselectEvento}" update=":dlg" />
                                                     <p:column width="100" headerText="Editar Evento">
                                                         <p:commandButton id="gt" 
                                                             style=" background: #F0BE10; color: white;" 
@@ -169,55 +236,21 @@
                                                              <f:convertDateTime pattern="dd/MM/yyyy" />
                                                           </p:outputLabel>
                                                     </p:column>
-                                                    <p:column  width="50" filterBy="#{evento.nument}" headerText="No. Ent. Ofic."  filterMatchMode="contains">
+                                                    <p:column  width="50" filterBy="#{evento.nument}" headerText="No. Ent. Ofic."  
+                                                               footerText="#{myBean.totalEntEventos}" filterMatchMode="contains">
                                                         <h:outputText  value="#{evento.nument}"/>
                                                     </p:column>
-                                                    <p:column width="50" filterBy="#{evento.numatl}" headerText="No. ATL."  filterMatchMode="contains">
+                                                    <p:column width="50" filterBy="#{evento.numatl}" headerText="No. ATL."  
+                                                              footerText="#{myBean.totalAtlEventos}" filterMatchMode="contains">
                                                         <h:outputText  value="#{evento.numatl}"/>
                                                     </p:column>
-                                                    <p:column width="50" filterBy="#{evento.numdias}" headerText="No. DIAS"  filterMatchMode="contains">
+                                                    <p:column width="50" filterBy="#{evento.numdias}" headerText="No. DIAS"  
+                                                              footerText="#{myBean.totalDiasEventos}" filterMatchMode="contains">
                                                         <h:outputText  value="#{evento.numdias}"/>
                                                     </p:column>
-                                                    <p:column width="50" filterBy="#{evento.numpax}" headerText="No. PAX"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.numpax}"/>
-                                                    </p:column>
-                                                    <p:column width="100" filterBy="#{evento.valoja}" headerText="Alojamiento (V/PAXDIA)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.valoja}"/>
-                                                    </p:column>
-                                                    <p:column width="100" filterBy="#{evento.valimen}" headerText="Alimentación (V/PAXDIA)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.valimen}"/>
-                                                    </p:column>
-                                                    <p:column width="100" filterBy="#{evento.vhidra}" headerText="Hidratación (V/ATLXDIA)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vhidra}"/>
-                                                    </p:column>
-                                                    <p:column width="100" filterBy="#{evento.vtransaereo}" headerText="Transporte Aereo (/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vtransaereo}"/>
-                                                    </p:column>
-                                                    <p:column width="100" filterBy="#{evento.vtaxaereo}" headerText="Tasas Aeropuerto - TARJETAS(V/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vtaxaereo}"/>
-                                                    </p:column>
-                                                    <p:column width="90" filterBy="#{evento.vsegviaje}" headerText="Seguro de Viaje (V/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vsegviaje}"/>
-                                                    </p:column>
-                                                    <p:column width="90" filterBy="#{evento.vtransterr}" headerText="Transaporte Terrestre (V/DIA)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vtransterr}"/>
-                                                    </p:column>
-                                                    <p:column width="90" filterBy="#{evento.vbonodep}" headerText="Bono Deportivo Inter PAXDIA"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vbonodep}"/>
-                                                    </p:column>
-                                                    <p:column width="90" filterBy="#{evento.vinsc}" headerText="Inscripción  (V/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vinsc}"/>
-                                                    </p:column>
-                                                    <p:column width="80" filterBy="#{evento.vvisa}" headerText="Visa (V/PAX)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vvisa}"/>
-                                                    </p:column>
-                                                    <p:column width="90" filterBy="#{evento.vfondoem}" headerText="Fondo Emergencia (V EVENTO)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vfondoem}"/>
-                                                    </p:column>
-                                                    <p:column width="90" filterBy="#{evento.vespdep}" headerText="Especificos Deporte (V EVENTO)"  filterMatchMode="contains">
-                                                        <h:outputText  value="#{evento.vespdep}"/>
-                                                    </p:column>
-                                                    <p:column  width="80" filterBy="#{evento.total}" headerText="Valor Total"  filterMatchMode="contains">
+                                                    
+                                                    <p:column  width="80" filterBy="#{evento.total}" headerText="Valor Total" 
+                                                               footerText="#{myBean.totalSumEventos}" filterMatchMode="contains">
                                                         <h:outputText  value="#{evento.total}"/>
                                                     </p:column>
                                                     <p:column width="80" filterBy="#{evento.sector}" headerText="Sector"  filterMatchMode="contains">
