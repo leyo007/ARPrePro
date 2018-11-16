@@ -99,20 +99,20 @@ public class MdnecesidadesFacade extends AbstractFacade<Mdnecesidades> implement
     @Override
     public List<Mdnecesidades> getListBySector(boolean x) {
         System.out.println("getListBySector S/N: "+x);
-        List <Mdfederacion> listF;
-        listF=fede.getListBySector(x);
-        int y=0; 
-        List<Mdnecesidades> myReturn=new ArrayList<>();
-        
+        String y="";
+       if(x)
+           y="CONVENCIONAL";
+                   else
+           y="DISCAPACIDAD";
         try {
-            for (Mdfederacion fedes : listF) {
-                myReturn.add((Mdnecesidades) em.createQuery("SELECT n from Mdnecesidades n WHERE n.iddep =:x")
-                    .setParameter("x", fedes.getId())
-                    .getSingleResult());
-            }
+            
+                return em.createQuery("SELECT n from Mdnecesidades n WHERE n.sector =:x")
+                    .setParameter("x", y)
+                    .getResultList();
+                    
             
             
-            return  myReturn;
+            
         } catch (Exception e) {
             System.out.println("Error, no encontré necesidades del sector: "+x+" Error: " + e.getMessage());
             return null;

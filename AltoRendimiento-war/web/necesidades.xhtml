@@ -6,7 +6,24 @@
      xmlns:p="http://primefaces.org/ui"
 >
      <ui:define name="content">
-         
+         #{myBean.noLogged()}
+         <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <p:idleMonitor timeout="#{renderizador.tiempoMonitor}" >
+                <p:ajax event="idle" onstart="PF('idleDialog').show()"      update="messages" />
+            </p:idleMonitor>
+
+
+            <p:confirmDialog 
+                message="La sesión ha caducado,"
+                header="Alto Rendimiento" severity="alert" widgetVar="idleDialog" closable="false" >
+                        <p:commandLink value="Salir" update="msg"
+                            oncomplete="idleDialog.hide()"
+                            action="#{renderizador.cerrarSesion()}"  ajax="false"/>
+                        
+            </p:confirmDialog>
+                      
+        </h:form>
   
         
          <style>
@@ -101,30 +118,32 @@
                                             <h:form id="form-lista">
                                                
                                                 <p:commandButton id="btn-generar" value="Generar Documento" icon="fa fa-fw fa-file" ajax="false">
-                                                    <p:dataExporter type="pdf" target=":form-lista:all" fileName="#{myBean.currentUser.usuapellidos}declaracion" 
-                                                    preProcessor="#{myBean.preProcessPDF}"
-                                                    options="#{myBean.pdfOpt}"
+                                                    <p:dataExporter type="xls" target=":form-lista:all" fileName="#{myBean.selectFede.nombre}_necesidades" 
+                                                    
                                                     />
                                                 </p:commandButton>
+                                                <p:remoteCommand name="refreshFooter" update="all:outputTotalS all:outputTotalL"/>
                                                 <p:dataTable id="all" value="#{myBean.listaNecesidad}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                                              selectionMode="single" selection="#{myBean.selectedNecesidad}" rowKey="#{item.id}"
                                                              widgetVar="listaR" filteredValue="#{myBean.filtroNecesidad}" emptyMessage="No hay registros..."
                                                 >
                                                     
                                                     <!--p:ajax event="rowSelect" listener="myBean.usuarioSeleccionadoAccion()" update=":dlg" oncomplete="PF('dlg1').show()"  /-->
-                                                    <p:column filterBy="#{item.deporte}" headerText="Deporte"  filterMatchMode="contains">
-                                                        <h:outputText value="#{item.deporte} " />
+                                                    <p:column id="deporteP" filterBy="#{item.deporte}" headerText="Deporte"  filterMatchMode="contains">
+                                                        <h:outputText id="deporte" value="#{item.deporte} " />
                                                     </p:column>
                                                     <p:column filterBy="#{item.disciplina}" headerText="Disciplina"  filterMatchMode="contains">
                                                         <h:outputText value="#{item.disciplina}"/>
                                                     </p:column>
-                                                    <p:column filterBy="#{item.tipo}"  rendered="true" headerText="Tipo"  filterMatchMode="equals">
-                                                        <f:facet name="filter">
-                                                            <p:selectOneMenu onchange="PF('listaR').filter()">
+                                                    <p:column id="tipoP" filterBy="#{item.tipo}"  rendered="true" headerText="Tipo"  filterMatchMode="equals" styleClass="menuSelect" >
+                                                        <f:facet id="tipoF" name="filter">
+                                                            <p:selectOneMenu id="tipoS" onchange="PF('listaR').filter()">
                                                                 <f:converter converterId="javax.faces.Boolean" />
                                                                 <f:selectItem itemLabel="Todas" itemValue="" />
                                                                 <f:selectItem itemLabel="Gral" itemValue="true" />
                                                                 <f:selectItem itemLabel="Ind" itemValue="false" />
+                                                                <p:ajax event="change" listener="#{myBean.totalEvento(myBean.filtroNecesidad)}"
+                                                                update="outputTotalS"/>
                                                             </p:selectOneMenu>
                                                         </f:facet>
                                                         <h:outputText value="#{item.tipo ? 'General': 'Individual'}" />
@@ -139,13 +158,13 @@
                                                         <h:outputText  value="#{item.cantidad}"/>
                                                     </p:column>
                                                     
-                                                    <p:column  filterBy="#{item.valor}" headerText="Valor"  footerText="#{myBean.totalEvento(myBean.listaNecesidad)}" filterMatchMode="contains">
+                                                    <p:column  filterBy="#{item.valor}" headerText="Valor"  footerText="#{myBean.totalEventos(myBean.listaNecesidad)}" filterMatchMode="contains" >
                                                         <h:outputText  value="#{item.valor} USD"/>
                                                     </p:column>
-                                                    <p:column  filterBy="#{item.total}" headerText="Total"  footerText="#{myBean.totalEventos(myBean.listaNecesidad)}" filterMatchMode="contains">
+                                                    <p:column  filterBy="#{item.total}" headerText="Total"  footerText="#{myBean.totalEvento(myBean.listaNecesidad)}" filterMatchMode="contains">
                                                         <h:outputText  value="#{item.total} USD"/>
                                                     </p:column>
-                                                    <p:column headerText="Modificar">
+                                                    <p:column headerText="Modificar" exportable="false">
                                                         <p:commandButton id="gt" 
                                                             style=" background: #F0BE10; color: white;" 
                                                             value="Editar" 
@@ -155,6 +174,14 @@
                                                 
                                                         ></p:commandButton>  
                                                     </p:column>
+                                                    <f:facet id="Ts" name="footer">
+                                                        TotalS:
+                                                        <h:outputText id="outputTotalS" value="#{myBean.totalEventos(myBean.filtroNecesidad)}" />
+                                                    </f:facet>
+                                                    <f:facet name="footer">
+                                                        TotalL:
+                                                        <h:outputText id="outputTotalL" value="#{myBean.totalEventos(myBean.listaNecesidad)}" />
+                                                    </f:facet>
                                                     <p:column headerText="Individuales" rendered="false">
                                                         <p:commandButton id="rp" 
                                                             style=" background: #10A9F0; color: white;" 

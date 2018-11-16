@@ -76,6 +76,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -353,12 +354,18 @@ public class mainBean implements Serializable {
                     System.out.println("4.- pmodulo: "+currentModulo.getIdmodulo().getIdmodulo());
                     modulo = mdmodulotFacade.find(currentModulo.getIdmodulo().getIdmodulo());
                     System.out.println("5.- modulo: "+modulo.getModnombre());
-                    
-                                       
+                    selectFede=mdfederacionFacade.find(currentUser.getCodinst());
+                                     
                     if(currentUser.getEntrenador())
                         menus=mdmenutFacade.getAllBymoduloCoach(modulo.getIdmodulo());
-                    else
+                    else{
                         menus=mdmenutFacade.getAllBymodulo(modulo.getIdmodulo());
+                        
+                        if(currentModulo.getIdmodulo().getIdmodulo()==6 && !selectFede.getSector()){
+                            menus.add(mdmenutFacade.find(7));
+                            menus.remove(mdmenutFacade.find(16));
+                        }
+                    }
                     System.out.println("6.- menus: "+menus.get(0));
                     
                     //menus.forEach((t) -> {
@@ -366,7 +373,7 @@ public class mainBean implements Serializable {
                         System.out.println("7.- Nombres: "+t.getMennombre());
                     };
                     //});
-                    selectFede=mdfederacionFacade.find(currentUser.getCodinst());
+                    
                     
                     System.out.println("8.- selectFede: "+selectFede);
                     System.out.println("9.- selectFede: "+selectFede.getSector());
@@ -551,7 +558,66 @@ public class mainBean implements Serializable {
         System.out.println(delegacion);
         newEvent=new Mdevento();
         newEvent.setDelegacion(delegacion);
-        
+        newEvent.setValoja(0.0);
+newEvent.setValojap(0);
+newEvent.setValojad(0);
+newEvent.setValimen(0.0);
+newEvent.setValimenp(0);
+newEvent.setValimend(0);
+newEvent.setVhidra(0.0);
+newEvent.setVhidrap(0);
+newEvent.setVhidrad(0);
+newEvent.setVtransaereo(0.0);
+newEvent.setVtransaereop(0);
+newEvent.setVtransaereod(0);
+newEvent.setVtransaereointer(0.0);
+newEvent.setVtransaereointerp(0);
+newEvent.setVtransaereointerd(0);
+newEvent.setVexcequi(0.0);
+newEvent.setVexcequip(0);
+newEvent.setVexcequid(0);
+newEvent.setVtaxaereo(0.0);
+newEvent.setVtaxaereop(0);
+newEvent.setVtaxaereod(0);
+newEvent.setVsegviaje(0.0);
+newEvent.setVsegviajep(0);
+newEvent.setVsegviajed(0);
+newEvent.setVtransterr(0.0);
+newEvent.setVtransterrp(0);
+newEvent.setVtransterrd(0);
+newEvent.setVtransterrinter(0.0);
+newEvent.setVtransterrinterp(0);
+newEvent.setVtransterrinterd(0);
+newEvent.setVbonodep(0.0);
+newEvent.setVbonodepp(0);
+newEvent.setVbonodepd(0);
+newEvent.setVinsc(0.0);
+newEvent.setVinscp(0);
+newEvent.setVinscd(0);
+newEvent.setVvisa(0.0);
+newEvent.setVvisap(0);
+newEvent.setVvisad(0);
+newEvent.setVfondoem(0.0);
+newEvent.setVfondoemp(0);
+newEvent.setVfondoemd(0);
+newEvent.setTradextras(0.0);
+newEvent.setTradextrasp(0);
+newEvent.setTradextrasd(0);
+newEvent.setGastosbanca(0.0);
+newEvent.setGastosbancap(0);
+newEvent.setGastosbancad(0);
+newEvent.setReuniotaller(0.0);
+newEvent.setReuniotallerp(0);
+newEvent.setReuniotallerd(0);
+newEvent.setActualizacioncono(0.0);
+newEvent.setActualizacionconop(0);
+newEvent.setActualizacionconod(0);
+newEvent.setLicencias(0.0);
+newEvent.setLicenciasp(0);
+newEvent.setLicenciasd(0);
+newEvent.setVespdep(0.0);
+newEvent.setVespdepp(0);
+newEvent.setVespdepd(0);
         newEvent.setAd(selectFede.getAd());
         if(selectFede.getTipo().equals("NACIONALES"))
             newEvent.setTipomacro("CPS");
@@ -626,16 +692,18 @@ public class mainBean implements Serializable {
         System.out.println("eventos:::::::::::::::::::: ");
         String resultado="";
         newEvent.setCreador(currentUser.getIdusuario());
+        newEvent.setCodfed(currentUser.getCodinst());
+        // xxx
         newEvent.setAtletas("");
         newEvent.setTotal((newEvent.getValoja()*newEvent.getValojap()*newEvent.getValojad())+(newEvent.getValimen()*newEvent.getValimenp()*newEvent.getValimend())+(newEvent.getVhidra()*newEvent.getVhidrap()*newEvent.getVhidrad())+(newEvent.getVtransaereo()*newEvent.getVtransaereop()*newEvent.getVtransaereod())+(newEvent.getVtransaereointer()*newEvent.getVtransaereointerp()*newEvent.getVtransaereointerd())+(newEvent.getVexcequi()*newEvent.getVexcequip()*newEvent.getVexcequid())+(newEvent.getVtaxaereo()*newEvent.getVtaxaereop()*newEvent.getVtaxaereod())+(newEvent.getVsegviaje()*newEvent.getVsegviajep()*newEvent.getVsegviajed())+(newEvent.getVtransterr()*newEvent.getVtransterrp()*newEvent.getVtransterrd())+(newEvent.getVtransterrinter()*newEvent.getVtransterrinterp()*newEvent.getVtransterrinterd())+(newEvent.getVbonodep()*newEvent.getVbonodepp()*newEvent.getVbonodepd())+(newEvent.getVinsc()*newEvent.getVinscp()*newEvent.getVinscd())+(newEvent.getVvisa()*newEvent.getVvisap()*newEvent.getVvisad())+(newEvent.getVfondoem()*newEvent.getVfondoemp()*newEvent.getVfondoemd())+(newEvent.getTradextras()*newEvent.getTradextrasp()*newEvent.getTradextrasd())+(newEvent.getGastosbanca()*newEvent.getGastosbancap()*newEvent.getGastosbancad())+(newEvent.getReuniotaller()*newEvent.getReuniotallerp()*newEvent.getReuniotallerd())+(newEvent.getActualizacioncono()*newEvent.getActualizacionconop()*newEvent.getActualizacionconod())+(newEvent.getLicencias()*newEvent.getLicenciasp()*newEvent.getLicenciasd())+(newEvent.getVespdep()*newEvent.getVespdepp()*newEvent.getVespdepd()));
-        for (Mdpersonast atletas : atletasEvento) {
+       /* for (Mdpersonast atletas : atletasEvento) {
             System.out.println(atletas.getDepcedula());
             //newEvent.setAtletas(newEvent.getAtletas()+" "+atletas.getDepapellido()+" "+atletas.getDepnombre()+" - ");
         }
         for(String entre: eventoEntrenadores){
             System.out.println(entre);
             //newEvent.setEntrenadores(newEvent.getEntrenadores()+" "+entre+" -");
-        }
+        }*/
         //falta multiplicadores * 19 valores
         System.out.println("eventos:::::::::::::::::::: "+newEvent.getValoja());
         if(delegacion>1){
@@ -676,15 +744,15 @@ public class mainBean implements Serializable {
         String resultado="";
         selectedEvent.setCreador(currentUser.getIdusuario());
         selectedEvent.setTotal(((selectedEvent.getValoja()*selectedEvent.getValojap()*selectedEvent.getValojad())+(selectedEvent.getValimen()*selectedEvent.getValimenp()*selectedEvent.getValimend())+(selectedEvent.getVhidra()*selectedEvent.getVhidrap()*selectedEvent.getVhidrad())+(selectedEvent.getVtransaereo()*selectedEvent.getVtransaereop()*selectedEvent.getVtransaereod())+(selectedEvent.getVtransaereointer()*selectedEvent.getVtransaereointerp()*selectedEvent.getVtransaereointerd())+(selectedEvent.getVexcequi()*selectedEvent.getVexcequip()*selectedEvent.getVexcequid())+(selectedEvent.getVtaxaereo()*selectedEvent.getVtaxaereop()*selectedEvent.getVtaxaereod())+(selectedEvent.getVsegviaje()*selectedEvent.getVsegviajep()*selectedEvent.getVsegviajed())+(selectedEvent.getVtransterr()*selectedEvent.getVtransterrp()*selectedEvent.getVtransterrd())+(selectedEvent.getVtransterrinter()*selectedEvent.getVtransterrinterp()*selectedEvent.getVtransterrinterd())+(selectedEvent.getVbonodep()*selectedEvent.getVbonodepp()*selectedEvent.getVbonodepd())+(selectedEvent.getVinsc()*selectedEvent.getVinscp()*selectedEvent.getVinscd())+(selectedEvent.getVvisa()*selectedEvent.getVvisap()*selectedEvent.getVvisad())+(selectedEvent.getVfondoem()*selectedEvent.getVfondoemp()*selectedEvent.getVfondoemd())+(selectedEvent.getTradextras()*selectedEvent.getTradextrasp()*selectedEvent.getTradextrasd())+(selectedEvent.getGastosbanca()*selectedEvent.getGastosbancap()*selectedEvent.getGastosbancad())+(selectedEvent.getReuniotaller()*selectedEvent.getReuniotallerp()*selectedEvent.getReuniotallerd())+(selectedEvent.getActualizacioncono()*selectedEvent.getActualizacionconop()*selectedEvent.getActualizacionconod())+(selectedEvent.getLicencias()*selectedEvent.getLicenciasp()*selectedEvent.getLicenciasd())+(selectedEvent.getVespdep()*selectedEvent.getVespdepp()*selectedEvent.getVespdepd())));
-            for (Mdpersonast atletas : atletasEvento) {
+           /* for (Mdpersonast atletas : atletasEvento) {
                 System.out.println(atletas.getDepcedula());
                 selectedEvent.setAtletas(selectedEvent.getAtletas()+" "+atletas.getDepapellido()+" "+atletas.getDepnombre()+" - ");
-            }
-        if(eventoEntrenadores!=null||eventoEntrenadores.size()>0)    
+            }*/
+        /*if(eventoEntrenadores!=null||eventoEntrenadores.size()>0)    
             for(String entre: eventoEntrenadores){
                 System.out.println(entre);
                 selectedEvent.setEntrenadores(selectedEvent.getEntrenadores()+" "+entre+" -");
-            }
+            }*/
         if(mdeventoFacade.modificarDatos(selectedEvent))
             if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
                     filtroEventos=mdeventoFacade.findAll();
@@ -709,15 +777,21 @@ public class mainBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
-    public boolean controlArticulo(String y){        
-        return y.equals("Especifique");
+    public boolean controlArticulo(String y){ 
+        boolean x=false;
+        char c; 
+        if(y.length()>0){
+            c = y.charAt(0);
+            x=(c == '8' || Character.isLetter(c));
+        }
+        return x;
     }
     
     public String registraNecesidadGral(){
         String resultado="";
         newNecesidad.setCreador(currentUser.getIdusuario());
-        newNecesidad.setDeporte(getnombreDeporte(newNecesidad.getIddep()));
         newNecesidad.setTipo(true);
+        newNecesidad.setDeporte(getnombreDeporte(newNecesidad.getIddep()));
         newNecesidad.setTotal(newNecesidad.getValor()*newNecesidad.getCantidad());
          if(selectFede.getSector())
             newNecesidad.setSector("CONVENCIONAL");
@@ -872,6 +946,7 @@ public class mainBean implements Serializable {
                 selectPersona.setFederacion(currentUser.getCodinst());
                 selectPersona.setDepprueba(selectPersona.getDepprueba()+" "+medida);
                 selectPersona.setAprobado(false);
+                selectPersona.setHandi(selectFede.getSector());
                 
                 if(mdpersonastFacade.guardarDatos(selectPersona)){  
                 
@@ -927,10 +1002,31 @@ public class mainBean implements Serializable {
         nuevoDeportista=false;
         return resultado;
     }
-    
+    private boolean apoyo;
     public String repostulacion(){
         String x="";
         mdpersonastFacade.modificarDatos(selectPersona);  
+        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("TOKIO 2020"))
+            selectIncentivo.setIdcatpro(1);
+        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("ELITE"))
+            selectIncentivo.setIdcatpro(2);
+        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("ALTO NIVEL"))
+            selectIncentivo.setIdcatpro(3);
+        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("AVANZADO"))
+            selectIncentivo.setIdcatpro(4);
+        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("DESARROLLO"))
+            selectIncentivo.setIdcatpro(5);
+        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("RESERVA"))
+            selectIncentivo.setIdcatpro(6);
+        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("TALENTO"))
+            selectIncentivo.setIdcatpro(7);
+        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("DESENTR"))
+            selectIncentivo.setIdcatpro(8);
+        if(apoyo)
+            selectIncentivo.setIdcatpro(9);
+        
+        
+        
         mdincentivostFacade.modificarDatos(selectIncentivo);
         if(currentPerfil.getIdperfil().getIdperfil()==2){
             
@@ -1351,6 +1447,11 @@ String name="";
      private boolean isAdmin;
      
     public void nuevousuario(){
+        //admin modulo 2 y perfil 2
+        //fed modulo 5 perfil 3
+        // coe y cpe modulo 6 perfil 4
+        //analista convencional modulo 7 perfil 5
+        //analista discapacidad modulo 7 pefil 5
         System.out.println("try create newUser: ");
         System.out.println("newUser.getCodinst(): "+newUser.getCodinst());
         newuPerfil=new Mdusuarioperfilt();
@@ -1364,7 +1465,7 @@ String name="";
                 if(isAdmin){
                     newuPerfil.setIdperfil(mdperfiltFacade.find(5));
                 }else{
-                    newuPerfil.setIdperfil(mdperfiltFacade.find(3));
+                    newuPerfil.setIdperfil(mdperfiltFacade.find(4));
                 }
                 break;//cpe
             default: 
@@ -1444,8 +1545,8 @@ String name="";
             newIncHist.setInchfechaini(hoy.getTime());
             //newIncHist.setInchfechafin(fecha); // xxx
             newIncHist.setPerid(0);
-            newIncHist.setHandi(aprovacion);
-            newIncHist.setClafundep(usuario);
+            newIncHist.setHandi(selectPersona.getHandi());
+            newIncHist.setClafundep(selectPersona.getClafundep());
             newIncHist.setEstado(event.getAprobado());
             
             mdincentivoshisttFacade.guardarDatos(newIncHist);
@@ -1733,9 +1834,12 @@ String name="";
                 listaPersonas=mdpersonastFacade.findByCodFed(currentUser.getCodinst());
             }
             else{
-                //System.out.println("buscando todas las personas ");
-                System.out.println("buscando todos");
-                listaPersonas=mdpersonastFacade.findAll();
+                if(selectFede.getSector()){
+                    System.out.println("buscando CPE");
+                    listaPersonas=mdpersonastFacade.findAll();
+                }else{
+                    listaPersonas=mdpersonastFacade.findBySector(selectFede.getSector());
+                }
             }
         }else
             if(listaPersonas==null){
@@ -1858,24 +1962,37 @@ String name="";
         if(currentUser!=null){
             System.out.println("Perfil: "+x.getIdperfil());
             System.out.println("para buscar, usa: "+currentUser.getCodinst());
-            if(x.getIdperfil()==(Integer)3){
+            System.out.println("Convencional? "+selectFede.getSector());
+            if(x.getIdperfil()==3){
 
                 System.out.println("Federacion selecionada: " +selectFede.getNombre()+" "+selectFede.getId());
                 listDeporte=mddeportestFacade.getDepByFed(selectFede.getId());
+                
                 if(!selectFede.getSector())
                     selectPersona.setHandi(true);
 
             }
-            if(x.getIdperfil()==(Integer)4){
+            if(x.getIdperfil()==4){
                 System.out.println("Es comite...");
                 if(nuevoHono!=null){
                     nuevoHono.setTipo(3);
                     System.out.println("nuevoHono.getTipo(): "+nuevoHono.getTipo());
                 }
-                if(imcoe)
+                if(selectFede.getSector()){
                     listDeporte=mddeportestFacade.getDepByCat(true);
-                else
+                    if(selectPersona!=null)
+                    selectPersona.setHandi(false);
+                }
+                else{
                     listDeporte=mddeportestFacade.getDepByCat(false);
+                    for (Mddeportest mddeportest : listDeporte) {
+                        System.out.println("mddeportest.getFedcod(): "+mddeportest.getDepdescripcion());
+                        System.out.println("mddeportest.getFedcod(): "+mddeportest.getFedcod());
+                        System.out.println("sector: "+mddeportest.getSector());
+                    }
+                    if(selectPersona!=null)
+                    selectPersona.setHandi(true);
+                }
             }
             System.out.println("DEPORTES - XXXXXXXXXXXXXXXXX");
             if(listDeporte==null){
@@ -2208,55 +2325,72 @@ String name="";
         totalEntEventos=0;
         totalAtlEventos=0;
         totalDiasEventos=0;
-        System.out.println("GET EVENTOS BY CREADOR");
-        System.out.println(getEventosD().length);
-        System.out.println(getEventosD().length);
-        
         if(filtroEventos==null){
             if(currentUser==null){
                 filtroEventos=mdeventoFacade.findAll();
             }
             else{
-                if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
-                    filtroEventos=mdeventoFacade.findAll();
-                    for (Mdevento filtroEvento : filtroEventos) {
-                        if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
-                        if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
-                        if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
-                        if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
-                        
+                //admin modulo 2 y perfil 2
+                //fed modulo 5 perfil 3
+                // coe y cpe modulo 6 perfil 4
+                //analista convencional modulo 7 perfil 5
+                //analista discapacidad modulo 7 pefil 5
+                switch(currentModulo.getIdmodulo().getIdmodulo()){
+                        case 2: System.out.println("Admin");
+                                filtroEventos=mdeventoFacade.findAll();
+                                for (Mdevento filtroEvento : filtroEventos) {
+                                    if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
+                                    if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
+                                    if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
+                                    if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
+                                }break;
+                        case 5: System.out.println("Federación");
+                                filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
+                                for (Mdevento filtroEvento : filtroEventos) {
+                                    if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
+                                    if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
+                                    if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
+                                    if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
+                                }break;
+                        case 6: System.out.println("Comité");
+                                if(selectFede.getSector()){
+                                    filtroEventos=mdeventoFacade.getListBySector("CONVENCIONAL");
+                                    for (Mdevento filtroEvento : filtroEventos) {
+                                        if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
+                                        if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
+                                        if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
+                                        if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
+                                    }
+                                }else{
+                                    filtroEventos=mdeventoFacade.getListBySector("DISCAPACIDAD");
+                                    for (Mdevento filtroEvento : filtroEventos) {
+                                        if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
+                                        if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
+                                        if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
+                                        if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
+                                    }               
+                                }break;
+                        case 7: if(selectFede.getSector()){
+                                    filtroEventos=mdeventoFacade.getListByFed(currentUser.getCodinst());
+                                    for (Mdevento filtroEvento : filtroEventos) {
+                                        if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
+                                        if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
+                                        if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
+                                        if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
+                                    }
+                                }else{
+                                    filtroEventos=mdeventoFacade.getListBySector("DISCAPACIDAD");
+                                    for (Mdevento filtroEvento : filtroEventos) {
+                                        if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
+                                        if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
+                                        if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
+                                        if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
+                                    }               
+                                }break;   
                     }
-                }
-                else{
-                    filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
-                    for (Mdevento filtroEvento : filtroEventos) {
-                        
-                        if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
-                        if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
-                        if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
-                        if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
-                    }
-                }
             }
         }else{
-                if(currentModulo.getIdmodulo().getIdmodulo()==6 || currentModulo.getIdmodulo().getIdmodulo()==2){
-                    filtroEventos=mdeventoFacade.findAll();
-                    for (Mdevento filtroEvento : filtroEventos) {
-                        if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
-                        if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
-                        if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
-                        if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
-                    }
-                }
-                else{
-                    filtroEventos=mdeventoFacade.getListByCreator(currentUser.getIdusuario());
-                    for (Mdevento filtroEvento : filtroEventos) {
-                        if(filtroEvento.getTotal()!=null)totalSumEventos=totalSumEventos+filtroEvento.getTotal();
-                        if(filtroEvento.getNumatl()!=null)totalAtlEventos=totalAtlEventos+filtroEvento.getNumatl();
-                        if(filtroEvento.getNumdias()!=null)totalDiasEventos=totalDiasEventos+filtroEvento.getNumdias();
-                        if(filtroEvento.getNument()!=null)totalEntEventos=totalEntEventos+filtroEvento.getNument();
-                    }
-                }
+               System.out.println("Filtro eventos no está vacío...");
             }
         return filtroEventos;
     }
@@ -2298,14 +2432,23 @@ String name="";
     }
 
     public List<Mdnecesidades> getListaNecesidad() {
+        System.out.println("getnecesidades...");
         if(currentUser.getIdacticode()==0){
+            System.out.println("Todos");
             listaNecesidad=mdnecesidadesFacade.findAll();
-        }if(currentUser.getCodinst()==49){
+        }else if(currentUser.getCodinst()==49){
+            System.out.println("49");
             listaNecesidad=mdnecesidadesFacade.getListBySector(true);
-        }if(currentUser.getCodinst()==52){
+        }else if(currentUser.getCodinst()==52){
+            System.out.println("52");
             listaNecesidad=mdnecesidadesFacade.getListBySector(false);
+            //listaNecesidad=mdnecesidadesFacade.getListBySector(false);
         }else{
+            System.out.println("por federación...");
             listaNecesidad=mdnecesidadesFacade.getListByFede(currentUser.getCodinst());
+        }
+        for (Mdnecesidades mdnecesidades : listaNecesidad) {
+            System.out.println("mdnecesidades: "+mdnecesidades.getDisciplina()+" "+mdnecesidades.getTipo());
         }
         return listaNecesidad;
     }
@@ -2488,7 +2631,7 @@ String name="";
                             listaniveles[4] = 4000.0;
                             nuevoHono.setTipo(1);
 
-                    }if(nuevoHono.getCargo().equals("Asistente Técnico")||nuevoHono.getCargo().equals("Preparador Físico")){
+                    }if(nuevoHono.getCargo().equals("Asistente Técnico")||nuevoHono.getCargo().equals("Preparador Físico")||nuevoHono.getCargo().equals("Coordinador Técnico")){
                         listaniveles=new double[4];
                             listaniveles[0] = 1500.0;
                             listaniveles[1] = 1000.0;
@@ -2513,7 +2656,7 @@ String name="";
                             listaniveles[4] = 4000.0;
                             selecetedHono.setTipo(1);
 
-                    }if(selecetedHono.getCargo().equals("Asistente Técnico")||selecetedHono.getCargo().equals("Preparador Físico")){
+                    }if(selecetedHono.getCargo().equals("Asistente Técnico")||selecetedHono.getCargo().equals("Preparador Físico")||selecetedHono.getCargo().equals("Coordinador Técnico")){
                         listaniveles=new double[4];
                             listaniveles[0] = 1500.0;
                             listaniveles[1] = 1000.0;
@@ -2776,7 +2919,6 @@ String name="";
             }
         
         }
-        System.out.println("Valor eventosD[0]: "+eventosD[0]);
         return eventosD;
     }
 
@@ -2885,6 +3027,14 @@ String name="";
 
     public void setTotalDiasEventos(int totalDiasEventos) {
         this.totalDiasEventos = totalDiasEventos;
+    }
+
+    public boolean isApoyo() {
+        return apoyo;
+    }
+
+    public void setApoyo(boolean apoyo) {
+        this.apoyo = apoyo;
     }
 
     

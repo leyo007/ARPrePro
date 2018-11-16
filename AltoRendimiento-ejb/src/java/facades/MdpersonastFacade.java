@@ -118,6 +118,18 @@ public class MdpersonastFacade extends AbstractFacade<Mdpersonast> implements Md
             return new Mdpersonast();
         }
     }
+
+    @Override
+    public List<Mdpersonast> findBySector(boolean x) {
+        try {
+              return  em.createQuery("SELECT p from Mdpersonast p WHERE p.handi =:x")
+                      .setParameter("x", x)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré las personas de la federación: "+x+" Error: " + e.getMessage());
+            return null;
+        }
+    }
     
      
   

@@ -33,7 +33,7 @@ public class MdmenutFacade extends AbstractFacade<Mdmenut> implements MdmenutFac
     @Override
     public List<Mdmenut> getAllBymodulo(int m) {
          try {
-              return  em.createQuery("SELECT m FROM Mdmenut m WHERE m.idmodulo =:pd")
+              return  em.createQuery("SELECT m FROM Mdmenut m WHERE m.idmodulo =:pd order by m.idmenu")
                     .setParameter("pd",m)
                     .getResultList();
         } catch (Exception e) {

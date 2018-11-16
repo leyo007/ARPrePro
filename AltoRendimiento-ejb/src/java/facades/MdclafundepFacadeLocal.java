@@ -30,7 +30,7 @@ public interface MdclafundepFacadeLocal {
     List<Mdclafundep> findRange(int[] range);
 
     int count();
-    
+    public List<Mdclafundep> findOrdered();
     public boolean guardarDatos(Mdclafundep x);
     public boolean modificarDatos(Mdclafundep x);
     public List<Mdclafundep> findByDeporte(Mddeportest x);

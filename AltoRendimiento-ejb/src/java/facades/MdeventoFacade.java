@@ -93,6 +93,31 @@ public class MdeventoFacade extends AbstractFacade<Mdevento> implements Mdevento
         }
     }
 
+    @Override
+    public List<Mdevento> getListBySector(String x) {
+        try {
+            return  em.createQuery("SELECT e from Mdevento e WHERE e.sector =:x")
+                    .setParameter("x", x)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré los Eventos de: "+x+" Error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public List<Mdevento> getListByFed(int x) {
+        System.out.println("Buscar eventos by fed");
+        try {
+            return  em.createQuery("SELECT e from Mdevento e WHERE e.codfed =:x")
+                    .setParameter("x", x)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré los Eventos de: "+x+" Error: " + e.getMessage());
+            return null;
+        }
+    }
+
 
     
 }

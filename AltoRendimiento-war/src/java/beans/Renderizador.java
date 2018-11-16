@@ -104,7 +104,7 @@ public class Renderizador {
     }
 
     public String getTiempoMonitor() {
-        String strTiempo = "60000";//valor por defecto  consulta  de Configuracion.ConfiguracionGeneral
+        String strTiempo = "1800000";//valor por defecto  consulta  de Configuracion.ConfiguracionGeneral 1800000
         try {
             ResourceBundle recurso = ResourceBundle.getBundle("Configuracion.ConfiguracionGeneral");
             strTiempo = recurso.getString("tiempoSesion");

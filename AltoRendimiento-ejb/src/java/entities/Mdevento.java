@@ -113,7 +113,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdevento.findByAtletas", query = "SELECT m FROM Mdevento m WHERE m.atletas = :atletas")
     , @NamedQuery(name = "Mdevento.findByEntrenadores", query = "SELECT m FROM Mdevento m WHERE m.entrenadores = :entrenadores")
     , @NamedQuery(name = "Mdevento.findByDelegacion", query = "SELECT m FROM Mdevento m WHERE m.delegacion = :delegacion")
-    , @NamedQuery(name = "Mdevento.findByCodigo", query = "SELECT m FROM Mdevento m WHERE m.codigo = :codigo")})
+    , @NamedQuery(name = "Mdevento.findByCodigo", query = "SELECT m FROM Mdevento m WHERE m.codigo = :codigo")
+    , @NamedQuery(name = "Mdevento.findByCodfed", query = "SELECT m FROM Mdevento m WHERE m.codfed = :codfed")})
 public class Mdevento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -303,6 +304,8 @@ public class Mdevento implements Serializable {
     @Basic(optional = false)
     @Column(name = "codigo")
     private int codigo;
+    @Column(name = "codfed")
+    private Integer codfed;
 
     public Mdevento() {
     }
@@ -987,6 +990,14 @@ public class Mdevento implements Serializable {
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
+    }
+
+    public Integer getCodfed() {
+        return codfed;
+    }
+
+    public void setCodfed(Integer codfed) {
+        this.codfed = codfed;
     }
 
     @Override

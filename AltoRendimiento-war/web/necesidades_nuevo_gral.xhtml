@@ -6,7 +6,24 @@
      xmlns:p="http://primefaces.org/ui"
 >
      <ui:define name="content">
-         
+         #{myBean.noLogged()}
+         <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <p:idleMonitor timeout="#{renderizador.tiempoMonitor}" >
+                <p:ajax event="idle" onstart="PF('idleDialog').show()"      update="messages" />
+            </p:idleMonitor>
+
+
+            <p:confirmDialog 
+                message="La sesión ha caducado,"
+                header="Alto Rendimiento" severity="alert" widgetVar="idleDialog" closable="false" >
+                        <p:commandLink value="Salir" update="msg"
+                            oncomplete="idleDialog.hide()"
+                            action="#{renderizador.cerrarSesion()}"  ajax="false"/>
+                        
+            </p:confirmDialog>
+                      
+        </h:form>
          
         
          <style>
@@ -84,7 +101,7 @@
                                                 <h:panelGrid columns="2"  border="0" style="width: 100%;">
                                                     <h:outputText class="one_third" value="CREADOR DE LA NECESIDAD"/>
                                                     <h:outputText class="" value=""/>                                                    
-                                                    <h:outputText  value="#{myBean.currentUser.idusuario} " id="evento"/>
+                                                    <h:outputText  value="" id="evento"/>
                                                     <p:message for="evento" display="text"/>
                                                     <h:outputText value=""/>
                                                     
@@ -113,14 +130,14 @@
                                                                     required="#{!myBean.controlArticulo(myBean.newNecesidad.articulo)}" 
                                                                     requiredMessage="Nombre Artículo" placeholder="Especifique el artículo, su cantidad y valor a continuación">
                                                         <f:selectItem itemLabel="Seleccione Artículo" itemValue="" />
-                                                        <f:selectItem itemLabel="Póliza de fidelidad y caución" itemValue="Póliza de fidelidad y caución" />
-                                                        <f:selectItem itemLabel="Equipos Deportivos" itemValue="Equipos Deportivos" />
-                                                        <f:selectItem itemLabel="Medicinas, exámenes médicos, vacunas, imagenología y radiología" itemValue="Medicinas, exámenes médicos, vacunas, imagenología y radiología" />
-                                                        <f:selectItem itemLabel="Equipos Médicos" itemValue="Equipos Médicos" />
-                                                        <f:selectItem itemLabel="Mantenimiento, adecuaciones y alquiler de escenario" itemValue="Mantenimiento, adecuaciones y alquiler de escenario" />
-                                                        <f:selectItem itemLabel="Mantenimiento, alquiler de implementos y maquinarias necesarias para los entrenamientos" itemValue="Mantenimiento, alquiler de implementos y maquinarias necesarias para los entrenamientos" />
-                                                        <f:selectItem itemLabel="Material de oficina" itemValue="Material de oficina" />
-                                                        <f:selectItem itemLabel="Otras necesidades" itemValue="Especifique" />
+                                                        <f:selectItem itemLabel="Póliza de fidelidad y caución" itemValue="1 Póliza de fidelidad y caución" />
+                                                        <f:selectItem itemLabel="Equipos Deportivos" itemValue="2 Equipos Deportivos" />
+                                                        <f:selectItem itemLabel="Medicinas, exámenes médicos, vacunas, imagenología y radiología" itemValue="3 Medicinas, exámenes médicos, vacunas, imagenología y radiología" />
+                                                        <f:selectItem itemLabel="Equipos Médicos" itemValue="4 Equipos Médicos" />
+                                                        <f:selectItem itemLabel="Mantenimiento, adecuaciones y alquiler de escenario" itemValue="5 Mantenimiento, adecuaciones y alquiler de escenario" />
+                                                        <f:selectItem itemLabel="Mantenimiento, alquiler de implementos y maquinarias necesarias para los entrenamientos" itemValue="6 Mantenimiento, alquiler de implementos y maquinarias necesarias para los entrenamientos" />
+                                                        <f:selectItem itemLabel="Material de oficina" itemValue="7 Material de oficina" />
+                                                        <f:selectItem itemLabel="Otras necesidades" itemValue="8 Especifique" />
                                                         <p:ajax update="articulotro" event="change" listener="#{myBean.controlArticulo(myBean.newNecesidad.articulo)}"/>
                                                    </p:selectOneMenu>
                                                     <h:outputText value="OTRO" />

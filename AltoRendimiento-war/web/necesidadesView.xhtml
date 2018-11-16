@@ -6,7 +6,24 @@
      xmlns:p="http://primefaces.org/ui"
 >
      <ui:define name="content">
-         
+         #{myBean.noLogged()}
+         <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <p:idleMonitor timeout="#{renderizador.tiempoMonitor}" >
+                <p:ajax event="idle" onstart="PF('idleDialog').show()"      update="messages" />
+            </p:idleMonitor>
+
+
+            <p:confirmDialog 
+                message="La sesión ha caducado,"
+                header="Alto Rendimiento" severity="alert" widgetVar="idleDialog" closable="false" >
+                        <p:commandLink value="Salir" update="msg"
+                            oncomplete="idleDialog.hide()"
+                            action="#{renderizador.cerrarSesion()}"  ajax="false"/>
+                        
+            </p:confirmDialog>
+                      
+        </h:form>
   
         
          <style>
@@ -99,7 +116,7 @@
                                                     options="#{myBean.pdfOpt}"
                                                     />
                                                 </p:commandButton>
-                                                <p:dataTable id="all" value="#{myBean.filtroNecesidad}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
+                                                <p:dataTable id="all" value="#{myBean.listaNecesidad}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                                              selectionMode="single" selection="#{myBean.selectedNecesidad}" rowKey="#{item.id}"
                                                              widgetVar="listaR" filteredValue="#{myBean.filtroNecesidad}" emptyMessage="No hay registros..."
                                                 >

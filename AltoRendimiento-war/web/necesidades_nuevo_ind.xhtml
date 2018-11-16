@@ -6,7 +6,24 @@
      xmlns:p="http://primefaces.org/ui"
 >
      <ui:define name="content">
-         
+         #{myBean.noLogged()}
+         <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <p:idleMonitor timeout="#{renderizador.tiempoMonitor}" >
+                <p:ajax event="idle" onstart="PF('idleDialog').show()"      update="messages" />
+            </p:idleMonitor>
+
+
+            <p:confirmDialog 
+                message="La sesión ha caducado,"
+                header="Alto Rendimiento" severity="alert" widgetVar="idleDialog" closable="false" >
+                        <p:commandLink value="Salir" update="msg"
+                            oncomplete="idleDialog.hide()"
+                            action="#{renderizador.cerrarSesion()}"  ajax="false"/>
+                        
+            </p:confirmDialog>
+                      
+        </h:form>
          
         
          <style>
@@ -84,7 +101,7 @@
                                                 <h:panelGrid columns="2"  border="0" style="width: 100%;">
                                                     <h:outputText class="one_third" value="CREADOR DE LA NECESIDAD"/>
                                                     <h:outputText class="" value=""/>                                                    
-                                                    <h:outputText  value="#{myBean.currentUser.idusuario} " id="evento"/>
+                                                    <h:outputText  value="" id="evento"/>
                                                     <p:message for="evento" display="text"/>
                                                     <h:outputText value=""/>
                                                     
@@ -132,10 +149,16 @@
                                                         <f:selectItem itemLabel="Vivienda" itemValue="Vivienda" />
                                                         <f:selectItem itemLabel="Alimentación" itemValue="Alimentación" />
                                                         <f:selectItem itemLabel="Seguro de vida, accidente y médico" itemValue="Seguro de vida, accidente y médico" />
-                                                        
-                                                        
+                                                       <f:selectItem itemLabel="Otras necesidades" itemValue="Especifique" />
+                                                        <p:ajax update="articulotro" event="change" listener="#{myBean.controlArticulo(myBean.newNecesidad.articulo)}"/>
                                                    </p:selectOneMenu>
-                                                    
+                                                    <h:outputText value="OTRO" />
+                                                    <p:inputText style="" value="#{myBean.newNecesidad.articulo}" id="articulotro" 
+                                                                 disabled="#{!myBean.controlArticulo(myBean.newNecesidad.articulo)}"
+                                                                 required="#{myBean.controlArticulo(myBean.newNecesidad.articulo)}" 
+                                                                 requiredMessage="Nombre Artículo" placeholder="Especifique el artículo, su cantidad y valor a continuación">
+                                                        <p:ajax update="articulo" event="change" listener="#{myBean.controlArticulo(myBean.newNecesidad.articulo)}"/>
+                                                    </p:inputText>
                                                     
                                                     <h:outputText value="CANTIDAD" />
                                                     <p:selectOneMenu disabled="false" required="true" requiredMessage="Falta nº de artículos"

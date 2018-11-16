@@ -66,5 +66,16 @@ public class MdclafundepFacade extends AbstractFacade<Mdclafundep> implements Md
             return null;
         }
     }
+
+    @Override
+    public List<Mdclafundep> findOrdered() {
+        try {
+            return  em.createQuery("SELECT f from Mdclafundep f WHERE order by f.nombre")
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré Mdclafundep en orden:  Error: " + e.getMessage());
+            return null;
+        }
+    }
     
 }

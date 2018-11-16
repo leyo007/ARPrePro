@@ -6,6 +6,7 @@
 package facades;
 
 import entities.Mdfederacion;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -51,7 +52,7 @@ public class MdfederacionFacade extends AbstractFacade<Mdfederacion> implements 
                     .getResultList();
         } catch (Exception e) {
             System.out.println("Error, no encontré federaciones de sector: "+x+" Error: " + e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
     }
     

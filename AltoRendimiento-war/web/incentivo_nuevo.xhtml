@@ -6,8 +6,24 @@
      xmlns:p="http://primefaces.org/ui"
 >
      <ui:define name="content">
-         
-         
+         #{myBean.noLogged()}
+         <h:form>
+            <p:growl id="messages" showDetail="true" sticky="true" />
+            <p:idleMonitor timeout="#{renderizador.tiempoMonitor}" >
+                <p:ajax event="idle" onstart="PF('idleDialog').show()"      update="messages" />
+            </p:idleMonitor>
+
+
+            <p:confirmDialog 
+                message="La sesión ha caducado,"
+                header="Alto Rendimiento" severity="alert" widgetVar="idleDialog" closable="false" >
+                        <p:commandLink value="Salir" update="msg"
+                            oncomplete="idleDialog.hide()"
+                            action="#{renderizador.cerrarSesion()}"  ajax="false"/>
+                        
+            </p:confirmDialog>
+                      
+        </h:form>
          <script>
             var fechanacimiento='';
             var sexo='';
@@ -292,7 +308,7 @@
                                                     <h:outputText value="CLASIFICACIONES FUNCIONALES" />
                                                     <p:selectOneMenu id="clafun" required="true" requiredMessage="Selecione la clasificación" disabled="#{!myBean.selectPersona.handi}" value="#{myBean.selectPersona.clafundep}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Clasificación"/>
-                                                        <f:selectItems value="#{myBean.listaClafundep}" var="cla" itemLabel="#{cla.nombre}" itemValue="#{cla.nombre}" />
+                                                        <f:selectItems value="#{myBean.listaClafundep}" var="cla" itemLabel="#{cla.nombre} - #{cla.deporte}" itemValue="#{cla.nombre}" />
                                                     </p:selectOneMenu> 
                                                     
                                                     <h:outputText value="REPRESENTA LA PROVINCIA:" />
@@ -312,7 +328,7 @@
                                                 <p:separator />
                                                 <p:commandButton id="gt" 
                                                 style=" background: #FBFBFB; color: black;" 
-                                                value="Guardado temporal" 
+                                                value="Guardar" 
                                                 action="#{myBean.registraPersona()}"
                                                 icon="fa fa-fw fa-save"
 

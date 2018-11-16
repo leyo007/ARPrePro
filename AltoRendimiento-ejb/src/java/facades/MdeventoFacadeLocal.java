@@ -33,6 +33,8 @@ public interface MdeventoFacadeLocal {
     public boolean modificarDatos(Mdevento x);
     public boolean guardarDatos(Mdevento x);
     public List<Mdevento> getListByCreator(int x);
+    public List<Mdevento> getListBySector(String x);
+    public List<Mdevento> getListByFed(int x);
     public List<Mdevento> duplicateRows(int delegaciones, Mdevento padre);
     
 }
