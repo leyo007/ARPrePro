@@ -54,6 +54,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdincentivoshistt.findByPerid", query = "SELECT m FROM Mdincentivoshistt m WHERE m.perid = :perid")})
 public class Mdincentivoshistt implements Serializable {
 
+    @Basic(optional = false)
+    @Column(name = "aprobadopor")
+    private int aprobadopor;
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "inchvmensual")
     private Double inchvmensual;
@@ -368,6 +372,14 @@ public class Mdincentivoshistt implements Serializable {
 
     public void setInchtotal(Double inchtotal) {
         this.inchtotal = inchtotal;
+    }
+
+    public int getAprobadopor() {
+        return aprobadopor;
+    }
+
+    public void setAprobadopor(int aprobadopor) {
+        this.aprobadopor = aprobadopor;
     }
     
 }

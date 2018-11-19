@@ -8,7 +8,7 @@
      <ui:define name="content">
          #{myBean.noLogged()}
          <h:form>
-            <p:growl id="messages" showDetail="true" sticky="true" />
+            <p:growl id="messages" showDetail="true" sticky="false" />
             <p:idleMonitor timeout="#{renderizador.tiempoMonitor}" >
                 <p:ajax event="idle" onstart="PF('idleDialog').show()"      update="messages" />
             </p:idleMonitor>
@@ -180,9 +180,9 @@
                  
                 <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
                 </h:outputLink>
-                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+                <p:growl id="growl" sticky="false" showDetail="true" life="3000" />
                
-                    <h2>NUEVO INCENTIVO</h2>     
+                    <h2>REGISTRO ATLETA</h2>     
                     <div id="comments">
                         <ul>
                             <li>
@@ -202,7 +202,7 @@
                                     </div>
                                     <div class="comcont">
                                         <h:form id="newinc" class="container" style="margin-left: 0%; margin-right: 0%; margin-bottom: 0px;">
-                                            <p:growl id="growl" sticky="false" showDetail="true" autoUpdate="true" life="1500"/>
+                                            <p:growl id="growl" sticky="false" showDetail="true" autoUpdate="true" life="3000"/>
                                             <p:messages id="messages" closable="true">
                                                 <p:effect type="puff" event="load" delay="300" />
                                             </p:messages>
@@ -288,6 +288,21 @@
                                                     <h:outputText value="" />
                                                      <p:message for="disc" display="text"/>
                                                      
+                                                     
+                                                    <p:separator /> <p:separator />
+                                                    <h:outputText value="APOYO" />
+                                                    
+                                                    <p:selectBooleanButton id="apoyo" value="#{myBean.selectPersona.apoyo}" 
+                                                                    onLabel="SI" offLabel="NO" style="" 
+                                                                    required="true" requiredMessage="Debe escojer si es de Apoyo!"
+                                                                    >
+                                                        
+                                                    </p:selectBooleanButton>
+                                                    <h:outputText value="" />
+                                                    <p:message for="apoyo" display="text"/>
+                                                    
+                                                    
+                                                    <p:separator /> <p:separator />
                                                     <h:outputText value="PRUEBA" />
                                                     <p:inputText style="" value="#{myBean.selectPersona.depprueba}" id="prueba" required="true" requiredMessage="Prueba obligstoria" placeholder="Especifique la prueba, si solo es numérica, añada la medida (ejm: 100 con metros = 100m)"/>
                                                      <h:outputText value="" />
@@ -312,7 +327,8 @@
                                                     </p:selectOneMenu> 
                                                     
                                                     <h:outputText value="REPRESENTA LA PROVINCIA:" />
-                                                    <p:selectOneMenu id="prov" required="true" requiredMessage="Selecione la provincia" value="#{myBean.selectPersona.idprorep}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                    <p:selectOneMenu id="prov" 
+                                                                     required="true" requiredMessage="Selecione la provincia" value="#{myBean.selectPersona.idprorep}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Provincia"/>
                                                         <f:selectItems value="#{myBean.listaProv}" var="pv" itemLabel="#{pv.nombredivpol}" itemValue="#{pv.iddivpol}" />
                                                     </p:selectOneMenu>

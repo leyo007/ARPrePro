@@ -68,7 +68,7 @@ public class MddivisionpoliticaFacade extends AbstractFacade<Mddivisionpolitica>
     @Override
     public Mddivisionpolitica getProvSingle(int x) {
         try{
-            return (Mddivisionpolitica) em.createQuery("SELECT pv FROM Mddivisionpolitica pv WHERE pv.idparroquiaorgdep=0 and pv.idcantonorgdep=0 and pv.idprovinciaorgdep =:x")
+            return (Mddivisionpolitica) em.createQuery("SELECT pv FROM Mddivisionpolitica pv WHERE pv.idparroquiaorgdep=0 and pv.idcantonorgdep=0 and pv.iddivpol =:x")
                     .setParameter("x", x)
                     .getSingleResult();
         }catch(Exception e){

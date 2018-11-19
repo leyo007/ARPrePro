@@ -944,7 +944,7 @@ newEvent.setVespdepd(0);
                 System.out.println(selectPersona.getIddeporte()); 
                 selectPersona.setIdcreador(currentUser.getIdusuario());
                 selectPersona.setFederacion(currentUser.getCodinst());
-                selectPersona.setDepprueba(selectPersona.getDepprueba()+" "+medida);
+                selectPersona.setDepprueba(selectPersona.getDepprueba());
                 selectPersona.setAprobado(false);
                 selectPersona.setHandi(selectFede.getSector());
                 
@@ -1006,24 +1006,29 @@ newEvent.setVespdepd(0);
     public String repostulacion(){
         String x="";
         mdpersonastFacade.modificarDatos(selectPersona);  
-        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("TOKIO 2020"))
-            selectIncentivo.setIdcatpro(1);
-        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("ELITE"))
-            selectIncentivo.setIdcatpro(2);
-        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("ALTO NIVEL"))
-            selectIncentivo.setIdcatpro(3);
-        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("AVANZADO"))
-            selectIncentivo.setIdcatpro(4);
-        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("DESARROLLO"))
-            selectIncentivo.setIdcatpro(5);
-        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("RESERVA"))
-            selectIncentivo.setIdcatpro(6);
-        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("TALENTO"))
-            selectIncentivo.setIdcatpro(7);
-        if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("DESENTR"))
-            selectIncentivo.setIdcatpro(8);
-        if(apoyo)
+        if(!selectPersona.getApoyo()){
+            if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("TOKIO 2020"))
+                selectIncentivo.setIdcatpro(1);
+            if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("ELITE"))
+                selectIncentivo.setIdcatpro(2);
+            if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("ALTO NIVEL"))
+                selectIncentivo.setIdcatpro(3);
+            if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("AVANZADO"))
+                selectIncentivo.setIdcatpro(4);
+            if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("DESARROLLO"))
+                selectIncentivo.setIdcatpro(5);
+            if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("RESERVA"))
+                selectIncentivo.setIdcatpro(6);
+            if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("TALENTO"))
+                selectIncentivo.setIdcatpro(7);
+            if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("DESENTR"))
+                selectIncentivo.setIdcatpro(8);
+        }else
+        {
             selectIncentivo.setIdcatpro(9);
+            
+            
+        }
         
         
         
@@ -1507,12 +1512,13 @@ String name="";
         System.out.println("EVENT:");
         System.out.println(event.getDepcedula());
         System.out.println(event.getDepapellido());
+        
        
         selectIncentivo=mdincentivostFacade.buscaXpersona(event);
         selectIncentivo.setIdestado(event.getAprobado());
-
+        System.out.println("id cat pro"+ selectIncentivo.getIdcatpro());
         
-        if(event.getAprobado()){//wwws
+        if(event.getAprobado()&&selectIncentivo!=null){//wwws
             newIncHist= new Mdincentivoshistt();
             selectIncentivo.setIncvalormensual(mdcodigosFacade.find(1).getValor()*mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getNumrbu());
             newIncHist.setInchcedula(event.getDepcedula());
@@ -1531,7 +1537,7 @@ String name="";
             newIncHist.setInchprueba(event.getDepprueba());
             newIncHist.setInchresultados(event.getDepresultados());
             newIncHist.setInchproyeccion(event.getDepproyeccion());
-            if(selectIncentivo.getIdcatactual()!=0)
+            if(selectIncentivo.getIdcatactual()!=null)
                 newIncHist.setInchcatactual(mdcategoriaactualtFacade.find(selectIncentivo.getIdcatactual()).getCatdescripcion());
             else
                 newIncHist.setInchcatactual(mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getCatdescripcion());
@@ -1545,10 +1551,10 @@ String name="";
             newIncHist.setInchfechaini(hoy.getTime());
             //newIncHist.setInchfechafin(fecha); // xxx
             newIncHist.setPerid(0);
-            newIncHist.setHandi(selectPersona.getHandi());
-            newIncHist.setClafundep(selectPersona.getClafundep());
+            newIncHist.setHandi(selAprobados.getHandi());
+            newIncHist.setClafundep(selAprobados.getClafundep());
             newIncHist.setEstado(event.getAprobado());
-            
+            newIncHist.setAprobadopor(currentUser.getIdusuario());
             mdincentivoshisttFacade.guardarDatos(newIncHist);
             mdpersonastFacade.modificarDatos(event);
             selectIncentivo.setIdcatactual(selectIncentivo.getIdcatpro());
@@ -1825,8 +1831,11 @@ String name="";
     public List<Mdpersonast> getListaPersonas() {
        
        
-        // System.out.println("Perfil: "+uPerfil.getIdperfil().getIdperfil() );
-        //if(listaPersonas==null){
+        //admin modulo 2 y perfil 2
+                //fed modulo 5 perfil 3
+                // coe y cpe modulo 6 perfil 4
+                //analista convencional modulo 7 perfil 5
+                //analista discapacidad modulo 7 pefil 5
         if(currentPerfil!=null){    
             if(currentPerfil.getIdperfil().getIdperfil()==3){
                  System.out.println("buscando personas de federación: "+currentPerfil.getIdperfil().getPernombre() );
@@ -1835,9 +1844,15 @@ String name="";
             }
             else{
                 if(selectFede.getSector()){
-                    System.out.println("buscando CPE");
-                    listaPersonas=mdpersonastFacade.findAll();
+                    if(currentPerfil.getIdperfil().getIdperfil()==5){
+                        listaPersonas=mdpersonastFacade.findByCodFed(currentUser.getCodinst());
+                    }else{
+                        if(currentPerfil.getIdperfil().getIdperfil()==4)
+                            listaPersonas=mdpersonastFacade.findAll();
+                    }
+                        
                 }else{
+                    
                     listaPersonas=mdpersonastFacade.findBySector(selectFede.getSector());
                 }
             }

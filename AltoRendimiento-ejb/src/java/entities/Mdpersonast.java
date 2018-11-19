@@ -58,6 +58,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mdpersonast.findByFederacion", query = "SELECT m FROM Mdpersonast m WHERE m.federacion = :federacion")})
 public class Mdpersonast implements Serializable {
 
+    @Column(name = "apoyo")
+    private Boolean apoyo;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -377,6 +380,14 @@ public class Mdpersonast implements Serializable {
     @Override
     public String toString() {
         return "entities.Mdpersonast[ iddep=" + iddep + " ]";
+    }
+
+    public Boolean getApoyo() {
+        return apoyo;
+    }
+
+    public void setApoyo(Boolean apoyo) {
+        this.apoyo = apoyo;
     }
     
 }

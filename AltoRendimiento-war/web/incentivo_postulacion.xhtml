@@ -267,6 +267,21 @@
                                                     <h:outputText value="" />
                                                      <p:message for="disc" display="text"/>
                                                      
+                                                     <p:separator /> <p:separator />
+                                                    <h:outputText value="APOYO" />
+                                                    
+                                                    <p:selectBooleanButton id="apoyo" value="#{myBean.selectPersona.apoyo}" 
+                                                                    onLabel="SI" offLabel="NO" style="" 
+                                                                    required="true" requiredMessage="Debe escojer si es de Apoyo!"
+                                                                    >
+                                                        <p:ajax event="change" update="@form"/>
+                                                    </p:selectBooleanButton>
+                                                    <h:outputText value="" />
+                                                    <p:message for="apoyo" display="text"/>
+                                                    
+                                                    
+                                                    <p:separator /> <p:separator />
+                                                     
                                                     <h:outputText value="PRUEBA" />
                                                     <p:inputText style="" value="#{myBean.selectIncentivo.prueba}" id="prueba" required="true" requiredMessage="Prueba obligstoria" placeholder="Especifique la prueba, si solo es numérica, añada la medida (ejm: 100 con metros = 100m)"/>
                                                     <h:outputText value="" />
@@ -281,7 +296,7 @@
                                                     <p:message for="prov" display="text"/>
                                                     
                                                     <h:outputText value="MES INGRESO" />
-                                                    <p:selectOneMenu id="mesingreso" value="#{myBean.selectIncentivo.idmes}" required="true" requiredMessage="Mes obligstorio" >
+                                                    <p:selectOneMenu id="mesingreso" value="#{myBean.selectIncentivo.idmes}" required="#{myBean.selectPersona.apoyo}" disabled="#{myBean.selectPersona.apoyo}" requiredMessage="Mes obligstorio" >
                                                                     <f:selectItem itemLabel="Mes Ingreso" />
                                                                     <f:selectItem  itemLabel="Enero" itemValue="1" />
                                                                     <f:selectItem  itemLabel="Febrero" itemValue="2" />
@@ -301,7 +316,7 @@
                                                     
                                                     
                                                     <h:outputText value="RESULTADOS ELEGIBILIDAD" />
-                                                    <p:selectOneMenu id="result" required="true" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectIncentivo.eligibidad}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                    <p:selectOneMenu id="result" required="#{myBean.selectPersona.apoyo}" disabled="#{myBean.selectPersona.apoyo}" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectIncentivo.eligibidad}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Seleccione"/>
                                                         <f:selectItems value="#{myBean.listaResult}" var="lr" itemLabel="#{lr.division } #{lr.edad.concat( ' - '.concat(lr.programa))}" itemValue="#{lr.id}" />
                                                         <p:ajax update="proyeccion conv" listener="#{myBean.getproyeccion(myBean.selectIncentivo.eligibidad)}" event="change"/>
@@ -313,7 +328,7 @@
                                                      <h:outputText value="Detalle Proyección" />
                                                      <p:inputTextarea value="#{myBean.selectIncentivo.detalleproyeccion}" rows="6" cols="50" />
                                                     <h:outputText value="CONVOCATORIA" />
-                                                    <p:selectOneMenu  id="conv" required="true" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectPersona.idconv}"  styleClass="menuSelect" panelStyleClass="panel">
+                                                    <p:selectOneMenu  id="conv" required="#{myBean.selectPersona.apoyo}" disabled="#{myBean.selectPersona.apoyo}" requiredMessage="Convocatoria obligatoria" value="#{myBean.selectPersona.idconv}"  styleClass="menuSelect" panelStyleClass="panel">
                                                         <f:selectItem itemLabel="Seleccione"/>
                                                         <f:selectItems value="#{myBean.listConv}" var="lc" itemLabel="#{lc.condescripcion}" itemValue="#{lc.idconv}" />
                                                     </p:selectOneMenu>
@@ -365,6 +380,7 @@
                                                         actionListener="#{myBean.tipoArchivo}"
                                                         oncomplete="$('html, body').animate({ scrollTop: 0 }, 'fast');"
                                                         icon="fa fa-fw fa-plus" 
+                                                        disabled="#{myBean.selectPersona.apoyo}"
                                                 ></p:commandButton>
                                                 <p:commandButton id="viewResul" 
                                                 style=" background: #fff; color: #2196f3;" 
