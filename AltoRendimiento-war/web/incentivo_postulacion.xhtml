@@ -242,8 +242,16 @@
                                                     <c:if test="#{myBean.selectPersona.idsexo eq 1}">
                                                         <h:outputText id="sex" value="F"/>
                                                     </c:if>
-                                                     <h:outputText value=""/>
-                                                     <p:message for="sex" display="text"/>
+                                                    <h:outputText value="APROBADO" />
+                                                    <c:if test="#{myBean.selectIncentivo.idestado eq true}">
+                                                        <h:outputText id="aprobado" value="SI"/>
+                                                    </c:if>
+                                                    <c:if test="#{myBean.selectIncentivo.idestado eq false}">
+                                                        <h:outputText id="aprobado" value="NO"/>
+                                                    </c:if>
+                                                    <c:if test="#{myBean.selectIncentivo.idestado eq null}">
+                                                        <h:outputText id="aprobado" value="NO"/>
+                                                    </c:if>
                                                     
                                                     
                                                      

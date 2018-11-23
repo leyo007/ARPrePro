@@ -1029,8 +1029,15 @@ newEvent.setVespdepd(0);
             
             
         }
-        
-        
+        selectIncentivo.setIdcatactual(selectIncentivo.getIdcatpro());
+        if(mdincentivostFacade.modificarDatos(selectIncentivo)){       
+            FacesMessage msg = new FacesMessage("Postulación propuesta y Actualizada", "Deberá ser aprobada" );
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención!!", "No se han realizado modificaciones.")); 
+            
+        }
         
         mdincentivostFacade.modificarDatos(selectIncentivo);
         if(currentPerfil.getIdperfil().getIdperfil()==2){
@@ -1380,6 +1387,7 @@ String name="";
     //editor de propuestas de admin:
     public void onRowSelect(SelectEvent event){
         selAprobados=(Mdpersonast) event.getObject();
+        System.out.println("mdincentivoshisttFacade.findLastApro(selAprobados.getDepcedula()): "+mdincentivoshisttFacade.findLastApro(selAprobados.getDepcedula()));
         listaincHistXCI=mdincentivoshisttFacade.getListByCI(selAprobados.getDepcedula());
         FacesMessage msg = new FacesMessage("Cèdula seleccionada: ", selAprobados.getDepcedula());
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -1392,8 +1400,10 @@ String name="";
         
         selectIncentivo=mdincentivostFacade.buscaXpersona(selAprobados);
         selectIncentivo.setIdestado(aprovacion);
-        
+        System.out.println("mdincentivoshisttFacade.findLastApro(selAprobados.getDepcedula()): "+mdincentivoshisttFacade.findLastApro(selAprobados.getDepcedula()).getIdhisinc());
         if(aprovacion){
+            
+            
             selectIncentivo.setIncvalormensual(mdcodigosFacade.find(1).getValor()*mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getNumrbu());
             
             

@@ -32,5 +32,6 @@ public interface MdincentivoshisttFacadeLocal {
     public boolean modificarDatos(Mdincentivoshistt x);
     public boolean guardarDatos(Mdincentivoshistt x);
     public List<Mdincentivoshistt> getListByCI(String x);
+    public Mdincentivoshistt findLastApro(String x);
     
 }

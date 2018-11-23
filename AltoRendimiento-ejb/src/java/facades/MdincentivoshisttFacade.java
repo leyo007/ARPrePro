@@ -65,5 +65,17 @@ public class MdincentivoshisttFacade extends AbstractFacade<Mdincentivoshistt> i
             return null;
         }
     }
+
+    @Override
+    public Mdincentivoshistt findLastApro(String x) {
+        try {
+              return (Mdincentivoshistt) em.createQuery("select t from Mdincentivoshistt t where t.inchcedula=:x order by t.idhisinc desc")
+                      .setParameter("x", x)
+                    .getSingleResult();
+        } catch (Exception e) {
+            System.out.println("Error, no encontré Incentivo Historico: "+x+" Error: " + e.getMessage());
+            return new Mdincentivoshistt();
+        }
+    }
     
 }
