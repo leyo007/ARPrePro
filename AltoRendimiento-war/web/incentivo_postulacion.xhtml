@@ -376,7 +376,7 @@
                                                 <p:separator />
                                                 <p:commandButton id="gt" 
                                                 style=" background: #FBFBFB; color: black;" 
-                                                value="Guardar" 
+                                                value="#{myBean.selectPersona.aprobado ? 'Repostular': 'Guardar'}" 
                                                 action="#{myBean.repostulacion()}"
                                                 icon="fa fa-fw fa-save"
 

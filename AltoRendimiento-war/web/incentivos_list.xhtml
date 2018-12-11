@@ -110,12 +110,11 @@
                                             <h:form id="form-lista">
                                                
                                                 <p:commandButton id="btn-generar" value="Generar Documento" icon="fa fa-fw fa-file" ajax="false">
-                                                    <p:dataExporter type="pdf" target=":form-lista:all" fileName="#{myBean.uActual.ci}declaracion" 
-                                                    preProcessor="#{myBean.preProcessPDF}"
-                                                    options="#{myBean.pdfOpt}"
+                                                    <p:dataExporter type="pdf" target=":form-lista:all" fileName="atletas" 
+                                                    
                                                     />
                                                 </p:commandButton>
-                                                <p:dataTable id="all" value="#{myBean.listaPersonas}" var="item" style='    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
+                                                <p:dataTable id="all" value="#{myBean.listaPersonas}" var="item" style='font-size: 11px!important;    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
                                                              selectionMode="single" selection="#{myBean.selectPersona}" rowKey="#{item.iddep}"
                                                              widgetVar="listaR" filteredValue="#{myBean.filtroPersonas}" emptyMessage="No hay registros..."
                                                 >
@@ -135,6 +134,17 @@
                                                     </p:column>
                                                     <p:column  filterBy="#{myBean.getIncePropuesta(item)}" headerText="Categoría"  filterMatchMode="contains">
                                                         <h:outputText  value="#{myBean.getIncePropuesta(item)}"/>
+                                                    </p:column>
+                                                    <p:column filterBy="#{item.aprobado}"  rendered="true" headerText="Aprobado"  filterMatchMode="equals">
+                                                        <f:facet name="filter">
+                                                            <p:selectOneMenu onchange="PF('listaR').filter()">
+                                                                <f:converter converterId="javax.faces.Boolean" />
+                                                                <f:selectItem itemLabel="Todos" itemValue="" />
+                                                                <f:selectItem itemLabel="Si" itemValue="true" />
+                                                                <f:selectItem itemLabel="No" itemValue="false" />
+                                                            </p:selectOneMenu>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.aprobado ? 'Si': 'No'}" />
                                                     </p:column>
                                                     <p:column rendered="false" sortBy="#{myBean.getincentivosMenXpersona(item)}" headerText="Delete values"  filterMatchMode="contains" >
                                                         <h:outputText value="#{myBean.getincentivosMenXpersona(item)}"/>

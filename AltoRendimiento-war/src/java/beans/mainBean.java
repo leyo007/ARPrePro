@@ -337,7 +337,7 @@ public class mainBean implements Serializable {
             String pwd=DigestUtils.shaHex(password);
             
             currentUser=mdusuariotFacade.findThisUser(usuario, pwd);
-            System.out.println("Usuario: "+currentUser.getUsumail());
+            //System.out.println("Usuario: "+currentUser.getUsumail());
             if(currentUser.getIdusuario()!=null){
                 /*if(currentUser.getIdacticode()!=1){
                     System.out.println("Sin acceso...");
@@ -346,14 +346,14 @@ public class mainBean implements Serializable {
                 }
                 else{*/
                     currentPerfil=mdusuarioperfiltFacade.findThisUser(currentUser);
-                    System.out.println("1.- uPerfil Cod Usuario: "+currentPerfil.getIdusuario().getIdusuario());
-                    System.out.println("2.- uPerfil P: "+currentPerfil.getIdperfil().getIdperfil());
+                    /*System.out.println("1.- uPerfil Cod Usuario: "+currentPerfil.getIdusuario().getIdusuario());
+                    System.out.println("2.- uPerfil P: "+currentPerfil.getIdperfil().getIdperfil());*/
                     x =mdperfiltFacade.find(currentPerfil.getIdperfil().getIdperfil());
-                    System.out.println("3.- perfil: "+x.toString());
+                    //System.out.println("3.- perfil: "+x.toString());
                     currentModulo=mdperfilmodulotFacade.findModulo(x);
-                    System.out.println("4.- pmodulo: "+currentModulo.getIdmodulo().getIdmodulo());
+                    //System.out.println("4.- pmodulo: "+currentModulo.getIdmodulo().getIdmodulo());
                     modulo = mdmodulotFacade.find(currentModulo.getIdmodulo().getIdmodulo());
-                    System.out.println("5.- modulo: "+modulo.getModnombre());
+                    //System.out.println("5.- modulo: "+modulo.getModnombre());
                     selectFede=mdfederacionFacade.find(currentUser.getCodinst());
                                      
                     if(currentUser.getEntrenador())
@@ -366,7 +366,7 @@ public class mainBean implements Serializable {
                             menus.remove(mdmenutFacade.find(16));
                         }
                     }
-                    System.out.println("6.- menus: "+menus.get(0));
+                    //System.out.println("6.- menus: "+menus.get(0));
                     
                     //menus.forEach((t) -> {
                     for(Mdmenut t: menus){
@@ -375,9 +375,9 @@ public class mainBean implements Serializable {
                     //});
                     
                     
-                    System.out.println("8.- selectFede: "+selectFede);
-                    System.out.println("9.- selectFede: "+selectFede.getSector());
-                    System.out.println("10.- FIN");
+                    //System.out.println("8.- selectFede: "+selectFede);
+                    //System.out.println("9.- selectFede: "+selectFede.getSector());
+                    //System.out.println("10.- FIN");
                     
                     
                     resultado="menu";
@@ -403,7 +403,7 @@ public class mainBean implements Serializable {
                 //}
             }
             else{
-                System.out.println("No hay usuario");
+                //System.out.println("No hay usuario");
                 
                  FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Datos erroneos","usuario o contraseña incorrectos"));
                 return resultado;
@@ -419,7 +419,7 @@ public class mainBean implements Serializable {
     }
     
     public String logout() throws IOException{
-        System.out.println("bye bye");
+        //System.out.println("bye bye");
         RequestContext.getCurrentInstance().execute("window.scrollTo(0,0);");
         HttpSession session = SessionBean.getSession();
         session.invalidate();
@@ -457,14 +457,14 @@ public class mainBean implements Serializable {
     }
     public String reposDeport(Mdpersonast x){
         selectPersona=x;
-        System.out.println("-------------------");
+        //System.out.println("-------------------");
         System.out.println("REPOSTULACION");
        
         selectIncentivo=mdincentivostFacade.buscaXpersona(x);
         System.out.println(getnombreDeporte(selectPersona.getIddeporte()));
         System.out.println(getnombreDciplina(selectPersona.getIddis()));
         
-        System.out.println("-------------------");
+        //System.out.println("-------------------");
         
         
         //return "incentivo_repost";
@@ -1004,9 +1004,12 @@ newEvent.setVespdepd(0);
     }
     private boolean apoyo;
     public String repostulacion(){
-        String x="";
+        
+         System.out.println(selectPersona.getAprobado());
+        String x="";//leo
         mdpersonastFacade.modificarDatos(selectPersona);  
         if(!selectPersona.getApoyo()){
+            System.out.println("No Apoyo...");
             if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("TOKIO 2020"))
                 selectIncentivo.setIdcatpro(1);
             if(mdresultadosFacade.find(selectIncentivo.getEligibidad()).getPrograma().equals("ELITE"))
@@ -1025,16 +1028,19 @@ newEvent.setVespdepd(0);
                 selectIncentivo.setIdcatpro(8);
         }else
         {
+            System.out.println("Apoyo...");
             selectIncentivo.setIdcatpro(9);
             
             
         }
         selectIncentivo.setIdcatactual(selectIncentivo.getIdcatpro());
-        if(mdincentivostFacade.modificarDatos(selectIncentivo)){       
+        if(mdincentivostFacade.modificarDatos(selectIncentivo)){   
+            System.out.println("ostulación propuesta y Actualizada");
             FacesMessage msg = new FacesMessage("Postulación propuesta y Actualizada", "Deberá ser aprobada" );
                 FacesContext.getCurrentInstance().addMessage(null, msg);
 
         }else{
+             System.out.println("Sin cambios...");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atención!!", "No se han realizado modificaciones.")); 
             
         }

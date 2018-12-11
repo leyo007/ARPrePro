@@ -189,9 +189,8 @@
                                             <h:form id="form-lista">
                                                
                                                 <p:commandButton id="btn-generar" value="Generar Documento" icon="fa fa-fw fa-file" ajax="false">
-                                                    <p:dataExporter type="pdf" target=":form-lista:all" fileName="#{myBean.uActual.ci}declaracion" 
-                                                    preProcessor="#{myBean.preProcessPDF}"
-                                                    options="#{myBean.pdfOpt}"
+                                                    <p:dataExporter type="pdf" target=":form-lista:all" fileName="eventos" 
+                                                    
                                                     />
                                                 </p:commandButton>
                                                 <p:dataTable id="all" value="#{myBean.filtroEventos}" var="evento" style='font-size: 9px!important;    word-wrap: normal!important; table-layout: auto; text-align: center;'   rowIndexVar="index" 
