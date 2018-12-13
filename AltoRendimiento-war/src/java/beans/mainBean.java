@@ -1533,9 +1533,18 @@ String name="";
         selectIncentivo=mdincentivostFacade.buscaXpersona(event);
         selectIncentivo.setIdestado(event.getAprobado());
         System.out.println("id cat pro"+ selectIncentivo.getIdcatpro());
+        //System.out.println("id cat edad"+ mdcategoriaedadtFacade.find(selectIncentivo.getIdcatpro()).getCatedaddescripcion());
         
         if(event.getAprobado()&&selectIncentivo!=null){//wwws
+            //listaincHistXCI.007
+            Mdincentivoshistt x= new Mdincentivoshistt();
+            if(listaincHistXCI.size()>0){
+                x=listaincHistXCI.get(listaincHistXCI.size()-1);
+                x.setInchfechafin(new Date());
+                mdincentivoshisttFacade.modificarDatos(x);
+            }
             newIncHist= new Mdincentivoshistt();
+            
             selectIncentivo.setIncvalormensual(mdcodigosFacade.find(1).getValor()*mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getNumrbu());
             newIncHist.setInchcedula(event.getDepcedula());
             newIncHist.setInchdeporte(getnombreDeporte(event.getIddeporte()));  
@@ -1546,7 +1555,7 @@ String name="";
                 newIncHist.setInchgenero("F");
             
             newIncHist.setInchconvocatoria(mdconvocatoriatFacade.find(event.getIdconv()).getCondescripcion());
-            newIncHist.setInchcatedad(mdcategoriaedadtFacade.find(selectIncentivo.getIdcatpro()).getCatedaddescripcion());
+            //newIncHist.setInchcatedad(mdcategoriaedadtFacade.find(selectIncentivo.getIdcatpro()).getCatedaddescripcion());
             newIncHist.setInchnombre(event.getDepnombre());
             newIncHist.setInchapellido(event.getDepapellido());
             newIncHist.setInchprovincia(mddivisionpoliticaFacade.getProvSingle(event.getIdprorep()).getNombredivpol());
@@ -1560,8 +1569,14 @@ String name="";
             newIncHist.setInchnovedad(event.getDepnovedad());
             newIncHist.setInchcatprop(mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getCatdescripcion());
             newIncHist.setInchvmensual(getincentivosMenXpersona(event));
-            newIncHist.setInchnmes(selectIncentivo.getIdmes());
-            newIncHist.setInchtotal(newIncHist.getInchvmensual()*newIncHist.getInchnmes());
+            if(x.getInchfechafin()!=null){
+                newIncHist.setInchnmes(selectIncentivo.getIdmes());// 007
+                newIncHist.setInchtotal(newIncHist.getInchvmensual()*newIncHist.getInchnmes());
+            }
+            else{
+                newIncHist.setInchnmes(selectIncentivo.getIdmes());
+                newIncHist.setInchtotal(newIncHist.getInchvmensual()*newIncHist.getInchnmes());
+                    }
             Calendar hoy = Calendar.getInstance();
             int hoyMonth = hoy.get(Calendar.MONTH);
             newIncHist.setInchfechaini(hoy.getTime());
@@ -2316,6 +2331,8 @@ String name="";
     }
 
     public List<Mdincentivoshistt> getListaincHistXCI() {
+        if(listaincHistXCI!=null)
+        System.out.println("listHistoricos: "+listaincHistXCI.get(listaincHistXCI.size() - 1).getIdhisinc());
         return listaincHistXCI;
     }
 

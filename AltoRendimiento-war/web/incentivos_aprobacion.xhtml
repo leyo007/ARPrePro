@@ -175,12 +175,12 @@
                                                                 <h:outputText id="apr" value="#{histinc.estado ? 'Aprobado': 'Negado'}"/>
                                                             </p:column>
                                                         </p:dataTable>
-                                                        <p:commandButton action="#{myBean.onRowAcceptPos(myBean.selAprobados)}" value="Aceptar" 
+                                                        <p:commandButton action="#{myBean.onRowAcceptPos(myBean.selAprobados)}" value="#{myBean.selAprobados.aprobado ? 'Re-Aceptar': 'Aceptar'}" 
                                                                                          icon="fa fa-fw fa-check-circle" styleClass="w3-btn botones" 
                                                                                          onclick="PF('dlg1').hide()"
                                                                                          style="color: #2196f3;"
                                                                                          update="form-lista:all"
-                                                                                         disabled="#{myBean.selAprobados.aprobado}"
+                                                                                         
                                                                                          >
                                                             
                                                         </p:commandButton>
@@ -192,15 +192,7 @@
                                                                                            >
                                                         </p:commandButton>
                                                         
-                                                        <p:commandButton id="rp" 
-                                                                         styleClass="w3-btn botones"
-                                                            style=" background: #10A9F0; color: white;" 
-                                                            value="Repostular" 
-                                                            action="#{myBean.reposDeport(myBean.selAprobados)}"
-                                                            icon="fa fa-fw fa-edit"
-
-
-                                                        ></p:commandButton>  
+                                                        
                                                        
                                                         <p:commandButton  value="Ver Postulaciones" icon="fa fa-list-ul"
                                                                                            style="color: #2196f3;"
