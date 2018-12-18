@@ -6,6 +6,7 @@ package beans;
 
 
 import com.sun.xml.ws.security.opt.impl.util.SOAPUtil;
+import entities.ActiveDirectoryAuthentication;
 import entities.Mdcategoriaactualt;
 import entities.Mdcvdp;
 import entities.Mdcvdr;
@@ -88,6 +89,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.primefaces.context.RequestContext;
@@ -1542,6 +1544,7 @@ String name="";
                 x=listaincHistXCI.get(listaincHistXCI.size()-1);
                 x.setInchfechafin(new Date());
                 mdincentivoshisttFacade.modificarDatos(x);
+                System.out.println("Meses: "+(x.getInchfechaini().getMonth()-x.getInchfechafin().getMonth()));
             }
             newIncHist= new Mdincentivoshistt();
             
@@ -1569,16 +1572,18 @@ String name="";
             newIncHist.setInchnovedad(event.getDepnovedad());
             newIncHist.setInchcatprop(mdcategoriaactualtFacade.find(selectIncentivo.getIdcatpro()).getCatdescripcion());
             newIncHist.setInchvmensual(getincentivosMenXpersona(event));
+            Calendar hoy = Calendar.getInstance();
+            int hoyMonth = hoy.get(Calendar.MONTH);
             if(x.getInchfechafin()!=null){
-                newIncHist.setInchnmes(selectIncentivo.getIdmes());// 007
+                newIncHist.setInchnmes(selectIncentivo.getIdmes()-hoyMonth);// 007
                 newIncHist.setInchtotal(newIncHist.getInchvmensual()*newIncHist.getInchnmes());
             }
             else{
                 newIncHist.setInchnmes(selectIncentivo.getIdmes());
                 newIncHist.setInchtotal(newIncHist.getInchvmensual()*newIncHist.getInchnmes());
                     }
-            Calendar hoy = Calendar.getInstance();
-            int hoyMonth = hoy.get(Calendar.MONTH);
+            
+            
             newIncHist.setInchfechaini(hoy.getTime());
             //newIncHist.setInchfechafin(fecha); // xxx
             newIncHist.setPerid(0);
@@ -3086,8 +3091,45 @@ String name="";
     }
 
     
+private String respuesta;
+public String validateUsernamePassword() {
+        ActiveDirectoryAuthentication ad = new ActiveDirectoryAuthentication("SENADER.LOCAL");   //dcmindep01   
+        try {
+            respuesta = ad.authenticate(usuario, password);
+        } catch (LoginException ex) {
+            Logger.getLogger(mainBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Datos erroneos","usuario o contraseña incorrectos"));  
+                return "";
+        }
+        System.out.println("***********************************************************************");
+        System.out.println(this.getUsuario());
+        System.out.println("respuesta: "+respuesta);
+        boolean flag = false; //false
+        if(respuesta.equalsIgnoreCase("registrado")){
+            flag =  true;
+        }
+        if(flag){
+            String listString = "";
+            System.out.println("usuario encontrado en AD");
+            
+           // usuarioActual = entidadFacade.searchByUser("").toString();
+            System.out.println("###############");
+            System.out.println("usuario, password: "+usuario+ " "+ password); //Administrator Tecnologi@1420
+            
+            //System.out.println(empleadoCedula.searchCedula("emoina"));
+            //System.out.println(entidadFacade.searchByUser("emoina"));
+            
+            System.out.println("###############");
 
-    
+            System.out.println("Apertura Formulario");
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Datos correctos","usuario o contraseña ok!"));  
+            return "formulario";   
+            
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Datos erroneos","usuario o contraseña incorrectos"));  
+                return "";
+        }
+    }    
 
     
     
